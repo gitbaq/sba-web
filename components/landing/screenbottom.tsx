@@ -12,7 +12,7 @@ const ScreenBottom = () => {
         <Image
           className='rounded-lg'
           src='/left_portrait.png'
-          alt='Next.js logo'
+          alt='SBA Photo'
           width={445}
           height={500}
           priority

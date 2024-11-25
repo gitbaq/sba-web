@@ -32,7 +32,7 @@ const ScreenTop = () => {
         <Image
           className='rounded-lg'
           src='/sba-green.png'
-          alt='Next.js logo'
+          alt='SBA photo'
           width={500}
           height={500}
           priority
