@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   // DropdownMenuLabel,
-  DropdownMenuSeparator,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -23,49 +23,51 @@ import Socials from "./socials";
 export default function NavigationMenuDemo() {
   return (
     <NavigationMenu className='max-w-100 text-stone-800 justify-between h-24 md:min-h-24 min-h-12 shadow-sm'>
-      <Link href='/' className='w-2/4'>
+      <Link href='/' className='w-2/5'>
         <Brand />
       </Link>
-      <Link href='/' className='md:px-5 w-2/4 content-center md:flex hidden'>
+      <Link href='/' className='md:px-5 w-1/5 content-center md:flex hidden'>
         Innovate. Lead. Succeed.
       </Link>
-      <div className='flex flex-row gap-3 w-1/4 justify-end '>
+      <div className='flex flex-row md:gap-3 md:w-2/5 w-3/5 md:justify-end justify-center'>
         <Socials />
 
         <div className='ml-5 gap-3 md:flex flex-row px-5 hidden'>
-          <Link href='about' className='icons'>
+          {/* <Link href='about' className='icons'>
             About
+          </Link>*/}
+          <Link href='courses' className='icons'>
+            Courses
           </Link>
-          <Link href='blog' className='icons'>
-            Blog
-          </Link>
-          <Link href='contact' className='icons'>
+          {/* <Link href='contact' className='icons'>
             Contact
-          </Link>
+          </Link> */}
         </div>
-      </div>
-
-      <div className='ml-5 gap-3 flex flex-row justify-end px-5 md:hidden w-1/4'>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Icons.HiMiniBars3 />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Link href='about'>About</Link>
-            </DropdownMenuItem>
-            {/* <DropdownMenuLabel>
+        <div className='flex flex-row ml-5 md:hidden'>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Icons.HiMiniBars3 />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {/* <DropdownMenuItem>
+                <Link href='about'>About</Link>
+              </DropdownMenuItem> */}
+              {/* <DropdownMenuLabel>
               <Link href='about'>About</Link>
             </DropdownMenuLabel> */}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href='blog'>Blog</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href='contact'>Contact</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {/* <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href='blog'>Blog</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href='contact'>Contact</Link>
+              </DropdownMenuItem> */}
+              <DropdownMenuItem>
+                <Link href='courses'>Courses</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </NavigationMenu>
   );

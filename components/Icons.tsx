@@ -69,13 +69,15 @@ import {
 import { BiSolidSchool } from "react-icons/bi";
 
 import { GoGoal } from "react-icons/go";
-
+import { GrInProgress } from "react-icons/gr";
 import {
   FaInstagram,
   FaTwitter,
   FaGithub,
   FaLinkedinIn,
 } from "react-icons/fa6";
+
+import { PiLinktreeLogoLight } from "react-icons/pi";
 
 export const Icons = {
   ChevronLeft,
@@ -156,6 +158,9 @@ export const Icons = {
   FaLinkedinIn,
 
   RiTwitterXLine,
+
+  GrInProgress,
+  PiLinktreeLogoLight,
 };
 
 export default Icons;

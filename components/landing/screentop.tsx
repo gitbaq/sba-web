@@ -11,7 +11,7 @@ const ScreenTop = () => {
       {/* // bg-gradient-to-b from-transparent via-stone-400 to-transparent */}
       <div className='h-full w-full md:w-2/4 content-center'>
         <div className='heading'>
-          <span className='font-ruthie'>Your Future</span>
+          <span className='font-ruthie heading'>Your Future</span>
           <br />
           Powered by Innovation
         </div>

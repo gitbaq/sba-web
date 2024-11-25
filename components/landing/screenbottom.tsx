@@ -21,7 +21,7 @@ const ScreenBottom = () => {
       </div>
       <div className='h-full w-full md:w-2/4 content-center'>
         <div className='heading'>
-          <span className='font-ruthie'>Your Business</span>
+          <span className='font-ruthie heading'>Your Business</span>
           <br />
           Redefined by AI
         </div>

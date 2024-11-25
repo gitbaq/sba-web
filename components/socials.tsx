@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Socials = () => {
   return (
-    <div className='flex flex-row w-1/4 gap-3 px-2 align-middle'>
+    <div className='flex flex-row w-full gap-3 px-2 md:justify-end justify-center'>
       <Link
         href='https://www.twitter.com/baq2coaching'
         target='_twitter'
@@ -18,6 +18,21 @@ const Socials = () => {
         className='flex justify-center flex-col '
       >
         <Icons.FaLinkedinIn className='text-white icons' />
+      </Link>
+      <Link
+        href='https://linktr.ee/syedbaqirali'
+        target='_linktree'
+        className='flex justify-center flex-col '
+      >
+        <Icons.PiLinktreeLogoLight className='text-white icons' />
+      </Link>{" "}
+      |
+      <Link
+        href='https://calendly.com/syedbaqirali/30min'
+        target='_calendly'
+        className='flex justify-center flex-col '
+      >
+        <Icons.CalendarClock className='text-white icons' />
       </Link>
     </div>
   );
