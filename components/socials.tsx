@@ -4,37 +4,36 @@ import Link from "next/link";
 
 const Socials = () => {
   return (
-    <div className='flex flex-row w-full gap-3 px-2 md:justify-end justify-center'>
+    <>
       <Link
         href='https://www.twitter.com/baq2coaching'
         target='_twitter'
         className='flex justify-center flex-col'
       >
-        <Icons.RiTwitterXLine className='text-white icons' />
+        <Icons.RiTwitterXLine className='icons' />
       </Link>
       <Link
         href='https://www.linkedin.com/in/syedbaqirali'
         target='_linkedin'
         className='flex justify-center flex-col '
       >
-        <Icons.FaLinkedinIn className='text-white icons' />
+        <Icons.FaLinkedinIn className='icons' />
       </Link>
       <Link
         href='https://linktr.ee/syedbaqirali'
         target='_linktree'
         className='flex justify-center flex-col '
       >
-        <Icons.PiLinktreeLogoLight className='text-white icons' />
-      </Link>{" "}
-      |
+        <Icons.PiLinktreeLogoLight className='icons' />
+      </Link>
       <Link
         href='https://calendly.com/syedbaqirali/30min'
         target='_calendly'
-        className='flex justify-center flex-col '
+        className='flex justify-center flex-col'
       >
-        <Icons.CalendarClock className='text-white icons' />
+        <Icons.CalendarClock className='icons' />
       </Link>
-    </div>
+    </>
   );
 };
 

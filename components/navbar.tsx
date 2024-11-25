@@ -20,19 +20,27 @@ import Brand from "./brand";
 import Icons from "./Icons";
 import Socials from "./socials";
 
-export default function NavigationMenuDemo() {
+export default function Navbar() {
   return (
-    <NavigationMenu className='max-w-100 text-stone-800 justify-between h-24 md:min-h-24 min-h-12 shadow-sm'>
-      <Link href='/' className='w-2/5'>
+    <NavigationMenu
+      className='flex flex-row min-w-full max-w-screen text-stone-200 h-24 md:min-h-24 min-h-12 
+      shadow-sm justify-between'
+    >
+      <Link
+        href='/'
+        className='flex flex-row heading items-center md:w-1/4 w-2/4 px-5'
+      >
         <Brand />
       </Link>
-      <Link href='/' className='md:px-5 w-1/5 content-center md:flex hidden'>
+      <Link
+        href='/'
+        className='min-h-full w-1/4 md:px-5 justify-center items-center md:flex hidden sub-heading'
+      >
         Innovate. Lead. Succeed.
       </Link>
-      <div className='flex flex-row md:gap-3 md:w-2/5 w-3/5 md:justify-end justify-center'>
-        <Socials />
-
-        <div className='ml-5 gap-3 md:flex flex-row px-5 hidden'>
+      <div className='flex flex-row md:w-1/4 w-2/4 md:gap-3 gap-2 md:justify-end justify-center'>
+        <Socials /> |
+        <div className='md:flex flex-row mr-5 hidden'>
           {/* <Link href='about' className='icons'>
             About
           </Link>*/}

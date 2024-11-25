@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import NavigationMenuDemo from "@/components/navbar";
+import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
@@ -15,8 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='flex flex-col bg-diff '>
-        <NavigationMenuDemo />
+      <body className='flex flex-col bg-diff'>
+        <Navbar />
 
         <div className='flex flex-col min-h-screen'>{children}</div>
 

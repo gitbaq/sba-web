@@ -8,7 +8,7 @@ import ScreenTop from "@/components/landing/screentop";
 
 export default function Home() {
   return (
-    <div className='flex flex-col w-screen items-center justify-items-center overflow-y-clip'>
+    <div className='flex flex-col w-full items-center justify-items-center overflow-y-clip'>
       {/* <main className='flex flex-col w-full sm:items-start'> */}
       <ScreenTop />
       <ImageCarousel />

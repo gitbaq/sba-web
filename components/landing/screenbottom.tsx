@@ -6,7 +6,7 @@ const ScreenBottom = () => {
     <div
       className='flex md:flex-row flex-col min-h-fit w-full md:items-center items-start 
     bg-gradient-to-b from-transparent via-stone-400 to-transparent 
-    md:p-10 p-2 justify-between'
+    justify-between'
     >
       <div className='h-full w-fit content-center'>
         <Image
@@ -19,7 +19,7 @@ const ScreenBottom = () => {
         />
         {/* <div className='font-ruthie text-8xl text-stone-800'>Syed Baqir</div> */}
       </div>
-      <div className='h-full w-full md:w-2/4 content-center'>
+      <div className='flex flex-col h-full w-full md:w-2/4'>
         <div className='heading'>
           <span className='font-ruthie heading'>Your Business</span>
           <br />
