@@ -45,11 +45,11 @@ const HeroComponent = () => {
       {data.map((d) => (
         <Card
           key={d.id}
-          className='bg-cyan-100 bg-opacity-80 min-w-[250] w-[250] min-h-[350px] h-[350px]'
+          className='bg-amber-400 shadow-md shadow-green-600 bg-opacity-40 min-w-[250] md:w-1/6 w-1/2 min-h-[350px] h-[350px]'
         >
-          <CardHeader className='flex flex-row gap-1 bg-gradient-to-br from-cyan-500 to-transparent'>
-            <Icons.StepForward className='text-green-700' />
-            <CardTitle className=' items-center card-heading text-cyan-950 font-russo'>
+          <CardHeader className='shadow-md'>
+            {/* <Icons.StepForward className='text-green-700' /> */}
+            <CardTitle className='items-center card-heading text-cyan-950 font-russo'>
               {d.heading}
             </CardTitle>
           </CardHeader>
