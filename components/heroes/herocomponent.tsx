@@ -41,11 +41,11 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full overflow-auto pb-5'>
+    <div className='flex flex-row w-full overflow-auto p-5 gap-5'>
       {data.map((d) => (
         <Card
           key={d.id}
-          className='bg-cyan-100 bg-opacity-80 md:m-5 m-2 min-w-[250] h-[350px]'
+          className='bg-cyan-100 bg-opacity-80 min-w-[250] w-[250] min-h-[350px] h-[350px]'
         >
           <CardHeader className='flex flex-row gap-1 bg-gradient-to-br from-cyan-500 to-transparent'>
             <Icons.StepForward className='text-green-700' />
