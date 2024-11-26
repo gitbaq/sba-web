@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import Icons from "../Icons";
 
 const HeroComponent = () => {
   const data = [
@@ -49,7 +48,7 @@ const HeroComponent = () => {
         >
           <CardHeader className='shadow-md'>
             {/* <Icons.StepForward className='text-green-700' /> */}
-            <CardTitle className='items-center card-heading text-cyan-950 font-russo'>
+            <CardTitle className='items-center card-heading text-slate-950 font-russo'>
               {d.heading}
             </CardTitle>
           </CardHeader>
