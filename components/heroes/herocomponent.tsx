@@ -44,7 +44,7 @@ const HeroComponent = () => {
       {data.map((d) => (
         <Card
           key={d.id}
-          className='bg-amber-400 shadow-md shadow-green-600 bg-opacity-40 min-w-[250] md:w-1/6 w-1/2 min-h-[350px] h-[350px]'
+          className='bg-amber-400 shadow-md shadow-green-600 bg-opacity-40 min-w-[250px] md:w-1/6 w-1/2 min-h-[350px] h-[350px]'
         >
           <CardHeader className='shadow-md'>
             {/* <Icons.StepForward className='text-green-700' /> */}
