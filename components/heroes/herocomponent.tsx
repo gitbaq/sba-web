@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import Icons from "../Icons";
 
 const HeroComponent = () => {
   const data = [
@@ -40,18 +41,19 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full overflow-auto p-5'>
+    <div className='flex flex-row w-full overflow-auto pb-5 gap-10'>
       {data.map((d) => (
         <Card
           key={d.id}
-          className='bg-white bg-opacity-90 md:m-5 m-2 min-w-[300px] h-[300px]'
+          className='bg-cyan-100 bg-opacity-80 md:m-5 m-2 min-w-[250] h-[350px]'
         >
-          <CardHeader>
-            <CardTitle className='card-heading'>{d.heading}</CardTitle>
+          <CardHeader className='flex flex-row gap-1 bg-gradient-to-br from-cyan-500 to-transparent'>
+            <Icons.StepForward className='text-green-700' />
+            <CardTitle className=' items-center card-heading text-cyan-950 font-russo'>
+              {d.heading}
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className='reg-text text-ellipsis line-clamp-5'>{d.text}</p>
-          </CardContent>
+          <CardContent className='reg-text mt-2'>{d.text}</CardContent>
         </Card>
       ))}
     </div>

@@ -36,12 +36,12 @@ export default function Portfolio() {
       alt: "Blox Intro",
     },
   ];
-  const width = 300;
-  const height = 300;
+  const width = 250;
+  const height = 250;
   return (
-    <div className='flex flex-col'>
-      <div className='heading w-full text-center font-russo'>
-        Visit my portfolio
+    <div className='flex flex-col gap-5 py-20'>
+      <div className='heading w-full ml-5 text-start font-russo  text-cyan-700'>
+        Portfolio
       </div>
       <div className='flex flex-row items-center ml-5'>
         <Icons.ChevronRight />
@@ -53,7 +53,7 @@ export default function Portfolio() {
           Blox: Productivity hub
         </Link>
       </div>
-      <div className='flex flex-row justify-around md:gap-3 gap-2 md:p-5 w-full bg-gradient-to-b from-transparent via-red-700 to-transparent overflow-auto'>
+      <div className='flex flex-row justify-between md:gap-10 gap-5 md:p-5 w-full bg-gradient-to-b from-transparent via-red-700 to-transparent overflow-auto'>
         {data.map((d) => (
           <Image
             key={d.id}

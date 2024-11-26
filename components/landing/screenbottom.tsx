@@ -19,8 +19,8 @@ const ScreenBottom = () => {
         />
         {/* <div className='font-ruthie text-8xl text-stone-800'>Syed Baqir</div> */}
       </div>
-      <div className='flex flex-col h-full w-full md:w-2/4'>
-        <div className='heading'>
+      <div className='flex flex-col h-full w-full md:w-2/4 max-w-lg p-5'>
+        <div className='sub-heading font-russo'>
           <span className='font-ruthie heading'>Your Business</span>
           <br />
           Redefined by AI
@@ -36,6 +36,8 @@ const ScreenBottom = () => {
         </div>
         <div className='quote'>
           &quot; Innovation distinguishes between a leader and a follower.&quot;
+          <br />
+          <br />
         </div>
         <div>Ready to lead? Let`s build your AI-driven future today.</div>
       </div>

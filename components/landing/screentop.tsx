@@ -1,17 +1,18 @@
 import React from "react";
 import Image from "next/image";
+import Socials from "../socials";
 
 const ScreenTop = () => {
   return (
     <div
-      className='flex md:flex-row flex-col h-full w-full md:items-center items-start 
+      className='flex md:flex-row flex-col md:gap-0 gap-10 h-full w-full md:items-center items-start 
     bg-gradient-to-b from-transparent via-stone-400 to-transparent'
     >
       {/* // bg-gradient-to-b from-transparent via-stone-400 to-transparent */}
-      <div className='flex flex-row h-full w-full md:w-2/4 justify-start md:px-5'>
+      <div className='flex flex-row h-full w-full md:w-2/4 justify-start md:px-5 px-5'>
         <div className='max-w-lg'>
-          <div className='heading'>
-            <span className='font-ruthie'>Your Future</span>
+          <div className='sub-heading font-russo'>
+            <span className='font-ruthie heading'>Your Future</span>
             <br />
             Powered by Innovation
           </div>
@@ -25,6 +26,8 @@ const ScreenTop = () => {
           <div className='quote'>
             &quot; Innovation distinguishes between a leader and a
             follower.&quot; - Steve Jobs
+            <br />
+            <br />
           </div>
           <div>Ready to lead? Let`s build your AI-driven future today.</div>
         </div>

@@ -15,10 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='flex flex-col bg-diff'>
+      <body className='flex flex-col bg-slate-100 gap-5 '>
         <Navbar />
 
-        <div className='flex flex-col min-h-screen'>{children}</div>
+        <div className='flex flex-col min-h-screen max-w-screen overflow-clip'>
+          {children}
+        </div>
 
         <Footer />
       </body>

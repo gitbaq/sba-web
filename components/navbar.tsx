@@ -23,7 +23,7 @@ import Socials from "./socials";
 export default function Navbar() {
   return (
     <NavigationMenu
-      className='flex flex-row min-w-full max-w-screen text-stone-200 h-24 md:min-h-24 min-h-12 
+      className='flex flex-row min-w-full max-w-screen  text-cyan-700 h-24 md:min-h-32 min-h-20 
       shadow-sm justify-between'
     >
       <Link
@@ -34,7 +34,7 @@ export default function Navbar() {
       </Link>
       <Link
         href='/'
-        className='min-h-full w-1/4 md:px-5 justify-center items-center md:flex hidden sub-heading'
+        className='min-h-full w-1/4 md:px-5 justify-center items-center md:flex hidden sub-heading font-russo '
       >
         Innovate. Lead. Succeed.
       </Link>

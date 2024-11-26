@@ -24,17 +24,22 @@ export default function ImageCarousel() {
       alt: "AI 4",
     },
   ];
-  const width = 400;
-  const height = 400;
+  const width = 250;
+  const height = 250;
   return (
-    <div className='flex flex-row justify-around md:gap-3 gap-2 md:py-10 w-full bg-gradient-to-b from-transparent via-red-700 to-transparent overflow-scroll'>
+    // md:gap-3 gap-2 md:p-5 p-5
+    <div
+      className='flex flex-row md:justify-around justify-center gap-10
+    w-full bg-gradient-to-b from-transparent via-red-700 to-transparent 
+    overflow-scroll'
+    >
       {data.map((d) => (
         <Image
           key={d.id}
           width={width}
           height={height}
           src={d.url}
-          className='object-scale-down md:max-w-full max-w-lg max-h-full drop-shadow-md rounded-md m-auto'
+          className='object-scale-down drop-shadow-sm rounded-lg'
           alt={d.alt}
         />
       ))}
