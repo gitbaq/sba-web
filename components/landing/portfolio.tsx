@@ -50,7 +50,7 @@ export default function Portfolio() {
           target='_blox'
           className='gap-3 icons'
         >
-          Blox: Productivity hub
+          Blox: Productivity hub.
         </Link>
       </div>
       <div className='flex flex-row justify-between md:gap-10 gap-5 md:p-5 w-full bg-gradient-to-b from-transparent via-red-700 to-transparent overflow-auto'>

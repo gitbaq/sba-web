@@ -41,7 +41,7 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full overflow-auto pb-5 gap-10'>
+    <div className='flex flex-row w-full overflow-auto pb-5'>
       {data.map((d) => (
         <Card
           key={d.id}

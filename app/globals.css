@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ruthie&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter');
+@import url('https://fonts.googleapis.com/css2?family=Ruthie');
 /* @import url('https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap');*/
 /* @import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap');  */
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Russo+One');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
