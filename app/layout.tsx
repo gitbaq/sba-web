@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "Innovate. Lead. Succeed.",
@@ -24,6 +25,7 @@ export default function RootLayout({
 
         <Footer />
       </body>
+      <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
     </html>
   );
 }

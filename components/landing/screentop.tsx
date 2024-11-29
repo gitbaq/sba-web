@@ -11,7 +11,7 @@ const ScreenTop = () => {
       <div className='flex flex-row h-full w-full md:w-2/4 justify-start md:px-5 px-5'>
         <div className='max-w-lg'>
           <div className='sub-heading font-russo'>
-            <span className='font-ruthie heading'>Your Future</span>
+            <span className='heading'>Your Future</span>
             <br />
             Powered by Innovation
           </div>
@@ -24,7 +24,7 @@ const ScreenTop = () => {
           </div>
           <div className='quote'>
             &quot; Innovation distinguishes between a leader and a
-            follower.&quot; - Steve Jobs
+            follower.&quot; <br />- Steve Jobs
             <br />
             <br />
           </div>

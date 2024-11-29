@@ -17,6 +17,8 @@ export default {
         inter: ["Inter", "sans-serif"],
         ruthie: ["Ruthie", "cursive"],
         russo: ["Russo One", "sans-serif"],
+        quarrel: ["Lovers Quarrel", "cursive"],
+
         // bungee: ["Bungee Tint", "sans-serif"],
         // bungeeSpice: ["Bungee Spice", "sans-serif"],
       },

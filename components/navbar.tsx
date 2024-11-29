@@ -34,7 +34,7 @@ export default function Navbar() {
       </Link>
       <Link
         href='/'
-        className='min-h-full w-1/4 md:px-5 justify-center items-center md:flex hidden sub-heading font-russo '
+        className='min-h-full w-1/4 hover:text-cyan-800 md:px-5 justify-center items-center md:flex hidden sub-heading'
       >
         Innovate. Lead. Succeed.
       </Link>
