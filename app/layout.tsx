@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Innovate. Lead. Succeed.",
@@ -16,9 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='flex flex-col bg-slate-100 gap-5 '>
-        <Navbar />
-
+      <body className='flex flex-col bg-slate-100'>
+        <TooltipProvider>
+          <Navbar />
+        </TooltipProvider>
         <div className='flex flex-col min-h-screen max-w-screen overflow-clip'>
           {children}
         </div>

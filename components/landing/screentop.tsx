@@ -16,7 +16,7 @@ const ScreenTop = () => {
             Powered by Innovation
           </div>
 
-          <div className='p-5'>
+          <div className='py-5'>
             AI is no longer a luxury—it`s a necessity. From predictive analytics
             to personalized customer experiences, we tailor solutions to fit
             your unique needs. Take the leap into the future and position your
@@ -31,10 +31,10 @@ const ScreenTop = () => {
           <div>Ready to lead? Let`s build your AI-driven future today.</div>
         </div>
       </div>
-      <div className='flex flex-row justify-end h-full w-full md:w-2/4'>
+      <div className='flex flex-row md:justify-end justify-center h-full w-full md:w-2/4'>
         <Image
           className='rounded-lg'
-          src='/sba-green.png'
+          src='/sba-portrait_right.png'
           alt='SBA photo'
           width={500}
           height={500}

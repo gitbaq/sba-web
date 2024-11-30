@@ -11,7 +11,7 @@ const ScreenBottom = () => {
       <div className='h-full w-fit content-center'>
         <Image
           className='rounded-lg'
-          src='/left_portrait.png'
+          src='/sba-portrait_left.png'
           alt='SBA Photo'
           width={445}
           height={500}
