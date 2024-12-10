@@ -21,7 +21,7 @@ const ScreenBottom = () => {
       </div>
       <div className='flex flex-col h-full w-full md:w-2/4 max-w-lg p-5'>
         <div className='sub-heading font-russo'>
-          <span className='font-ruthie heading'>Your Business</span>
+          <span className='heading'>Your Business</span>
           <br />
           Redefined by AI
         </div>
