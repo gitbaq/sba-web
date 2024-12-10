@@ -2,7 +2,6 @@ import React from "react";
 import Socials from "./socials";
 import Brand from "./brand";
 import Footer_links from "./footer_links";
-import { version } from "react";
 
 const Footer = () => {
   return (
@@ -23,10 +22,7 @@ const Footer = () => {
           <Footer_links />
         </div>
       </div>
-      <div>
-        &copy; {new Date().getFullYear()} www.syedbaqirali.com &nbsp; - Powered
-        by: {version}
-      </div>
+      <div>&copy; {new Date().getFullYear()} www.syedbaqirali.com</div>
     </footer>
   );
 };
