@@ -17,6 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      <head>
+        {/* <script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600195581005817'
+          crossOrigin='anonymous'
+        ></script> */}
+        <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
+      </head>
       <body className='flex flex-col bg-slate-100'>
         <TooltipProvider>
           <Navbar />
@@ -27,7 +35,6 @@ export default function RootLayout({
 
         <Footer />
       </body>
-      <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
     </html>
   );
 }
