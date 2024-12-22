@@ -25,7 +25,7 @@ export default function RootLayout({
         ></script> */}
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
-      <body className='flex flex-col bg-slate-100'>
+      <body className='flex flex-col bg-slate-100 font-thin'>
         <TooltipProvider>
           <Navbar />
         </TooltipProvider>

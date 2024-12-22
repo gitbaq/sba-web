@@ -17,8 +17,8 @@ export default function Subscribe() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant='outline'>
-          Join! <Icons.Mail className='text-amber-600' />
+        <Button variant='outline' className='rounded-lg'>
+          Join Mailing List <Icons.Mail className='text-amber-500' />
         </Button>
       </SheetTrigger>
       <SheetContent>

@@ -15,6 +15,7 @@ const ScreenIntro = () => {
         <br />
         Let’s turn your vision into measurable success.
       </p>
+
       <div className='flex flex-row justify-evenly max-w-lg w-full text-cyan-700 text-2xl'>
         <Socials />
       </div>
