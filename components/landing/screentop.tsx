@@ -29,8 +29,9 @@ const ScreenTop = () => {
         </div>
 
         <div className='px-2 max-w-sm'>
-          AI is no longer a luxury—it`s a necessity. Take the leap into the
-          future and position your business as a leader in your industry.
+          AI is no longer a luxury—it`s a necessity. Take the leap into a
+          promising future and position your business as a leader in your
+          industry.
         </div>
         <div className='quote px-2'>
           &quot; Innovation distinguishes between a leader and a
