@@ -1,0 +1,8 @@
+h1{
+    @apply font-bold text-xl pt-3 pb-1 rounded-r-lg shadow-sm;
+    @apply bg-gradient-to-r from-transparent to-stone-100;
+}
+
+p{
+    @apply pb-10
+}

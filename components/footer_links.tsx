@@ -8,7 +8,7 @@ const Footer_links = () => {
       {/* <Link href='about'>About</Link>
       <Link href='blog'>Blog</Link> */}
       <Link href='learning' className='icons_diff text-2xl text-pink-800'>
-        <Icons.GiBookshelf />
+        <Icons.Library />
       </Link>
     </>
   );

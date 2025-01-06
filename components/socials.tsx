@@ -10,28 +10,28 @@ const Socials = () => {
         target='_twitter'
         className='flex justify-center flex-col'
       >
-        <Icons.RiTwitterXLine className='icons' />
+        <Icons.FaXTwitter className='icons' />
       </Link>
       <Link
         href='https://www.linkedin.com/in/syedbaqirali'
         target='_linkedin'
         className='flex justify-center flex-col '
       >
-        <Icons.FaLinkedinIn className='icons' />
+        <Icons.FaLinkedin className='icons' />
       </Link>
       <Link
         href='https://linktr.ee/syedbaqirali'
         target='_linktree'
         className='flex justify-center flex-col '
       >
-        <Icons.PiLinktreeLogoLight className='icons' />
+        <Icons.PiLinktreeLogo className='icons' />
       </Link>
       <Link
         href='https://calendly.com/syedbaqirali/30min'
         target='_calendly'
         className='flex justify-center flex-col'
       >
-        <Icons.CalendarClock className='icons' />
+        <Icons.FaCalendarDays className='icons' />
       </Link>
     </>
   );

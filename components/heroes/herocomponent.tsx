@@ -1,12 +1,13 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import Icons from "../Icons";
 
 const HeroComponent = () => {
   const data = [
     {
       id: 1,
       heading: "Custom AI Solutions",
-      text: "Design and implement AI-powered applications (e.g., recommendation systems, predictive analytics, NLP tools) tailored to your business needs using cutting-edge AI technologies like TensorFlow, PyTorch, and OpenAI APIs.",
+      text: "Design and implement AI-powered applications (e.g., recommendation systems, predictive analytics, NLP tools) using AI technologies like TensorFlow, PyTorch, and OpenAI APIs.",
     },
     {
       id: 2,
@@ -40,19 +41,19 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full overflow-auto p-5 gap-5'>
+    <div className='flex flex-row md:max-w-7xl max-w-2xl w-full overflow-auto p-5 gap-5'>
       {data.map((d) => (
         <Card
           key={d.id}
-          className=' shadow-md shadow-amber-300 min-w-[250px] md:w-1/6 w-1/2 min-h-[350px] h-[350px]'
+          className='min-w-72 md:w-1/6 w-1/2 min-h-48 h-48 hover:border overflow-auto'
         >
-          <CardHeader className='shadow-md'>
-            {/* <Icons.StepForward className='text-green-700' /> */}
-            <CardTitle className='items-center card-heading text-slate-950 font-russo'>
+          <CardHeader className='shadow-sm p-3 bg-gradient-to-b from-indigo-50 to-transparent'>
+            <CardTitle className='font-semibold flex flex-row gap-2 items-center '>
+              <Icons.CircleCheckBig className='text-emerald-400 h-4 w-4 min-h-4 min-w-4' />
               {d.heading}
             </CardTitle>
           </CardHeader>
-          <CardContent className='reg-text mt-2'>{d.text}</CardContent>
+          <CardContent className='py-2 px-3 text-xs'>{d.text}</CardContent>
         </Card>
       ))}
     </div>

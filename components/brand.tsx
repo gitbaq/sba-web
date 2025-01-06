@@ -1,11 +1,17 @@
 import React from "react";
+import Link from "next/link";
+import Icons from "./Icons";
 
 const Brand = () => {
   return (
-    <div className='flex flex-row items-center gap-3'>
-      <div className='bg-amber-500 rounded-full w-6 h-6'>&nbsp;</div>
-      <div className='text-3xl font-quarrel  text-nowrap'>Syed Baqir </div>
-      {/* <div className='font-thin text-lg text-nowrap'>AI Engineer</div> */}
+    <div className='flex flex-row items-center gap-2  h-8 min-h-8'>
+      <Icons.Bot className=' text-amber-500' strokeWidth={3} />
+      <Link
+        href='/'
+        className='flex flex-row items-center font-russo text-xl text-nowrap gap-1'
+      >
+        Syed <div className='text-slate-500'>B</div>
+      </Link>
     </div>
   );
 };

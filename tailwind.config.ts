@@ -11,11 +11,26 @@ export default {
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: [`var(--font-inter)`, ...defaultTheme.fontFamily.sans],
-  			inter: ["Inter", "sans-serif"],
-  			ruthie: ["Ruthie", "cursive"],
-  			russo: ["Russo One", "sans-serif"],
-  			quarrel: ["Lovers Quarrel", "cursive"]
+  			sans: [
+  				'`var(--font-inter)`',
+                    ...defaultTheme.fontFamily.sans
+                ],
+  			inter: [
+  				'Inter',
+  				'sans-serif'
+  			],
+  			ruthie: [
+  				'Ruthie',
+  				'cursive'
+  			],
+  			russo: [
+  				'Russo One',
+  				'sans-serif'
+  			],
+  			quarrel: [
+  				'Lovers Quarrel',
+  				'cursive'
+  			]
   		},
   		colors: {
   			background: 'hsl(var(--background))',
