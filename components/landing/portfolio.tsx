@@ -53,7 +53,7 @@ export default function Portfolio() {
               target='_blox'
               className='gap-3 icons text-slate-700'
             >
-              Blox: Productivity hub.
+              Blox: Productivity hub
             </Link>
           </div>
         </div>
