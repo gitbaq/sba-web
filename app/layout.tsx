@@ -7,9 +7,9 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Rightbar from "@/components/rightbar";
 import { Toaster } from "@/components/ui/sonner";
-import Icons from "@/components/Icons";
+// import Icons from "@/components/Icons";
 import Quote from "@/components/quote";
-// import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "Syed Baqir Ali - Innovate, Lead, Succeed",
@@ -24,12 +24,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        {/* <script
+        <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600195581005817'
           crossOrigin='anonymous'
-        ></script> */}
-        {/* <GoogleAnalytics gaId='G-8EVK1ZF0L8' /> */}
+        ></script>
+        <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body className='bg-stone-50 text-sm text-slate-950 w-full h-screen min-h-screen'>
         <TooltipProvider>
@@ -46,9 +46,9 @@ export default function RootLayout({
                   <Rightbar />
                   <Quote />
                 </div>
-                <div className='lg:hidden flex side-panels p-1'>
+                {/* <div className='lg:hidden flex side-panels p-1'>
                   <Icons.Menu />
-                </div>
+                </div> */}
               </div>
               <Footer />
             </div>
