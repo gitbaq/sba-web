@@ -13,7 +13,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "Syed Baqir Ali - Innovate, Lead, Succeed",
-  description: "Syed Baqir Ali - Innovate, Lead, Succeed.",
+  description: "Syed Baqir Ali - Innovate, Lead, Succeed",
 };
 
 export default function RootLayout({
