@@ -38,11 +38,10 @@ export default function RootLayout({
               <Navbar />
               <div className='flex flex-row w-full min-h-full h-full  '>
                 <LearningSidebar />
-
-                <main className='flex flex-col w-full h-full min-h-screen items-center bg-gradient-to-t from-slate-100 to-transparent'>
+                <main className='flex flex-row w-full h-full min-h-screen items-center bg-gradient-to-t from-slate-100 to-transparent'>
                   {children}
                 </main>
-                <div className='w-64 min-w-64 lg:flex hidden side-panels p-2 flex-col bg-red-100'>
+                <div className='w-64 min-w-64 lg:flex hidden side-panels p-2 flex-col items-start justify-start min-h-full'>
                   <Rightbar />
                   <Quote />
                 </div>

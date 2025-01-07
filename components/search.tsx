@@ -59,10 +59,12 @@ function Search() {
       <>
         <Input
           type='text'
-          placeholder='Search for something'
+          placeholder='Search (minimum 2 characters)'
           className='rounded-l-lg rounded-r-none bg-white text-slate-900 md:max-w-lg w-full border border-sky-500'
           onChange={handleChange}
-          onKeyUp={(e) => (e.key == "Enter" ? searchQuery() : null)}
+          onKeyUp={(e) =>
+            e.key == "Enter" && query.length > 1 ? searchQuery() : null
+          }
           onFocus={(e) =>
             e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
           }
@@ -72,6 +74,7 @@ function Search() {
         />
 
         <Button
+          disabled={query.length < 2 ? true : false}
           type='submit'
           className='rounded-l-none rounded-r-lg bg-sky-400 border border-sky-500'
           onClick={searchQuery}

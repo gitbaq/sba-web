@@ -164,8 +164,8 @@ export function LearningSidebar() {
           <SearchResults />
         </Suspense>
       </SidebarContent>
-      <SidebarFooter className='text-slate-400 text-center border-t border-slate-100 min-h-24 h-24 justify-center'>
-        {/* <Usernav /> */}&copy;syedbaqirali.com
+      <SidebarFooter className='text-slate-400 text-center border-t text-xs border-slate-100 min-h-24 h-24 justify-center'>
+        &copy;{new Date().getFullYear()} www.syedbaqirali.com
       </SidebarFooter>
     </Sidebar>
   );

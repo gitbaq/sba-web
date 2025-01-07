@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: Params }) {
             <div className='heading'>{subtopic.heading}</div>
           </div>
           <div className='flex justify-between items-center text-slate-900 w-full'>
-            <div className='flex flex-row font-semibold'>
+            <div className='flex flex-row font-extrabold text-amber-700'>
               {subtopic.subHeading}
             </div>
           </div>

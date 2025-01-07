@@ -22,7 +22,7 @@ export default function Usernav() {
           src={`${bucket_url_public}/profile_sba.jpg`}
           className='w-8 h-8 rounded-full hover:cursor-pointer hover:border-2 hover:border-amber-400'
         />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarFallback>SBA</AvatarFallback>
       </Avatar>
     </div>
   );

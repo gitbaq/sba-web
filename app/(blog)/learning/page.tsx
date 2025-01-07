@@ -40,21 +40,27 @@ function SearchResults() {
         subTopics?.map((sub: SubTopic) => (
           <Tooltip key={sub.id}>
             <div className='w-full border-b border-slate-200 mb-3 py-3'>
-              <a href={`/learning/${sub.id}`}>
+              <div className='hover:bg-slate-100 rounded'>
                 <TooltipTrigger asChild>
-                  <div className='hover:bg-slate-100 rounded'>
-                    <span className='font-semibold text-cyan-700'>
-                      {sub.heading}
-                    </span>
-                    <br />
-                    <span className='text-slate-400'>{sub.subHeading}</span>
+                  <span>
+                    <a href={`/learning/${sub.id}`}>
+                      <span>
+                        <span className='font-semibold text-cyan-700 hover:underline'>
+                          {sub.heading}
+                        </span>
+                        <br />
+                        <span className='text-slate-400 hover:underline'>
+                          {sub.subHeading}
+                        </span>
+                      </span>
+                    </a>
                     <br />
                     <span className='line-clamp-3 overflow-y-hidden'>
                       {parse(sub.content)}
                     </span>
-                  </div>
+                  </span>
                 </TooltipTrigger>
-              </a>
+              </div>
 
               <TooltipContent className='tooltips'>
                 <>
@@ -72,7 +78,7 @@ function SearchResults() {
 
 export default function LearningPage() {
   return (
-    <main className='flex flex-col items-center w-full min-h-full p-2 overflow-auto'>
+    <main className='flex flex-col self-start items-center w-full min-h-full h-full p-2 overflow-auto'>
       <section className='bg-indigo-50 bg-opacity-60 flex flex-row h-full items-center p-2 gap-2 rounded-lg w-3/4'>
         <Icons.Search className='text-white p-1 rounded-full bg-sky-400 border-2 border-sky-500 min-h-6 min-w-6 h-6 w-6' />
         <h1 className='flex w-full font-semibold text-lg'>Search Results</h1>

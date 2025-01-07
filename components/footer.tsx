@@ -12,8 +12,13 @@ const Footer = () => {
       <div className='flex flex-row md:w-1/3 gap-3 justify-center'>
         <Socials />
       </div>
-      <div className='flex flex-row md:w-1/3 w-full  md:justify-end justify-center font-thin px-2'>
-        &copy; {new Date().getFullYear()} www.syedbaqirali.com
+      <div className='flex flex-row md:w-1/3 w-full text-slate-400 text-xs  md:justify-end justify-center font-thin px-2'>
+        <span className='md:hidden flex'>
+          &copy;{new Date().getFullYear()} www.syedbaqirali.com
+        </span>
+        <span className='md:flex hidden'>
+          <Brand />
+        </span>
       </div>
     </footer>
   );

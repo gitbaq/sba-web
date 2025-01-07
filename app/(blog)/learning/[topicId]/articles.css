@@ -1,8 +1,25 @@
 h1{
-    @apply font-bold text-xl pt-3 pb-1 rounded-r-lg shadow-sm;
-    @apply bg-gradient-to-r from-transparent to-stone-100;
+    @apply font-extrabold text-xl pt-3 pb-2 text-sky-800;
+    /* @apply bg-gradient-to-r from-transparent to-stone-100; */
 }
 
 p{
-    @apply pb-10
+    @apply mb-5
 }
+
+.article{
+    @apply text-sky-800 hover:underline font-semibold
+}
+
+.article_img{
+    @apply max-h-60 max-w-sm placeholder-slate-50 place-content-center rounded-lg ml-auto mr-auto mt-10 mb-10 border-4 border-separate border-sky-100 shadow-xl
+}
+
+ul{
+    @apply list-disc list-outside space-y-2 mb-5
+}
+
+li{
+@apply text-slate-800
+}
+
