@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<url>
+  <loc>https://www.syedbaqirali.com/</loc>
+  <priority>0.2</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/about</loc>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/contact</loc>
+  <priority>0.3</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning?query=transform</loc>
+  <priority>0.5</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/1</loc>
+  <priority>0.5</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/5</loc>
+  <priority>0.5</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/15</loc>
+  <priority>0.5</priority>
+  <changefreq>daily</changefreq>
+</url>
+
+</urlset>
