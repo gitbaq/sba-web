@@ -42,50 +42,44 @@ export default function Portfolio() {
   ];
   const width = 150;
   const height = 150;
+
   return (
-    <div className='w-full p-5 md:max-w-5xl max-w-sm'>
-      <div className='flex flex-col gap-10'>
-        <div>
-          <div className='heading w-full text-center focus '>Portfolio</div>
-          <div className='flex flex-row items-center justify-center sub-heading'>
-            <Link
-              href={blox_url}
-              target='_blox'
-              className='gap-3 icons text-slate-700'
-            >
-              Blox: Productivity hub
-            </Link>
-          </div>
+    <div className='flex flex-col gap-3 w-full justify-center'>
+      <div className='bg-gradient-to-t from-transparent to-stone-200 rounded-lg p-2'>
+        <div className='heading w-full text-center focus'>Portfolio</div>
+        <div className='flex flex-row items-center justify-center sub-heading'>
+          <Link href={blox_url} target='_blox' className='icons text-slate-700'>
+            Blox: Productivity hub
+          </Link>
         </div>
-        {/* <div className='scrolling'> */}
+      </div>
+      <div className='flex flex-row justify-center p-2 w-full'>
         <Carousel
-          orientation='horizontal'
+          className='w-full '
           opts={{
-            align: "center",
             loop: true,
           }}
         >
-          <CarouselContent className='gap-2 ml-0'>
+          <CarouselContent className='gap-1'>
             {data.map((d) => (
-              <CarouselItem
-                key={d.id}
-                className='md:basis-1/2 lg:basis-1/3 pl-4'
-              >
-                <Card className='w-72 min-w-72 min-h-80 h-80'>
-                  <CardHeader className='shadow-sm p-3 bg-gradient-to-b from-indigo-50 to-transparent'>
-                    <CardTitle className='font-semibold flex flex-row gap-2 items-center '>
-                      <Icons.CircleCheckBig className='text-emerald-400 h-4 w-4 min-h-4 min-w-4' />
-                      {d.alt}
+              <CarouselItem key={d.id} className='md:basis-2/6 aspect-square'>
+                <Card className='w-full'>
+                  <CardHeader className='shadow-sm'>
+                    <CardTitle>
+                      <div className='font-semibold flex flex-row gap-2 items-center'>
+                        <Icons.CircleCheckBig className='text-emerald-400 h-4 w-4 min-h-4 min-w-4' />
+                        {d.alt}
+                      </div>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className='py-2 px-3 text-xs'>
+                  <CardContent className='justify-center p-2 items-center'>
                     <Image
                       key={d.id}
+                      src={d.url}
+                      className='rounded-md aspect-square min-w-full min-h-full'
+                      alt={d.alt}
                       width={width}
                       height={height}
-                      src={d.url}
-                      className='shadow-xl rounded-md m-auto min-w-64 min-h-64'
-                      alt={d.alt}
                     />
                   </CardContent>
                 </Card>
@@ -95,7 +89,6 @@ export default function Portfolio() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        {/* </div> */}
       </div>
     </div>
   );

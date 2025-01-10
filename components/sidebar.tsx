@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { topics_url } from "@/utils/endpoints/endpoints";
@@ -23,9 +24,12 @@ import {
 import Icons from "./Icons";
 import Brand from "./brand";
 import { toast } from "sonner";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +85,14 @@ function SearchResults() {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <SidebarMenuButton asChild>
-                            <a href={`/learning/${sub.id}`}>
+                            <a
+                              href={`/learning/${sub.id}`}
+                              className={`${
+                                pathname === "/learning/" + sub.id
+                                  ? "active"
+                                  : ""
+                              }`}
+                            >
                               <Icons.Text strokeWidth={2} />
                               <span>{sub.heading}</span>
                             </a>
@@ -109,10 +120,11 @@ function SearchResults() {
 
 export function LearningSidebar() {
   const { toggleSidebar } = useSidebar();
+  const pathname = usePathname();
 
   return (
-    <Sidebar variant='sidebar' className='shadow-none border-none'>
-      <SidebarHeader className='flex flex-col justify-center w-full shadow-sm min-h-24 border-b bg-slate-800 text-slate-200'>
+    <Sidebar variant='sidebar' className='shadow-md border-none'>
+      <SidebarHeader className='flex flex-col justify-center w-full shadow-sm min-h-16 border-b bg-slate-800 text-slate-200'>
         <div className='flex flex-row items-center gap-2'>
           <Icons.Menu
             onClick={toggleSidebar}
@@ -121,42 +133,57 @@ export function LearningSidebar() {
           <Brand />
         </div>
       </SidebarHeader>
-      <SidebarContent className='border-r border-slate-100'>
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem key='home'>
                 <SidebarMenuButton asChild>
-                  <a href={`/`}>
-                    <Icons.House className='icons-size' />
+                  <a
+                    href={`/`}
+                    className={`${pathname === "/" ? "active" : ""}`}
+                  >
+                    <Icons.House className='icons-size text-amber-500' />
                     <span>Home</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem key='about'>
                 <SidebarMenuButton asChild>
-                  <a href={`/about`}>
+                  <Link
+                    href={`/about`}
+                    className={`${pathname === "/about" ? "active" : ""}`}
+                  >
                     <Icons.Info className='icons-size' />
                     <span>About</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem key='learning'>
-                <SidebarMenuButton asChild>
-                  <a href={`/learning?query=transform`}>
-                    <Icons.Library className='icons-size' />
-                    <span>Learning</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+
               <SidebarMenuItem key='contact'>
                 <SidebarMenuButton asChild>
-                  <a href={`/contact`}>
+                  <a
+                    href={`/contact`}
+                    className={`${pathname === "/contact" ? "active" : ""}`}
+                  >
                     <Icons.MessageSquareCode />
                     <span>Contact</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              <SidebarSeparator />
+              <SidebarMenuItem key='learning'>
+                <SidebarMenuButton asChild>
+                  <a
+                    href={`/learning?query=transform`}
+                    className={`${pathname === "/learning" ? "active" : ""}`}
+                  >
+                    <Icons.Library className='icons-size' />
+                    <span>Learning</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarSeparator />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

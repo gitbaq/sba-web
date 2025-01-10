@@ -11,36 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-// function SearchInput({
-//   handleChange,
-//   searchQuery,
-// }: {
-//   handleChange: ChangeEventHandler<HTMLInputElement>;
-//   searchQuery: EventHandler;
-// }) {
-//   return (
-//     <>
-//       <Input
-//         type='text'
-//         placeholder='Search...'
-//         className=' bg-white text-slate-900 md:max-w-lg w-full border border-sky-500'
-//         onChange={handleChange}
-//         onKeyUp={(e) => (e.key == "Enter" ? searchQuery() : "")}
-//         onFocus={(e) =>
-//           e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
-//         }
-//         onClick={(e) =>
-//           e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
-//         }
-//       />
-//       <Button
-//         type='submit'
-//         className='rounded-l-none rounded-r-lg bg-sky-400 border border-sky-500'
-//         onClick={searchQuery}
-//       ></Button>
-//     </>
-//   );
-// }
 
 function Search() {
   function SearchInput() {
@@ -60,7 +30,7 @@ function Search() {
         <Input
           type='text'
           placeholder='Search (minimum 2 characters)'
-          className='rounded-l-lg rounded-r-none bg-white text-slate-900 md:max-w-lg w-full border border-sky-500'
+          className='rounded-l-lg rounded-r-none bg-white text-slate-900 w-full border border-cyan-500'
           onChange={handleChange}
           onKeyUp={(e) =>
             e.key == "Enter" && query.length > 1 ? searchQuery() : null
@@ -76,7 +46,7 @@ function Search() {
         <Button
           disabled={query.length < 2 ? true : false}
           type='submit'
-          className='rounded-l-none rounded-r-lg bg-sky-400 border border-sky-500'
+          className='rounded-l-none rounded-r-lg bg-cyan-400 border border-cyan-500'
           onClick={searchQuery}
         >
           <Icons.Search />

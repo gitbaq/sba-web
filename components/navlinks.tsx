@@ -11,15 +11,21 @@ import Icons from "./Icons";
 export default function NavLinks() {
   return (
     <div className='flex flex-row gap-3 items-center'>
-      <div className='md:flex flex-row hidden gap-3 items-center'>
+      <div className='text-sm md:flex flex-row hidden gap-2 items-center justify-center'>
+        <Link href='/' className='icons'>
+          <Icons.House className='text-amber-400 icons-size' />
+        </Link>{" "}
+        |
         <Link href='/about' className='icons'>
           About
-        </Link>
-        <Link href='/learning?query=transform' className='icons'>
-          Learning
-        </Link>
+        </Link>{" "}
+        |
         <Link href='/contact' className='icons'>
           Contact
+        </Link>{" "}
+        |
+        <Link href='/learning?query=transform' className='icons'>
+          Learning
         </Link>
       </div>
       <div className='flex flex-row md:hidden'>

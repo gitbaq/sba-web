@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Control, FieldPath, useForm } from "react-hook-form";
 import { subs_url } from "@/utils/endpoints/endpoints";
 import Link from "next/link";
+import Icons from "@/components/Icons";
 
 const formSchema = z.object({
   id: z.number(),
@@ -143,10 +144,11 @@ export default function Profile({ params }: { params: Params }) {
                 formControl={form.control}
               />
             </div>
-
-            <Button type='submit' className='bg-orange-500'>
-              {isLoading ? "Loading..." : "Submit"}
-            </Button>
+            <div className='flex justify-end'>
+              <Button type='submit' className='bg-amber-500'>
+                <Icons.UserPlus /> {isLoading ? "Loading..." : "Signup"}
+              </Button>
+            </div>
 
             {error && (
               <div className='col-span-2' style={{ color: "red" }}>

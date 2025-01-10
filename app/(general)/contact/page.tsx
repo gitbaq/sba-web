@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import Socials from "@/components/socials";
+// import Socials from "@/components/socials";
 import {
   Form,
   FormField,
@@ -74,26 +74,19 @@ export default function Contact() {
     }
   }
   return (
-    <main
-      className='flex w-full h-full flex-col md:max-w-xl
-    py-5 rounded-lg'
-    >
-      <section className='flex flex-col w-full justify-start items-center md:max-w-lg gap-1 py-5 bg-slate-100 rounded-t-lg'>
+    <main className='flex flex-col items-center h-full py-3 rounded-lg px-2'>
+      <section className='flex flex-col w-full justify-start gap-1 p-2 rounded-t-lg bg-stone-100'>
         <div className='text-2xl font-semibold'>Contact</div>
-        <div className='font-thin'>Looking forward to hearing from you</div>
+        <div className='font-normal'>Looking forward to hearing from you!</div>
       </section>
-      <section className='flex flex-col w-full justify-center items-center md:max-w-lg shadow-inner py-5'>
+      <section className='flex flex-col w-full justify-center items-center shadow-inner py-5'>
         {success && <p className='text-green-600 font-semibold'>{success}</p>}
         {error && <p className='text-red-600 font-semibold'>{error}</p>}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-            <ProfileFormField
-              name='email'
-              label='Email'
-              placeholder='Email'
-              inputType='email'
-              formControl={form.control}
-            />
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-4 w-full px-5'
+          >
             <ProfileFormField
               name='firstName'
               label='First Name'
@@ -104,6 +97,13 @@ export default function Contact() {
               name='lastName'
               label='Last Name'
               placeholder='Last Name'
+              formControl={form.control}
+            />
+            <ProfileFormField
+              name='email'
+              label='Email'
+              placeholder='Email'
+              inputType='email'
               formControl={form.control}
             />
             <ProfileFormField
@@ -122,14 +122,14 @@ export default function Contact() {
                     <Textarea
                       className='input-field'
                       placeholder='Message'
+                      rows={10}
                       {...field}
                     />
                   </FormControl>
 
                   <FormDescription className='text-sky-600'>
                     * Your suggestions and comments are important to me.
-                    <br />
-                    I&apos;ll get back to your shortly on this.
+                    I&apos;ll (try to) get back shortly.
                   </FormDescription>
 
                   <FormMessage />
@@ -137,24 +137,17 @@ export default function Contact() {
               )}
             />
             <div className='flex justify-end'>
-              <Button type='submit' className='bg-orange-500'>
-                {isLoading ? "Loading..." : "Submit"}
+              <Button type='submit' className='bg-amber-500'>
+                {isLoading ? "Loading..." : "🚀 Send Message"}
               </Button>
             </div>
           </form>
         </Form>
       </section>
       <section
-        className='flex flex-col w-full justify-start items-center md:max-w-lg gap-5
+        className='flex flex-col w-full justify-start items-center gap-5
        bg-slate-100 rounded-b-lg'
-      >
-        <div>
-          <div className='text-2xl font-semibold'>Follow Me</div>
-          <div className='flex flex-row gap-5 py-3'>
-            <Socials />
-          </div>
-        </div>
-      </section>
+      ></section>
     </main>
   );
 }
@@ -183,13 +176,13 @@ const ProfileFormField: React.FC<ProfileFormFieldsProps> = ({
       control={formControl}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className='w-full'>
           {inputType != "hidden" && (
             <FormLabel className='ml-1 font-semibold'>{label}</FormLabel>
           )}
           <FormControl>
             <Input
-              className='input-field'
+              className='input-field w-full'
               placeholder={placeholder}
               type={inputType || "text"}
               readOnly={readonly}

@@ -16,7 +16,7 @@ import { web_url } from "@/utils/endpoints/endpoints";
 export default function SharePanel({ subtopic }: { subtopic: SubTopic }) {
   return (
     <div className='flex flex-row items-center border rounded p-1 px-2 gap-1'>
-      <Icons.Share2 className='mr-3 text-sky-800 icons h-5 w-5' />
+      <Icons.Share2 className='mr-3 text-sky-800 icons icons-size' />
       <LinkedinShareButton
         title={subtopic.heading}
         summary={subtopic.subHeading}

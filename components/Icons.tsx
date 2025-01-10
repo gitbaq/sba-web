@@ -15,6 +15,12 @@ import {
   Share2,
   EllipsisVertical,
   CircleCheckBig,
+  ExternalLink,
+  ChevronsRight,
+  Bell,
+  User,
+  UserPlus,
+  Save,
 } from "lucide-react";
 
 import { FaXTwitter, FaLinkedin, FaCalendarDays } from "react-icons/fa6";
@@ -36,6 +42,12 @@ export const Icons = {
   Share2,
   EllipsisVertical,
   CircleCheckBig,
+  ExternalLink,
+  Bell,
+  ChevronsRight,
+  User,
+  UserPlus,
+  Save,
   FaLinkedin,
   FaXTwitter,
   PiLinktreeLogo,
