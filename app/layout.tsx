@@ -10,7 +10,7 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Rightbar from "@/components/rightbar";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
-
+import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "Syed Baqir Ali - Innovate, Lead, Succeed",
   description: "Syed Baqir Ali - Innovate, Lead, Succeed",
@@ -52,6 +52,7 @@ export default function RootLayout({
                 <main className='flex flex-row w-full h-full items-start justify-center'>
                   <div className='lg:max-w-4xl md:max-w-lg w-full h-full'>
                     {children}
+                    <Analytics />
                   </div>
                 </main>
                 <div className='lg:flex hidden flex-col min-h-full w-64 min-w-64'>

@@ -16,6 +16,16 @@
   <changefreq>daily</changefreq>
 </url>
 <url>
+  <loc>https://www.syedbaqirali.com/profile</loc>
+  <priority>0.3</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/login</loc>
+  <priority>0.3</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
   <loc>https://www.syedbaqirali.com/learning?query=transform</loc>
   <priority>0.5</priority>
   <changefreq>daily</changefreq>
