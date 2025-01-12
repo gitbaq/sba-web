@@ -13,8 +13,8 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
-  title: "Syed Baqir Ali - Innovate, Lead, Succeed",
-  description: "Syed Baqir Ali - Innovate, Lead, Succeed",
+  title: "Syed B - Innovate, Lead, Succeed",
+  description: "Syed B - Innovate, Lead, Succeed",
 };
 export const viewport: Viewport = {
   width: "device-width",

@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: Params }) {
 
   const subtopic: SubTopic = await getSubTopicById(topicId);
   const iURL: string =
-    subtopic.imageUrl === null ? "/ai3.png" : subtopic.imageUrl;
+    subtopic.imageUrl === null ? "/ai4.png" : subtopic.imageUrl;
   return (
     <main className='flex flex-col h-full w-full items-center overflow-y-auto py-3 px-2'>
       <section className='flex flex-col w-full h-full justify-center'>
