@@ -11,6 +11,7 @@ import {
 import Icons from "@/components/Icons";
 import parse from "html-react-parser";
 import { toast } from "sonner";
+import Search from "@/components/search";
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -37,7 +38,7 @@ function SearchResults() {
 
   return (
     <>
-      <section className='bg-stone-100 bg-opacity-60 flex flex-row w-full items-center p-2 gap-2 rounded-lg'>
+      <section className='bg-stone-100 dark:bg-transparent bg-opacity-60 flex flex-row w-full items-center p-2 gap-2 rounded-lg'>
         <Icons.Search className='text-white p-1 rounded-full bg-cyan-400 border-2 border-cyan-500 min-h-6 min-w-6 h-6 w-6' />
         <h1 className='flex w-full font-semibold text-lg'>Search Results</h1>
         {subTopics && (
@@ -53,7 +54,7 @@ function SearchResults() {
               {/* <div className='w-full border-slate-200 mb-3 py-3 bg-indigo-300'> */}
               {/* <div className='hover:bg-slate-300 rounded'> */}
               <TooltipTrigger asChild>
-                <div className='flex flex-row p-1 gap-1 rounded w-full hover:bg-slate-100'>
+                <div className='flex flex-row p-1 gap-1 rounded w-full bg-background hover:bg-accent hover:text-accent-foreground'>
                   <div
                     style={{
                       backgroundImage: `url(${
@@ -69,11 +70,11 @@ function SearchResults() {
                   <div className='py-1 px-2 w-full'>
                     <a href={`/learning/${sub.id}`}>
                       <span>
-                        <span className='font-semibold text-cyan-700 hover:underline'>
+                        <span className='font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
                           {sub.heading}
                         </span>
                         <br />
-                        <span className='text-slate-400 hover:underline'>
+                        <span className='text-slate-400 dark:text-slate-300 hover:underline'>
                           {sub.subHeading}
                         </span>
                       </span>
@@ -89,7 +90,7 @@ function SearchResults() {
 
               <TooltipContent className='tooltips'>
                 <>
-                  <span className='text-sky-800'>{sub.heading}</span>
+                  <span className='text-cyan-700'>{sub.heading}</span>
                   <br />
                   {sub.subHeading}
                 </>
@@ -104,7 +105,8 @@ function SearchResults() {
 
 export default function LearningPage() {
   return (
-    <main className='flex flex-col self-start items-center w-full min-h-screen h-full px-2 py-3 overflow-auto'>
+    <main className='flex flex-col self-start gap-2 items-center w-full min-h-screen h-full px-2 py-3 overflow-auto'>
+      <Search />
       <Suspense fallback='Loading..'>
         <SearchResults />
       </Suspense>

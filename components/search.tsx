@@ -5,11 +5,11 @@ import { useState } from "react";
 import Icons from "./Icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover";
 
 
 function Search() {
@@ -29,8 +29,8 @@ function Search() {
       <>
         <Input
           type='text'
-          placeholder='Search (minimum 2 characters)'
-          className='rounded-l-lg rounded-r-none bg-white text-slate-900 w-full border border-cyan-500'
+          placeholder='Quick Search...'
+          className='rounded-l-lg rounded-r-none bg-accent text-primary w-full border border-secondary'
           onChange={handleChange}
           onKeyUp={(e) =>
             e.key == "Enter" && query.length > 1 ? searchQuery() : null
@@ -57,10 +57,10 @@ function Search() {
 
   return (
     <>
-      <div className='md:flex hidden items-center justify-center w-full'>
+      <div className='flex flex-row items-center justify-center w-full'>
         <SearchInput />
       </div>
-      <div className='md:hidden flex items-center w-full justify-end px-2'>
+      {/* <div className='md:hidden flex items-center w-full justify-end px-2'>
         <Popover>
           <PopoverTrigger asChild>
             <Icons.Search className='hover:cursor-pointer' />
@@ -71,7 +71,7 @@ function Search() {
             </div>
           </PopoverContent>
         </Popover>
-      </div>
+      </div> */}
     </>
   );
 }

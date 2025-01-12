@@ -140,10 +140,13 @@ body {
 }
 
 .icons{
-  @apply  hover:text-amber-500 hover:no-underline
+  @apply  hover:text-amber-600 hover:no-underline dark:hover:text-amber-500
 }
 .icons-size{
-  @apply h-5 w-5 min-h-5 min-w-5
+  @apply aspect-square h-4 min-h-4 items-baseline
+}
+.icons-small{
+@apply h-3 w-3 min-h-3 min-w-3
 }
 
 .icons_diff{
@@ -155,8 +158,8 @@ body {
 }
 
 .lead_text{
-  @apply text-cyan-700;
-  @apply hover:text-cyan-800;
+  @apply text-cyan-700 hover:text-cyan-800;
+  @apply dark:text-cyan-400 dark:hover:text-cyan-500;
 }
 
 .tooltip{
@@ -173,7 +176,7 @@ body {
 }
 
 .input-field{
-  @apply bg-slate-50 w-full;
+  @apply bg-accent w-full;
 }
 
 .tooltips{
@@ -185,10 +188,14 @@ body {
 }
 
 .side-panels{
-  @apply bg-slate-800 bg-opacity-5;
+  @apply bg-accent;
 }
 
 a.active {
-  @apply bg-stone-200 text-slate-900 hover:bg-stone-300
+  @apply bg-accent text-primary hover:text-amber-400
+}
+
+a.active_top {
+  @apply text-amber-400 hover:text-amber-300
 }
 

@@ -75,7 +75,7 @@ export default function Contact() {
   }
   return (
     <main className='flex flex-col items-center h-full py-3 rounded-lg px-2'>
-      <section className='flex flex-col w-full justify-start gap-1 p-2 rounded-t-lg bg-stone-100'>
+      <section className='flex flex-col w-full justify-start gap-1 p-2 rounded-t-lg bg-accent'>
         <div className='text-2xl font-semibold'>Contact</div>
         <div className='font-normal'>Looking forward to hearing from you!</div>
       </section>
@@ -144,10 +144,6 @@ export default function Contact() {
           </form>
         </Form>
       </section>
-      <section
-        className='flex flex-col w-full justify-start items-center gap-5
-       bg-slate-100 rounded-b-lg'
-      ></section>
     </main>
   );
 }

@@ -13,7 +13,7 @@ export default function Rightbar() {
   });
 
   return (
-    <div className='flex flex-col h-full min-h-full space-y-1 bg-white'>
+    <div className='flex flex-col h-full min-h-full space-y-1 bg-neutral-100 dark:bg-neutral-900 p-2'>
       <div className='flex flex-col gap-1'>
         <Calendar
           mode='range'

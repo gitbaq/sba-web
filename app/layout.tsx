@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "next-themes";
 export const metadata: Metadata = {
   title: "Syed B - Innovate, Lead, Succeed",
   description: "Syed B - Innovate, Lead, Succeed",
@@ -42,30 +43,32 @@ export default function RootLayout({
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body
-        className={`${inter.className} antialiased bg-stone-50 text-sm text-slate-950 w-full h-screen min-h-screen max-w-full`}
+        className={`${inter.className} antialiased bg-background text-sm text-primary w-full h-screen min-h-screen max-w-full`}
       >
-        <TooltipProvider delayDuration={2000}>
-          <SidebarProvider defaultOpen={true} className='h-full w-full'>
-            <div className='flex flex-col w-full h-fit min-h-full'>
-              <Navbar />
-              <div className='flex flex-row w-full min-h-full h-full  '>
-                <LearningSidebar />
-                <main className='flex flex-row w-full h-full items-start justify-center'>
-                  <div className='lg:max-w-4xl md:max-w-lg w-full h-full'>
-                    {children}
-                    <Analytics />
-                    <SpeedInsights />
+        <ThemeProvider attribute='class'>
+          <TooltipProvider delayDuration={2000}>
+            <SidebarProvider defaultOpen={true} className='h-full w-full'>
+              <div className='flex flex-col w-full h-fit min-h-full'>
+                <Navbar />
+                <div className='flex flex-row w-full min-h-full h-full  '>
+                  <LearningSidebar />
+                  <main className='flex flex-row w-full h-full items-start justify-center'>
+                    <div className='lg:max-w-4xl md:max-w-lg w-full h-full'>
+                      {children}
+                      <Analytics />
+                      <SpeedInsights />
+                    </div>
+                  </main>
+                  <div className='lg:flex hidden flex-col min-h-full w-64 min-w-64'>
+                    <Rightbar />
                   </div>
-                </main>
-                <div className='lg:flex hidden flex-col min-h-full w-64 min-w-64'>
-                  <Rightbar />
                 </div>
+                <Footer />
               </div>
-              <Footer />
-            </div>
-          </SidebarProvider>
-        </TooltipProvider>
-        <Toaster />
+            </SidebarProvider>
+          </TooltipProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

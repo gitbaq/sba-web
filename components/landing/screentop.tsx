@@ -10,7 +10,7 @@ const ScreenTop = () => {
     >
       <div className='rounded-ss-full bg-gradient-to-b bg-amber-400 p-3'>
         <Image
-          className='from-neutral-800 via-neutral-400 to-inherit opacity-80'
+          className='from-neutral-800 via-neutral-400 to-inherit opacity-80 z-10'
           src='/ai4.png'
           alt='AI'
           width={320}

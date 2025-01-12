@@ -7,24 +7,42 @@ import {
 import Link from "next/link";
 import React from "react";
 import Icons from "./Icons";
+import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
+  const pathname = usePathname();
   return (
-    <div className='flex flex-row gap-3 items-center'>
-      <div className='text-sm md:flex flex-row hidden gap-2 items-center justify-center'>
-        <Link href='/' className='icons'>
-          <Icons.House className='text-amber-400 icons-size' />
-        </Link>{" "}
-        |
-        <Link href='/about' className='icons'>
+    <div className='flex flex-row gap-3 items-start'>
+      <div className='md:flex flex-row hidden gap-5 items-center justify-center '>
+        <Link
+          href='/'
+          className={`${pathname === "/" ? "active_top" : ""} icons text-lg`}
+        >
+          {/* <Icons.House className='text-amber-400 icons-size' />  */}
+          Home
+        </Link>
+        <Link
+          href='/about'
+          className={`${
+            pathname === "/about" ? "active_top" : ""
+          } icons text-lg`}
+        >
           About
-        </Link>{" "}
-        |
-        <Link href='/contact' className='icons'>
+        </Link>
+        <Link
+          href='/contact'
+          className={`${
+            pathname === "/contact" ? "active_top" : ""
+          } icons text-lg`}
+        >
           Contact
-        </Link>{" "}
-        |
-        <Link href='/learning?query=transform' className='icons'>
+        </Link>
+        <Link
+          href='/learning?query=transform'
+          className={`${
+            pathname === "/learning" ? "active_top" : ""
+          } icons text-lg`}
+        >
           Learning
         </Link>
       </div>
@@ -33,11 +51,11 @@ export default function NavLinks() {
           <DropdownMenuTrigger>
             <Icons.EllipsisVertical />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='bg-slate-100 text-slate-900 rounded p-2 w-32 min-w-32'>
+          <DropdownMenuContent className='bg-accent text-primary z-50 rounded p-2 w-32 min-w-32'>
             <DropdownMenuItem>
               <Link
                 href='/'
-                className='flex flex-row gap-3 items-center w-full p-1'
+                className='flex flex-row gap-3 items-center w-full p-1 icons'
               >
                 <Icons.House className='icons-size' />
 
@@ -47,7 +65,7 @@ export default function NavLinks() {
             <DropdownMenuItem>
               <Link
                 href='/about'
-                className='flex flex-row gap-3 items-center w-full p-1'
+                className='flex flex-row gap-3 items-center w-full p-1  icons'
               >
                 <Icons.Info className='icons-size' />
 
@@ -57,7 +75,7 @@ export default function NavLinks() {
             <DropdownMenuItem>
               <Link
                 href='/learning'
-                className='flex flex-row gap-3 items-center w-full p-1'
+                className='flex flex-row gap-3 items-center w-full p-1  icons'
               >
                 <Icons.Library className='icons-size' />
 
@@ -67,7 +85,7 @@ export default function NavLinks() {
             <DropdownMenuItem>
               <Link
                 href='/contact'
-                className='flex flex-row gap-3 items-center w-full p-1'
+                className='flex flex-row gap-3 items-center w-full p-1  icons'
               >
                 <Icons.MessageSquareCode className='icons-size' />
 

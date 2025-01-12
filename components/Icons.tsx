@@ -21,6 +21,9 @@ import {
   User,
   UserPlus,
   Save,
+  SunDim,
+  Moon,
+  MonitorCog,
 } from "lucide-react";
 
 import { FaXTwitter, FaLinkedin, FaCalendarDays } from "react-icons/fa6";
@@ -48,6 +51,9 @@ export const Icons = {
   User,
   UserPlus,
   Save,
+  SunDim,
+  Moon,
+  MonitorCog,
   FaLinkedin,
   FaXTwitter,
   PiLinktreeLogo,

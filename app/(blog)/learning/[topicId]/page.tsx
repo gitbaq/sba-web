@@ -27,8 +27,8 @@ export default async function Page({ params }: { params: Params }) {
   return (
     <main className='flex flex-col h-full w-full items-center overflow-y-auto py-3 px-2'>
       <section className='flex flex-col w-full h-full justify-center'>
-        <div className='flex flex-col rounded-t-xl px-5 self-center w-full border border-slate-100 bg-gradient-to-t from-transparent to-slate-100'>
-          <div className='flex flex-row items-center text-cyan-700 w-full gap-2'>
+        <div className='flex flex-col rounded-t-xl px-5 self-center w-full border border-accent bg-gradient-to-t from-transparent to-accent'>
+          <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
             <div className='heading'>{subtopic.heading}</div>
           </div>
           <div className='flex justify-between items-center text-slate-900 w-full'>
@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: Params }) {
           >
             &nbsp;
           </div>
-          <div className='flex justify-between items-center w-full text-slate-700 py-3'>
+          <div className='flex justify-between items-center w-full text-slate-700 dark:text-slate-300 py-3'>
             <div>
               {format(subtopic.createDate, "MMM do, yyyy")}
               {/* |{" "} */}

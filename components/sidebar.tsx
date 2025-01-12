@@ -26,6 +26,9 @@ import Brand from "./brand";
 import { toast } from "sonner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Search from "./search";
+import DarkModeSelector from "./DarkModeSelector";
+import Copyright from "./Copyright";
 
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -124,7 +127,7 @@ export function LearningSidebar() {
 
   return (
     <Sidebar variant='sidebar' className='shadow-md border-none'>
-      <SidebarHeader className='flex flex-col justify-center w-full shadow-sm min-h-16 border-b bg-slate-800 text-slate-200'>
+      <SidebarHeader className='flex flex-col justify-center w-full shadow-sm min-h-16 border-b bg-slate-900 text-slate-200'>
         <div className='flex flex-row items-center gap-2'>
           <Icons.Menu
             onClick={toggleSidebar}
@@ -136,6 +139,11 @@ export function LearningSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
+            <Search />
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem key='home'>
                 <SidebarMenuButton asChild>
@@ -143,7 +151,7 @@ export function LearningSidebar() {
                     href={`/`}
                     className={`${pathname === "/" ? "active" : ""}`}
                   >
-                    <Icons.House className='icons-size text-amber-500' />
+                    <Icons.House className='icons-size text-amber-600' />
                     <span>Home</span>
                   </a>
                 </SidebarMenuButton>
@@ -191,8 +199,11 @@ export function LearningSidebar() {
           <SearchResults />
         </Suspense>
       </SidebarContent>
-      <SidebarFooter className='text-slate-400 text-center border-t text-xs border-slate-100 min-h-24 h-24 justify-center'>
-        &copy;{new Date().getFullYear()} www.syedbaqirali.com
+      <SidebarFooter className='text-center border-t text-xs border-slate-100 dark:border-slate-600 min-h-24 h-24 justify-center'>
+        <div className='flex flex-row gap-2 items-center justify-center w-full p-2 bg-accent rounded-full text-primary border border-accent'>
+          <DarkModeSelector />
+        </div>
+        <Copyright />
       </SidebarFooter>
     </Sidebar>
   );

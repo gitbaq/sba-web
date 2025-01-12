@@ -36,7 +36,7 @@ export default function Login() {
   });
   return (
     <main className='flex flex-col w-full items-center h-full py-3 px-2'>
-      <section className='flex flex-col w-full justify-start gap-1 p-2 bg-stone-100 rounded-t-lg'>
+      <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-lg'>
         <div className='text-lg font-semibold'>Login</div>
       </section>
       <Form {...form}>

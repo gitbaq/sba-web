@@ -32,7 +32,7 @@ const data = [
 
 function LinksPanel() {
   return (
-    <div className='flex flex-col p-2 bg-white'>
+    <div className='flex flex-col p-2 bg-accent rounded-lg shadow-md'>
       <div className='lead_text font-semibold mb-5'>AI Blogs</div>
       {data.map((d) => (
         <Link
@@ -41,11 +41,11 @@ function LinksPanel() {
           target='_blank'
           className='icons text-sm px-1 mb-1 flex flex-row items-cnter gap-1'
         >
-          <Icons.ChevronsRight className='icons-size text-slate-600' />
+          <Icons.ChevronsRight className='icons-size text-primary' />
           {d.title}
         </Link>
       ))}
-      <div className='flex flex-row items-center text-xs text-cyan-600 mt-5'>
+      <div className='flex flex-row items-center text-xs text-stone-800 dark:text-stone-300 mt-5'>
         <Link
           href='/contact'
           target='_self'

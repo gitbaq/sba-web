@@ -85,10 +85,10 @@ export default function Subscribe() {
           <SheetTitle>
             <div className='flex flex-row gap-3'>
               Subscribe to Mailing List{" "}
-              <Icons.Mails className='text-indigo-900' />
+              <Icons.Mails className='text-amber-500' />
             </div>
           </SheetTitle>
-          <SheetDescription className='text-start text-xs text-slate-500'>
+          <SheetDescription className='text-start text-xs'>
             Enter email to join mailing list.
           </SheetDescription>
         </SheetHeader>
@@ -115,15 +115,11 @@ export default function Subscribe() {
                 )}
               />
               <div className='flex justify-end'>
-                <Button type='submit' className='min-w-24 bg-indigo-500'>
+                <Button type='submit' className='min-w-24 bg-amber-500'>
                   {isLoading ? "Loading..." : "Join"}
                 </Button>
               </div>
-              {error && (
-                <div className='cols-span-4' style={{ color: "red" }}>
-                  {error}
-                </div>
-              )}
+              {error && <div className='cols-span-4 text-red-500'>{error}</div>}
             </div>
           </form>
         </Form>

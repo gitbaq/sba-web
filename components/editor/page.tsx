@@ -177,7 +177,7 @@ export default function Editor({ params }: { params?: Params }) {
               placeholder='Slug'
               formControl={form.control}
             />
-            <div className='flex flex-row items-end p-1 gap-2 rounded w-full hover:bg-slate-100'>
+            <div className='flex flex-row items-end p-1 gap-2 rounded w-full hover:bg-slate-100 dark:hover:bg-slate-700'>
               <EditorFormField
                 name='imageUrl'
                 label='Image Url'
