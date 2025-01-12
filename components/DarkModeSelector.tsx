@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 function DarkModeSelector() {
   const { /*systemTheme,*/ theme, setTheme } = useTheme();
   // const currentTheme = theme === "system" ? systemTheme : theme;
+
   return (
     <>
       <Icons.SunDim
