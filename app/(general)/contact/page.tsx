@@ -16,15 +16,16 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Control, FieldPath, useForm } from "react-hook-form";
-import { contact_url } from "@/utils/endpoints/endpoints";
+import { contact_secure_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
+import FormMessages from "@/components/FormMessages";
 
 const formSchema = z.object({
   email: z.string().email({
     message: "Enter valid email.",
   }),
-  firstName: z.string().min(1).max(255),
-  lastName: z.string().min(1).max(255),
+  // firstName: z.string().min(1).max(255),
+  // lastName: z.string().min(1).max(255),
   subject: z.string().max(255),
   message: z.string().min(1).max(2000),
 });
@@ -38,67 +39,78 @@ export default function Contact() {
 
     defaultValues: {
       email: "",
-      firstName: "",
-      lastName: "",
+      // firstName: "",
+      // lastName: "",
       subject: "",
       message: "",
     },
   });
+  function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts?.pop()?.split(";").shift();
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
+    const token = getCookie("token");
 
-    try {
-      const response = await fetch(contact_url, {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      accept: "*/*",
+      authorization: "Bearer " + token,
+    };
+    const fetchOption = {
+      method: "POST",
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error("Error: " + data.errors);
-      } else {
+      headers: headers,
+
+      body: JSON.stringify(values),
+    };
+    await fetch(contact_secure_url, fetchOption)
+      .then((res) => {
+        console.log(token);
+        console.log(res);
+        if (!res.ok) {
+          throw new Error("Error: " + res.status + ": " + res.statusText);
+        }
         setSuccess(`Thank you, we have received your message`);
         toast("Thank You! we have received your message");
-      }
-    } catch (error) {
-      setError("" + error.message);
-    } finally {
-      setIsLoading(false);
-    }
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => setIsLoading(false));
   }
   return (
     <main className='flex flex-col items-center h-full py-3 rounded-lg px-2'>
       <section className='flex flex-col w-full justify-start gap-1 p-2 rounded-t-lg bg-accent'>
-        <div className='text-2xl font-semibold'>Contact</div>
-        <div className='font-normal'>Looking forward to hearing from you!</div>
+        <div className='text-2xl font-semibold'>Contact me</div>
+        <div className='font-normal'>Looking forward to hearing from you</div>
       </section>
       <section className='flex flex-col w-full justify-center items-center shadow-inner py-5'>
-        {success && <p className='text-green-600 font-semibold'>{success}</p>}
-        {error && <p className='text-red-600 font-semibold'>{error}</p>}
+        <FormMessages error={error} success={success} />
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-4 w-full px-5'
           >
-            <ProfileFormField
+            {/* <ProfileFormField
               name='firstName'
               label='First Name'
               placeholder='First Name'
+              readonly
               formControl={form.control}
             />
             <ProfileFormField
               name='lastName'
               label='Last Name'
               placeholder='Last Name'
+              readonly
               formControl={form.control}
-            />
+            />*/}
             <ProfileFormField
               name='email'
               label='Email'
@@ -178,7 +190,7 @@ const ProfileFormField: React.FC<ProfileFormFieldsProps> = ({
           )}
           <FormControl>
             <Input
-              className='input-field w-full'
+              className='input-field w-full focus-visible:ring-0'
               placeholder={placeholder}
               type={inputType || "text"}
               readOnly={readonly}

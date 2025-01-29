@@ -2,7 +2,10 @@
 // import Form from "next/form";
 
 import { Button } from "../ui/button";
-import { subtopics_url } from "@/utils/endpoints/endpoints";
+import {
+  subtopics_secure_url,
+  subtopics_url,
+} from "@/utils/endpoints/endpoints";
 import { SubTopic } from "@/types/types";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
@@ -21,6 +24,7 @@ import { FieldPath, Control, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Icons from "../Icons";
+import FormMessages from "../FormMessages";
 
 const formSchema = z.object({
   id: z.number(),
@@ -29,30 +33,17 @@ const formSchema = z.object({
   subHeading: z.string().min(1).max(255),
   slug: z.string(),
   imageUrl: z.string(),
-  isPublished: z.string(),
+  isPublished: z.number(),
   content: z.string(),
 });
 
-async function createPostLocal(formData: z.infer<typeof formSchema>) {
-  try {
-    const response = await fetch(subtopics_url, {
-      method: "PATCH",
-      body: JSON.stringify(formData),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error("Error: " + data.errors);
-    } else {
-      toast("Thank You! we have received your message");
-    }
-  } catch (error) {
-    toast(`Error: ${error}`);
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts?.pop()?.split(";").shift();
   }
+  return "ERROR " + value;
 }
 
 type Params = { subId: string | undefined };
@@ -61,9 +52,10 @@ export default function Editor({ params }: { params?: Params }) {
   const subId = "" + params?.subId;
 
   const [subtopic, setSubtopic] = useState<SubTopic>();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string | null>(null);
-  // const [success, setSuccess] = useState<string | null>(null);
+  const [mode, setMode] = useState<string>("POST");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,7 +65,7 @@ export default function Editor({ params }: { params?: Params }) {
       slug: "",
       subHeading: "",
       imageUrl: "",
-      isPublished: "",
+      isPublished: 0,
       content: "",
     },
   });
@@ -85,9 +77,11 @@ export default function Editor({ params }: { params?: Params }) {
 
       if (!response.ok) {
         toast(`HTTP error! status: ${response.status}`);
+        return;
       }
       const result = await response.json();
       setSubtopic(result);
+      setMode("PATCH");
       form.setValue("id", result.id);
       form.setValue("topicId", result.topicId);
       form.setValue("heading", result.heading);
@@ -95,6 +89,7 @@ export default function Editor({ params }: { params?: Params }) {
       form.setValue("slug", result.slug);
       form.setValue("imageUrl", result.imageUrl);
       form.setValue("content", result.content);
+      form.setValue("isPublished", result.isPublished ? 1 : 0);
     };
 
     fetchData().catch((e) => {
@@ -102,53 +97,74 @@ export default function Editor({ params }: { params?: Params }) {
     });
   }, [subId, form]);
 
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //     setIsLoading(true);
-  //     setError(null);
-  //     setSuccess(null);
+  async function createUpdatePost(formData: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    const token = getCookie("token");
+    if (token === null || token?.indexOf("ERROR") === 0) {
+      setError(`Token Error: ${token}`);
+      return;
+    }
 
-  //     try {
-  //       const response = await fetch(subtopics_url, {
-  //         method: "PATCH",
-  //         body: JSON.stringify(values),
-  //         headers: {
-  //           Accept: "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
+    await fetch(subtopics_secure_url, {
+      method: mode,
+      body: JSON.stringify(formData),
 
-  //       const data = await response.json();
-  //       if (!response.ok) {
-  //         throw new Error("Error: " + data.errors);
-  //       } else {
-  //         setSuccess(`Thank you, we have received your message`);
-  //         toast("Thank You! we have received your message");
-  //       }
-  //     } catch (error) {
-  //       setError("" + error.message);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        res.json().then((data) => {
+          console.log("Data: " + data);
+          if (!res.ok) {
+            throw new Error(data.errors);
+          } else {
+            setSuccess("Changes are saved");
+            toast("Changes are saved");
+          }
+        });
+      })
+      .catch((error) => {
+        setError(`Error: ${error}`);
+        toast(`${error}`);
+      })
+      .finally(() => setIsLoading(false));
+  }
+
   return (
     <main className='flex flex-col w-full items-center h-full py-3'>
-      <section className='flex flex-col w-full justify-start gap-1 py-1 bg-stone-100 rounded-t-lg'>
+      <section className='flex flex-col w-full justify-start gap-1 py-1 px-2 bg-stone-100 dark:bg-stone-700 rounded-t-lg'>
         <div className='text-2xl font-semibold'>Blog Editor</div>
       </section>
+
       <section className='flex flex-col w-full justify-center items-center shadow-inner p-2'>
-        {/* {success && <p className='text-green-600 font-semibold'>{success}</p>}
-        {error && <p className='text-red-600 font-semibold'>{error}</p>} */}
+        <FormMessages error={error} success={success} />
 
         <Form {...form}>
           <form
             className='space-y-4 w-full'
-            onSubmit={form.handleSubmit(createPostLocal)}
+            onSubmit={form.handleSubmit(createUpdatePost)}
           >
+            <div className='flex justify-end'>
+              <Button type='submit' className='bg-amber-500 w-full'>
+                <Icons.Save /> {isLoading ? "Saving..." : "Save"}
+                Changes
+              </Button>
+            </div>
             <EditorFormField
               name='id'
               label='Id'
               placeholder='Id'
-              inputType='text'
+              inputType='number'
+              formControl={form.control}
+              readonly
+            />
+            <EditorFormField
+              name='isPublished'
+              label='Published?'
+              placeholder='Published?'
               formControl={form.control}
               readonly
             />
@@ -220,9 +236,9 @@ export default function Editor({ params }: { params?: Params }) {
             />
 
             <div className='flex justify-end'>
-              <Button type='submit' className='bg-amber-500'>
-                {/* {isLoading ? "Loading..." : "Submit"} */} <Icons.Save />{" "}
-                Save Changes
+              <Button type='submit' className='bg-amber-500 w-full'>
+                <Icons.Save /> {isLoading ? "Saving..." : "Save"}
+                Changes
               </Button>
             </div>
           </form>
@@ -239,7 +255,7 @@ interface EditorFormFieldProps {
   description?: string;
   inputType?: string;
   readonly?: boolean;
-  defaultValue?: string | number | readonly string[] | undefined;
+  defaultValue?: string | number | boolean | readonly string[] | undefined;
   formControl: Control<z.infer<typeof formSchema>, unknown>;
 }
 
@@ -265,7 +281,7 @@ const EditorFormField: React.FC<EditorFormFieldProps> = ({
             <Input
               className='input-field w-full'
               placeholder={placeholder}
-              type={inputType || "text"}
+              type={inputType ? inputType : "text"}
               readOnly={readonly}
               {...field}
             />

@@ -1,12 +1,34 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { isTokenExpired } from "./utils/authUtils";
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  return NextResponse.redirect(new URL("/login", request.url));
+export async function middleware(request: NextRequest) {
+  // Get Cookie
+  const token = request.cookies.get("token");
+
+  const path = request.nextUrl.pathname;
+  const cookieStore = await cookies();
+  if (path === "/logout") {
+    cookieStore.delete("token");
+    cookieStore.delete("authToken");
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (!token || isTokenExpired(token.value)) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", path);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: "/editorx/:path*",
+  matcher: ["/editor/:path*", "/contact", "/admin/:path*", "/logout"],
+  // matcher: ["/:path*"],
 };
+
+

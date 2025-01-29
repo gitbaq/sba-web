@@ -45,9 +45,9 @@ export default function Portfolio() {
 
   return (
     <div className='flex flex-col gap-3 w-full justify-center'>
-      <div className='bg-gradient-to-t from-transparent to-stone-200 dark:to-slate-800 rounded-lg p-2'>
-        <div className='heading w-full text-center focus'>Portfolio</div>
-        <div className='flex flex-row items-center justify-center sub-heading'>
+      <div className='p-2'>
+        <div className='sub-heading w-full text-start'>Portfolio</div>
+        <div className='flex flex-row items-center justify-start '>
           <Link
             href={blox_url}
             target='_blox'
