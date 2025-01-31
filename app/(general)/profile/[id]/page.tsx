@@ -18,6 +18,7 @@ import { Control, FieldPath, useForm } from "react-hook-form";
 import { subs_url } from "@/utils/endpoints/endpoints";
 import Link from "next/link";
 import Icons from "@/components/Icons";
+import FormMessages from "@/components/FormMessages";
 
 const formSchema = z.object({
   id: z.number(),
@@ -106,11 +107,11 @@ export default function Profile({ params }: { params: Params }) {
           <h1 className='text-2xl font-semibold'>Complete Signup</h1>
           <p className='text-sm text-neutral-500'>
             Already have an account?{" "}
-            <Link href='#' className='icons underline underline-offset-4'>
+            <Link href='/login' className='icons underline underline-offset-4'>
               Login
             </Link>
           </p>
-          {success && <p className='text-green-600 font-semibold'>{success}</p>}
+          <FormMessages error={error} success={success} />
         </div>
 
         <Form {...form}>
@@ -149,12 +150,6 @@ export default function Profile({ params }: { params: Params }) {
                 <Icons.UserPlus /> {isLoading ? "Loading..." : "Signup"}
               </Button>
             </div>
-
-            {error && (
-              <div className='col-span-2' style={{ color: "red" }}>
-                {error}
-              </div>
-            )}
           </form>
         </Form>
       </section>

@@ -3,31 +3,20 @@ import * as React from "react";
 // import Search from "./search";
 import NavLinks from "./navlinks";
 import Usernav from "./user/Usernav";
-import Icons from "./Icons";
-import Brand from "./brand";
-import { useSidebar } from "./ui/sidebar";
+
+import NavbarBrand from "./navbarbrand";
 
 export default function Navbar() {
-  const { toggleSidebar } = useSidebar();
-
   return (
-    <div className='flex flex-col w-full shadow-sm min-h-16 justify-center border-b bg-slate-900 text-slate-200'>
-      <div className='flex flex-row items-center justify-end'>
-        <div className='flex flex-row w-2/5 gap-1 px-2 items-center'>
-          <Icons.Menu
-            onClick={toggleSidebar}
-            className='hover:cursor-pointer'
-          />
+    <div className='flex flex-row w-full border-b border-accent min-h-16 justify-center'>
+      <div className='self-center w-full px-4'>
+        <NavbarBrand />
+      </div>
 
-          <Brand />
-        </div>
-        <div className='w-full lg:max-w-4xl md:max-w-xl'>
-          {/* <Search /> */}&nbsp;
-        </div>
-        <div className='flex flex-row lg:w-2/5 w-full gap-3 items-center justify-end px-3'>
-          <NavLinks />
-          <Usernav />
-        </div>
+      <div className='flex flex-row lg:w-3/5 w-full gap-3 items-center justify-end px-3'>
+        <NavLinks />
+
+        <Usernav />
       </div>
     </div>
   );

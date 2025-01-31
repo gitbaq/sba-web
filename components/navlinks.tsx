@@ -16,32 +16,26 @@ export default function NavLinks() {
       <div className='md:flex flex-row hidden gap-5 items-center justify-center '>
         <Link
           href='/'
-          className={`${pathname === "/" ? "active_top" : ""} icons text-lg`}
+          className={`${pathname === "/" ? "active_top" : ""} icons`}
         >
           {/* <Icons.House className='text-amber-400 icons-size' />  */}
           Home
         </Link>
         <Link
           href='/about'
-          className={`${
-            pathname === "/about" ? "active_top" : ""
-          } icons text-lg`}
+          className={`${pathname === "/about" ? "active_top" : ""} icons`}
         >
           About
         </Link>
         <Link
           href='/contact'
-          className={`${
-            pathname === "/contact" ? "active_top" : ""
-          } icons text-lg`}
+          className={`${pathname === "/contact" ? "active_top" : ""} icons`}
         >
           Contact
         </Link>
         <Link
           href='/learning?query=transform'
-          className={`${
-            pathname === "/learning" ? "active_top" : ""
-          } icons text-lg`}
+          className={`${pathname === "/learning" ? "active_top" : ""} icons`}
         >
           Learning
         </Link>

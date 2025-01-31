@@ -21,18 +21,23 @@ const data = [
   {
     id: 4,
     url: "https://aws.amazon.com/blogs/machine-learning/",
-    title: "AWS Machine Learning Blog",
+    title: "AWS ML Blog",
   },
   {
     id: 5,
     url: "https://ai.google/latest-news/",
     title: "Google AI",
   },
+  {
+    id: 6,
+    url: "https://netflixtechblog.com/",
+    title: "Netflix Tech Blog",
+  },
 ];
 
 function LinksPanel() {
   return (
-    <div className='flex flex-col p-2 bg-accent rounded-lg shadow-md'>
+    <div className='flex flex-col p-2 shadow rounded-lg'>
       <div className='lead_text font-semibold mb-5'>AI Blogs</div>
       {data.map((d) => (
         <Link
@@ -45,11 +50,11 @@ function LinksPanel() {
           {d.title}
         </Link>
       ))}
-      <div className='flex flex-row items-center text-xs text-stone-800 dark:text-stone-300 mt-5'>
+      <div className='flex flex-row items-center text-xs mt-5'>
         <Link
           href='/contact'
           target='_self'
-          className='icons px-1 mb-1 flex flex-row items-baseline gap-1'
+          className='icons flex flex-row justify-center p-2 text-cyan-600 bg-accent w-full'
         >
           Suggest More Blogs
         </Link>

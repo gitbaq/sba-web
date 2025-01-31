@@ -1,4 +1,5 @@
 import {
+  Shield,
   FolderCode,
   Library,
   PencilLine,
@@ -24,11 +25,26 @@ import {
   SunDim,
   Moon,
   MonitorCog,
+  Mail,
+  EyeIcon,
+  EyeOffIcon,
+  Phone,
+  LogOut,
+  CircleX,
 } from "lucide-react";
 
-import { FaXTwitter, FaLinkedin, FaCalendarDays } from "react-icons/fa6";
+import {
+  FaXTwitter,
+  FaFacebook,
+  FaGithub,
+  FaLinkedin,
+  FaCalendarDays,
+  FaGoogle,
+  FaQuoteLeft,
+} from "react-icons/fa6";
 import { PiLinktreeLogo } from "react-icons/pi";
 export const Icons = {
+  Shield,
   FolderCode,
   Library,
   PencilLine,
@@ -54,10 +70,20 @@ export const Icons = {
   SunDim,
   Moon,
   MonitorCog,
+  Mail,
+  EyeIcon,
+  EyeOffIcon,
+  Phone,
   FaLinkedin,
   FaXTwitter,
   PiLinktreeLogo,
   FaCalendarDays,
+  LogOut,
+  FaFacebook,
+  FaGithub,
+  FaGoogle,
+  FaQuoteLeft,
+  CircleX,
 };
 
 export default Icons;

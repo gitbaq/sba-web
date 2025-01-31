@@ -13,7 +13,11 @@ export default function Rightbar() {
   });
 
   return (
-    <div className='flex flex-col h-full min-h-full space-y-1 bg-neutral-100 dark:bg-neutral-900 p-2'>
+    <div className='flex flex-col h-full min-h-full space-y-5 p-2'>
+      <div className='flex flex-col gap-5'>
+        <LinksPanel />
+        <Quote />
+      </div>
       <div className='flex flex-col gap-1'>
         <Calendar
           mode='range'
@@ -25,10 +29,6 @@ export default function Rightbar() {
           <Icons.Info className='h-4 w-4 min-h-4 min-w-4 text-slate-500' />
           <span>Choose date range to refine search</span>
         </div>
-      </div>
-      <div className='flex flex-col gap-1'>
-        <Quote />
-        <LinksPanel />
       </div>
     </div>
   );

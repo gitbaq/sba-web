@@ -25,7 +25,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { subs_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
+import FormMessages from "./FormMessages";
 const formSchema = z.object({
+  firstName: z.string().min(1).max(255),
   email: z.string().email({
     message: "Enter valid email.",
   }),
@@ -35,16 +37,19 @@ export default function Subscribe() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "email@email.com",
+      firstName: "",
+      email: "",
     },
   });
 
   async function onSubscribe(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     // console.log("Starting...");
     try {
@@ -62,6 +67,7 @@ export default function Subscribe() {
         toast("Error: " + data.errors);
         throw new Error("Error: " + data.errors);
       } else {
+        setSuccess("All changes are saved");
         router.push(`/profile/${data.data.id}`);
       }
     } catch (error) {
@@ -84,17 +90,37 @@ export default function Subscribe() {
         <SheetHeader>
           <SheetTitle>
             <div className='flex flex-row gap-3'>
-              Subscribe to Mailing List{" "}
-              <Icons.Mails className='text-amber-500' />
+              Join Now! <Icons.Mails className='text-amber-500' />
             </div>
           </SheetTitle>
           <SheetDescription className='text-start text-xs'>
-            Enter email to join mailing list.
+            Periodically, I send an email about what&apos;s new and exciting -
+            about AI, AWS, Java, React, Python, Docker and other things.
           </SheetDescription>
         </SheetHeader>
+        <FormMessages error={error} success={success} />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubscribe)}>
             <div className='grid gap-4 py-4'>
+              <FormField
+                control={form.control}
+                name='firstName'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className='input-field'
+                        type='text'
+                        id='firstName'
+                        placeholder='First Name'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name='email'
@@ -119,7 +145,6 @@ export default function Subscribe() {
                   {isLoading ? "Loading..." : "Join"}
                 </Button>
               </div>
-              {error && <div className='cols-span-4 text-red-500'>{error}</div>}
             </div>
           </form>
         </Form>

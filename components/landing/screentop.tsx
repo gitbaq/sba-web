@@ -1,11 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import Subscribe from "../subscribe";
+import Icons from "../Icons";
 
 const ScreenTop = () => {
   return (
     <div
-      className='flex md:flex-row flex-col md:gap-10 gap-10 md:items-center items-center
+      className='flex md:flex-row flex-col md:gap-10 md:items-center items-center
     px-5 py-3'
     >
       <div className='rounded-ss-full bg-gradient-to-b bg-amber-400 p-3'>
@@ -19,12 +20,9 @@ const ScreenTop = () => {
         />
       </div>
 
-      <div
-        className='flex flex-col h-full w-full md:w-2/4 
-      justify-center gap-3 rounded hover:shadow-sm'
-      >
-        <div className='flex flex-col justify-center items-center sub-heading rounded-t-lg p-3 '>
-          <div className='focus'>Your Future</div>
+      <div className='flex flex-col h-full min-h-full w-full md:w-2/4 justify-center items-center'>
+        <div className='flex flex-col sub-heading w-full'>
+          <div className='heading w-full'>Your Future</div>
           <div>Powered by Innovation</div>
         </div>
 
@@ -33,9 +31,9 @@ const ScreenTop = () => {
           promising future and position your business as a leader in your
           industry.
         </div>
-        <div className='quote px-2'>
-          &quot; Innovation distinguishes between a leader and a
-          follower.&quot;&nbsp;- Steve Jobs
+        <div className='flex flex-row gap-1 quote px-2 py-5'>
+          <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />{" "}
+          Innovation distinguishes between a leader and a follower - Steve Jobs
         </div>
         <div className='px-2'>
           Ready to lead? Let`s build your AI-driven future today.

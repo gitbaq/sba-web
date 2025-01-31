@@ -6,19 +6,20 @@ export interface Topic {
 
 export interface SubTopic {
   id: number;
+  topicId: number;
   heading: string;
   subHeading: string;
   slug: string;
   content: string;
-  published: string;
+  isPublished: string;
   createDate: string;
   createdBy: string;
   updateDate: string;
   updatedBy: string;
   publishDate: string;
   publishedBy: string;
-  topicId: string;
   imageUrl: string;
+  sbaTopicName: string;
 }
 
 export interface RandomQuote {

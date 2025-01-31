@@ -3,18 +3,18 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  // SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-  useSidebar,
 } from "@/components/ui/sidebar";
-import { topics_url } from "@/utils/endpoints/endpoints";
+
 import { Topic } from "@/types/types";
-// import Brand from "../brand";
 import { Suspense, useEffect, useState } from "react";
 import {
   Tooltip,
@@ -22,13 +22,12 @@ import {
   TooltipContent,
 } from "@radix-ui/react-tooltip";
 import Icons from "./Icons";
-import Brand from "./brand";
-import { toast } from "sonner";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Search from "./search";
-import DarkModeSelector from "./DarkModeSelector";
-import Copyright from "./Copyright";
+import ThemeSelector from "./ThemeSelector";
+import { getAllTopics } from "@/utils/services/getAllTopics";
+import NavbarBrand from "./navbarbrand";
 
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -36,23 +35,7 @@ function SearchResults() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(`${topics_url}`);
-
-        if (!response.ok) {
-          setTopics([]);
-          toast("We are working on it");
-          throw new Error(`HTTP error! status: ${response.status}`);
-        } else {
-          const result = await response.json();
-
-          setTopics(result);
-        }
-      } catch (e) {
-        toast("Something is not right. We are working to fix it!");
-        setTopics([]);
-        throw new Error(`HTTP error! status: ${e}`);
-      }
+      setTopics(await getAllTopics());
     };
 
     fetchData().catch((e) => {
@@ -61,7 +44,22 @@ function SearchResults() {
   }, []);
 
   return (
-    <SidebarGroup className='overflow-y-auto'>
+    <SidebarGroup className='overflow-y-scroll'>
+      <Search />
+      <SidebarHeader>
+        <SidebarGroupLabel className='text-sm font-semibold p-0'>
+          <div className='flex flex-row w-full items-baseline justify-between'>
+            <span>Reading List</span>
+            <Link href='/learning?query=transform' className='px-1'>
+              <Icons.ExternalLink
+                className={`icons-size ${
+                  pathname === "/learning" ? " text-amber-500 " : ""
+                }`}
+              />
+            </Link>
+          </div>
+        </SidebarGroupLabel>
+      </SidebarHeader>
       <SidebarGroupContent>
         <SidebarMenu>
           {topics?.map((item) => (
@@ -122,26 +120,14 @@ function SearchResults() {
 }
 
 export function LearningSidebar() {
-  const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
 
   return (
-    <Sidebar variant='sidebar' className='shadow-md border-none'>
-      <SidebarHeader className='flex flex-col justify-center w-full shadow-sm min-h-16 border-b bg-slate-900 text-slate-200'>
-        <div className='flex flex-row items-center gap-2'>
-          <Icons.Menu
-            onClick={toggleSidebar}
-            className='hover:cursor-pointer'
-          />{" "}
-          <Brand />
-        </div>
+    <Sidebar variant='sidebar' className='border-none h-maxscr2 absolute'>
+      <SidebarHeader className='p-4  border-b border-accent  bg-white dark:bg-slate-950'>
+        <NavbarBrand />
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <Search />
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className=' bg-white dark:bg-slate-950'>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -151,7 +137,7 @@ export function LearningSidebar() {
                     href={`/`}
                     className={`${pathname === "/" ? "active" : ""}`}
                   >
-                    <Icons.House className='icons-size text-amber-600' />
+                    <Icons.House className='icons-size' />
                     <span>Home</span>
                   </a>
                 </SidebarMenuButton>
@@ -179,32 +165,18 @@ export function LearningSidebar() {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarSeparator />
-              <SidebarMenuItem key='learning'>
-                <SidebarMenuButton asChild>
-                  <a
-                    href={`/learning?query=transform`}
-                    className={`${pathname === "/learning" ? "active" : ""}`}
-                  >
-                    <Icons.Library className='icons-size' />
-                    <span>Learning</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarSeparator />
+              {/* <SidebarSeparator /> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <Suspense>
           <SearchResults />
         </Suspense>
+        <SidebarSeparator />
+        <SidebarFooter className='items-center justify-center'>
+          <ThemeSelector />
+        </SidebarFooter>
       </SidebarContent>
-      <SidebarFooter className='text-center border-t text-xs border-slate-100 dark:border-slate-600 min-h-24 h-24 justify-center'>
-        <div className='flex flex-row gap-2 items-center justify-center w-full p-2 bg-accent rounded-full text-primary border border-accent'>
-          <DarkModeSelector />
-        </div>
-        <Copyright />
-      </SidebarFooter>
     </Sidebar>
   );
 }
