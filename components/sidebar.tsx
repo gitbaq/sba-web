@@ -3,7 +3,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  // SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,7 +10,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 
 import { Topic } from "@/types/types";
@@ -44,7 +42,7 @@ function SearchResults() {
   }, []);
 
   return (
-    <SidebarGroup className='overflow-y-scroll'>
+    <SidebarGroup className='overflow-y-scroll h-full'>
       <Search />
       <SidebarHeader>
         <SidebarGroupLabel className='text-sm font-semibold p-0'>
@@ -165,15 +163,13 @@ export function LearningSidebar() {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              {/* <SidebarSeparator /> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
         <Suspense>
           <SearchResults />
         </Suspense>
-        <SidebarSeparator />
-        <SidebarFooter className='items-center justify-center'>
+        <SidebarFooter>
           <ThemeSelector />
         </SidebarFooter>
       </SidebarContent>
