@@ -34,8 +34,8 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const nextUrl = callbackUrl === null ? "/" : appBasePath + callbackUrl;
-  const [token, setToken] = useState<string | null>(null);
-  const [ck, setCk] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
+  // const [ck, setCk] = useState<string | null>(null);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,8 +61,8 @@ function LoginForm() {
     const res = await response;
     if (res.ok) {
       // const data = await res.json();
-      setToken(JSON.stringify(res.headers.values));
-      setCk(document.cookie);
+      // setToken(JSON.stringify(res.headers.values));
+      // setCk(document.cookie);
       // document.cookie = `token=${data.res.token}`;
       toast("Logged In!");
       setIsLoading(false);
@@ -86,9 +86,9 @@ function LoginForm() {
     <div className='w-full max-w-lg border-accent'>
       <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-lg'>
         <div className='text-lg font-semibold '>Login</div>
-        <span>Cookie: {ck}</span>
+        {/* <span>Cookie: {ck}</span>
         <span>{nextUrl}</span>
-        <span>Token: {token}</span>
+        <span>Token: {token}</span> */}
       </section>
       <section className='border border-accent border-t-slate-200'>
         <FormMessages error={error} success={success} />
