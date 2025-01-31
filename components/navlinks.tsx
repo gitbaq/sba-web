@@ -33,12 +33,12 @@ export default function NavLinks() {
         >
           Contact
         </Link>
-        <Link
+        {/* <Link
           href='/learning?query=transform'
           className={`${pathname === "/learning" ? "active_top" : ""} icons`}
         >
           Learning
-        </Link>
+        </Link> */}
       </div>
       <div className='flex flex-row md:hidden'>
         <DropdownMenu>
