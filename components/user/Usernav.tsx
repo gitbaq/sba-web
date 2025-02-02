@@ -12,7 +12,6 @@ import LogoutButton from "@/app/(auth)/logout/LogoutButton";
 export default function Usernav() {
   const router = useRouter();
   function handleClick(): void {
-    // toast("Logging in...");
     router.push("/login");
   }
 
@@ -31,12 +30,6 @@ export default function Usernav() {
             </Link>
           </TooltipTrigger>
         </Tooltip> */}
-        <Tooltip>
-          <TooltipContent>Logout</TooltipContent>
-          <TooltipTrigger>
-            <LogoutButton />
-          </TooltipTrigger>
-        </Tooltip>
       </div>
       <Tooltip>
         <TooltipContent>User Profile</TooltipContent>
@@ -48,6 +41,12 @@ export default function Usernav() {
             />
             <AvatarFallback>SBA</AvatarFallback>
           </Avatar>
+        </TooltipTrigger>
+      </Tooltip>
+      <Tooltip>
+        <TooltipContent>Logout</TooltipContent>
+        <TooltipTrigger>
+          <LogoutButton />
         </TooltipTrigger>
       </Tooltip>
     </div>

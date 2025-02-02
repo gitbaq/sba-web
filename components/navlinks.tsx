@@ -18,20 +18,22 @@ export default function NavLinks() {
           href='/'
           className={`${pathname === "/" ? "active_top" : ""} icons`}
         >
-          {/* <Icons.House className='text-amber-400 icons-size' />  */}
-          Home
+          <Icons.House className='icons-small' />
+          {/* Home */}
         </Link>
         <Link
           href='/about'
           className={`${pathname === "/about" ? "active_top" : ""} icons`}
         >
-          About
+          <Icons.Info className='icons-small' />
+          {/* About */}
         </Link>
         <Link
           href='/contact'
           className={`${pathname === "/contact" ? "active_top" : ""} icons`}
         >
-          Contact
+          <Icons.MessageSquareCode className='icons-small' />
+          {/* Contact */}
         </Link>
         {/* <Link
           href='/learning?query=transform'
