@@ -9,7 +9,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Rightbar from "@/components/rightbar";
 import { Toaster } from "@/components/ui/sonner";
-// import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
@@ -35,19 +35,19 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        {/* <script
+        <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600195581005817'
           crossOrigin='anonymous'
         ></script>
-        <GoogleAnalytics gaId='G-8EVK1ZF0L8' /> */}
+        <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body
         className={`${inter.className} antialiased text-sm text-primary w-full h-screen min-h-screen max-w-full`}
       >
-        <TooltipProvider delayDuration={2000}>
-          <SidebarProvider defaultOpen={true} className='h-full w-full'>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <TooltipProvider delayDuration={2000}>
+            <SidebarProvider defaultOpen={true} className='h-full w-full'>
               <div className='flex flex-col w-full h-fit min-h-full'>
                 <Navbar />
                 <div className='flex flex-row w-full min-h-full h-full  '>
@@ -63,12 +63,12 @@ export default function RootLayout({
                 </div>
                 <Footer />
               </div>
-            </ThemeProvider>
-          </SidebarProvider>
-        </TooltipProvider>
-        <Toaster />
-        <Analytics />
-        <SpeedInsights />
+            </SidebarProvider>
+          </TooltipProvider>
+          <Toaster />
+          <Analytics />
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

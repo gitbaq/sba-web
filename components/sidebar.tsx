@@ -2,7 +2,6 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -23,7 +22,7 @@ import Icons from "./Icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Search from "./search";
-import ThemeSelector from "./ThemeSelector";
+
 import { getAllTopics } from "@/utils/services/getAllTopics";
 import NavbarBrand from "./navbarbrand";
 
@@ -169,9 +168,9 @@ export function LearningSidebar() {
         <Suspense>
           <SearchResults />
         </Suspense>
-        <SidebarFooter>
+        {/* <SidebarFooter>
           <ThemeSelector />
-        </SidebarFooter>
+        </SidebarFooter> */}
       </SidebarContent>
     </Sidebar>
   );
