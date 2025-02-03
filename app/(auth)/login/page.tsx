@@ -18,8 +18,8 @@ import { toast } from "sonner";
 import Icons from "@/components/Icons";
 import Link from "next/link";
 import { Suspense, /*useEffect,*/ useState } from "react";
-import { appBasePath, login_url } from "@/utils/endpoints/endpoints";
-import { useRouter, useSearchParams } from "next/navigation";
+import { login_url } from "@/utils/endpoints/endpoints";
+import { /*useRouter,*/ useSearchParams } from "next/navigation";
 import FormMessages from "@/components/FormMessages";
 
 const formSchema = z.object({
@@ -41,10 +41,10 @@ function LoginForm() {
   const [success, setSuccess] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-  const nextUrl = callbackUrl === null ? "/" : appBasePath + callbackUrl;
+  const nextUrl = callbackUrl === null ? "/" : callbackUrl;
   // const [token, setToken] = useState<string | null>(null);
   // const [ck, setCk] = useState<string | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,14 +68,17 @@ function LoginForm() {
     });
     const res = await response;
     if (res.ok) {
-      // const data = await res.json();
+      const data = await res.json();
       // setToken(JSON.stringify(res.headers.values));
       // setCk(document.cookie);
       // document.cookie = `token=${data.res.token}`;
       toast("Logged In!");
       setIsLoading(false);
-      router.push(nextUrl);
-      // document.location.href = nextUrl;
+      // router.push(nextUrl);
+      // router.forward();
+      document.cookie = `token=${data?.res.token}`;
+      console.log(`Logged In: ${document.cookie}`);
+      document.location.href = nextUrl;
     } else if (res.status === 401) {
       const message: string = "Username or password is incorrect";
       toast(message);

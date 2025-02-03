@@ -37,7 +37,7 @@ export default function Usernav() {
           <Avatar onClick={handleClick}>
             <AvatarImage
               src={`${bucket_url_public}/profile_sba.jpg`}
-              className='w-8 h-8 rounded-full hover:cursor-pointer hover:border-2 hover:border-amber-400'
+              className='w-8 h-8 min-h-8 min-w-8 rounded-full hover:cursor-pointer hover:border-2 hover:border-amber-400'
             />
             <AvatarFallback>SBA</AvatarFallback>
           </Avatar>

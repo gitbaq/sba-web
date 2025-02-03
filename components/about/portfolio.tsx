@@ -51,7 +51,7 @@ export default function Portfolio() {
           <Link
             href={blox_url}
             target='_blox'
-            className='icons text-slate-700 dark:text-slate-300'
+            className='icons text-amber-500 dark:text-amber-400 font-semibold hover:underline underline-offset-8'
           >
             Blox: Productivity hub
           </Link>

@@ -43,12 +43,12 @@ export default function RootLayout({
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body
-        className={`${inter.className} antialiased text-sm text-primary w-full h-screen min-h-screen max-w-full`}
+        className={`${inter.className} antialiased text-sm w-full h-fit min-h-screen max-w-full`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <TooltipProvider delayDuration={2000}>
             <SidebarProvider defaultOpen={true} className='h-full w-full'>
-              <div className='flex flex-col w-full h-fit min-h-full'>
+              <div className='flex flex-col w-full h-full min-h-full'>
                 <Navbar />
                 <div className='flex flex-row w-full min-h-full h-full  '>
                   <LearningSidebar />
