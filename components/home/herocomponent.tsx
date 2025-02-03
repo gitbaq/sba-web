@@ -41,22 +41,25 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='lg:max-w-2xl max-w-full w-full overflow-auto my-5 z-50'>
-      <div className='flex flex-row gap-1 max-w-full'>
-        {data.map((d) => (
-          <Card
-            key={d.id}
-            className='min-w-72 md:w-1/6 w-1/2 min-h-48 h-48 hover:border overflow-auto'
-          >
-            <CardHeader className='shadow-sm p-3 bg-gradient-to-b from-slate-100 dark:from-slate-700 to-transparent'>
-              <CardTitle className='font-semibold flex flex-row gap-2 items-center '>
-                <Icons.CircleCheckBig className='text-emerald-400 h-4 w-4 min-h-4 min-w-4' />
-                {d.heading}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className='py-2 px-3 text-xs'>{d.text}</CardContent>
-          </Card>
-        ))}
+    <div className='w-full max-w-full my-5 z-50'>
+      <Icons.ChevronsRight />
+      <div className='max-w-full overflow-auto '>
+        <div className='flex flex-row gap-1 w-full'>
+          {data.map((d) => (
+            <Card
+              key={d.id}
+              className='min-w-72 md:w-1/6 w-1/2 min-h-48 h-48 hover:border overflow-auto'
+            >
+              <CardHeader className='shadow-sm p-3 bg-gradient-to-b from-slate-100 dark:from-slate-700 to-transparent'>
+                <CardTitle className='font-semibold flex flex-row gap-2 items-center '>
+                  <Icons.CircleCheckBig className='text-emerald-400 h-4 w-4 min-h-4 min-w-4' />
+                  {d.heading}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='py-2 px-3 text-xs'>{d.text}</CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

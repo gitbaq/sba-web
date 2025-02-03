@@ -120,11 +120,11 @@ export function LearningSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant='sidebar' className='border-none h-maxscr2 absolute'>
-      <SidebarHeader className='p-4  border-b border-accent  bg-white dark:bg-slate-950'>
+    <Sidebar variant='sidebar' className='border-none absolute'>
+      <SidebarHeader className='p-4'>
         <NavbarBrand />
       </SidebarHeader>
-      <SidebarContent className=' bg-white dark:bg-slate-950'>
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

@@ -16,7 +16,7 @@
 }
 
 .article ul{
-    @apply list-disc list-outside
+    @apply list-disc list-inside
 }
 
 .article li{

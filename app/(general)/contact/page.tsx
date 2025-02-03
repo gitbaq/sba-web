@@ -132,16 +132,16 @@ export default function Contact() {
                   <FormLabel>Message</FormLabel>
                   <FormControl>
                     <Textarea
-                      className='input-field'
+                      className='input-field focus-visible:ring-sky-100'
                       placeholder='Message'
                       rows={10}
                       {...field}
                     />
                   </FormControl>
 
-                  <FormDescription className='text-sky-600'>
-                    * Your suggestions and comments are important to me.
-                    I&apos;ll (try to) get back shortly.
+                  <FormDescription className='text-accent-foreground'>
+                    * Your suggestions and comments are important. I&apos;ll
+                    (try to) get back shortly.
                   </FormDescription>
 
                   <FormMessage />
@@ -190,7 +190,7 @@ const ProfileFormField: React.FC<ProfileFormFieldsProps> = ({
           )}
           <FormControl>
             <Input
-              className='input-field w-full focus-visible:ring-0'
+              className='input-field w-full focus-visible:ring-sky-100'
               placeholder={placeholder}
               type={inputType || "text"}
               readOnly={readonly}

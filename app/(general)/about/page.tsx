@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Socials from "@/components/socials";
-import Portfolio from "@/components/landing/portfolio";
+import Portfolio from "@/components/about/portfolio";
 
 export default function About() {
   return (

@@ -7,16 +7,15 @@ import { isTokenExpired } from "./utils/authUtils";
 export async function middleware(request: NextRequest) {
   // Get Cookie
   const token = request.cookies.get("token");
-
   const path = request.nextUrl.pathname;
   const cookieStore = await cookies();
   if (path === "/logout") {
     cookieStore.delete("token");
-    cookieStore.delete("authToken");
     return NextResponse.redirect(new URL("/", request.url));
   }
 
   if (!token || isTokenExpired(token.value)) {
+    cookieStore.delete("token");
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", path);
     return NextResponse.redirect(loginUrl);

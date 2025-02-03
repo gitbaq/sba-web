@@ -177,7 +177,7 @@ body {
 }
 
 .input-field{
-  @apply bg-accent w-full;
+  @apply w-full border border-accent shadow-none focus-visible:ring-sky-300 dark:focus-visible:ring-slate-600;
 }
 
 .tooltips{
