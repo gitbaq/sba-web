@@ -31,6 +31,8 @@ import {
   Phone,
   LogOut,
   CircleX,
+  Bookmark,
+  Dot,
 } from "lucide-react";
 
 import {
@@ -84,6 +86,8 @@ export const Icons = {
   FaGoogle,
   FaQuoteLeft,
   CircleX,
+  Bookmark,
+  Dot,
 };
 
 export default Icons;

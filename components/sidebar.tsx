@@ -4,7 +4,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -42,22 +41,18 @@ function SearchResults() {
 
   return (
     <SidebarGroup className='overflow-y-scroll h-full'>
-      <Search />
-      <SidebarHeader>
-        <SidebarGroupLabel className='text-sm font-semibold p-0'>
-          <div className='flex flex-row w-full items-baseline justify-between'>
-            <span>Reading List</span>
-            <Link href='/learning?query=transform' className='px-1'>
-              <Icons.ExternalLink
-                className={`icons-size ${
-                  pathname === "/learning" ? " text-amber-500 " : ""
-                }`}
-              />
-            </Link>
-          </div>
-        </SidebarGroupLabel>
-      </SidebarHeader>
+      {/* <SidebarHeader className='flex flex-row items-center justify-between'>
+        <Link
+          href='/learning?query=transform'
+          className='flex flex-row gap-1 items-center font-bold icons'
+        >
+          <Icons.Bookmark className=' text-amber-600 icons-size' />
+          <span>Reading List</span>
+        </Link>
+        <Icons.ExternalLink className='icons-size' />
+      </SidebarHeader> */}
       <SidebarGroupContent>
+        <Search />
         <SidebarMenu>
           {topics?.map((item) => (
             <div key={item.id}>
@@ -65,13 +60,13 @@ function SearchResults() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row lead_text font-semibold'>
+                      <div className='flex flex-row lead_text font-semibold text-lg'>
                         <Icons.BookOpen strokeWidth={2} />
                         <span>{item.sbaTopicName}</span>
                       </div>
                     </SidebarMenuButton>
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent side='right'>
                     <div className='tooltips'>{item.sbaTopicName}</div>
                   </TooltipContent>
                 </Tooltip>
@@ -91,12 +86,12 @@ function SearchResults() {
                                   : ""
                               }`}
                             >
-                              <Icons.Text strokeWidth={2} />
+                              <Icons.Text strokeWidth={1} />
                               <span>{sub.heading}</span>
                             </a>
                           </SidebarMenuButton>
                         </TooltipTrigger>
-                        <TooltipContent className='tooltips'>
+                        <TooltipContent className='tooltips' side='right'>
                           <div>
                             <span className=' text-sky-800'>{sub.heading}</span>
                             <br />
@@ -120,7 +115,10 @@ export function LearningSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar variant='sidebar' className='border-none absolute'>
+    <Sidebar
+      variant='sidebar'
+      className='border-none absolute h-full min-h-full'
+    >
       <SidebarHeader className='p-4'>
         <NavbarBrand />
       </SidebarHeader>
@@ -159,6 +157,17 @@ export function LearningSidebar() {
                   >
                     <Icons.MessageSquareCode />
                     <span>Contact</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem key='learning'>
+                <SidebarMenuButton asChild>
+                  <a
+                    href={`/learning?query=transform`}
+                    className={`${pathname === "/learning" ? "active" : ""}`}
+                  >
+                    <Icons.Bookmark className='icons-size text-amber-600' />
+                    <span>Reading List</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -19,12 +19,12 @@ export default function Quote() {
   }, [runthis]);
 
   return (
-    <div className='flex flex-col h-fit justify-center w-full p-2 items-center rounded-lg shadow'>
+    <div className='flex flex-col h-fit justify-center w-full p-2 items-center'>
       {quote && (
         <div className='flex flex-col gap-2 py-5 px-2 '>
           <div className='flex flex-row gap-1'>
             <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />
-            <span className='p-2  bg-accent rounded-lg text-sm'>
+            <span className='p-2  borderx border-accent rounded-lg text-sm'>
               {quote?.quoteText}
             </span>
             {/* <FaQuoteRight className='text-cyan-600  min-h-4 min-w-4 self-end' /> */}

@@ -47,17 +47,17 @@ export default function RootLayout({
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <TooltipProvider delayDuration={2000}>
-            <SidebarProvider defaultOpen={true} className='h-full w-full'>
+            <SidebarProvider defaultOpen={false} className='h-full w-full'>
               <div className='flex flex-col w-full h-full min-h-full'>
                 <Navbar />
-                <div className='flex flex-row w-full min-h-full h-full  '>
+                <div className='flex flex-row w-full min-h-full h-full'>
                   <LearningSidebar />
                   <main className='flex flex-row w-full h-full items-start justify-center'>
                     <div className='lg:max-w-4xl md:max-w-lg w-full h-full'>
                       {children}
                     </div>
                   </main>
-                  <div className='lg:flex hidden flex-col min-h-full w-64 min-w-64'>
+                  <div className='md:flex hidden flex-col min-h-full w-64 min-w-64'>
                     <Rightbar />
                   </div>
                 </div>

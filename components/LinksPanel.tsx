@@ -37,14 +37,14 @@ const data = [
 
 function LinksPanel() {
   return (
-    <div className='flex flex-col p-2 shadow rounded-lg'>
+    <div className='flex flex-col p-2'>
       <div className='lead_text font-semibold mb-5'>AI Blogs</div>
       {data.map((d) => (
         <Link
           key={d.id}
           href={d.url}
           target='_blank'
-          className='icons text-sm px-1 mb-1 flex flex-row items-cnter gap-1'
+          className='icons text-sm px-1 mb-1 flex flex-row items-center gap-2'
         >
           <Icons.ChevronsRight className='icons-size text-primary' />
           {d.title}
