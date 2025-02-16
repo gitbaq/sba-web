@@ -33,6 +33,7 @@ import {
   CircleX,
   Bookmark,
   Dot,
+  PanelLeftOpen,
 } from "lucide-react";
 
 import {
@@ -88,6 +89,7 @@ export const Icons = {
   CircleX,
   Bookmark,
   Dot,
+  PanelLeftOpen,
 };
 
 export default Icons;

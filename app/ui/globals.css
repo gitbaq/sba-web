@@ -140,6 +140,11 @@ body {
 .icons{
   @apply  hover:text-amber-600 hover:no-underline dark:hover:text-amber-500
 }
+
+.icons-size-lg{
+  @apply aspect-square h-6 min-h-6 items-baseline
+}
+
 .icons-size{
   @apply aspect-square h-4 min-h-4 items-baseline
 }
