@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Params }) {
               backgroundImage: `url(${iURL})`,
             }}
             className={`flex justify-center p-5 items-center
-              bg-center bg-cover
+               bg-auto opacity-80 bg-center
            w-full min-h-96 my-5 rounded shadow`}
           >
             &nbsp;
