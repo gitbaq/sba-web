@@ -27,21 +27,41 @@
 </url>
 <url>
   <loc>https://www.syedbaqirali.com/learning?query=transform</loc>
-  <priority>0.5</priority>
+  <priority>1.0</priority>
   <changefreq>daily</changefreq>
 </url>
 <url>
   <loc>https://www.syedbaqirali.com/learning/1</loc>
-  <priority>0.5</priority>
+  <priority>1.0</priority>
   <changefreq>daily</changefreq>
 </url>
 <url>
   <loc>https://www.syedbaqirali.com/learning/5</loc>
-  <priority>0.5</priority>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/14</loc>
+  <priority>1.0</priority>
   <changefreq>daily</changefreq>
 </url>
 <url>
   <loc>https://www.syedbaqirali.com/learning/15</loc>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/16</loc>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning/52</loc>
+  <priority>1.0</priority>
+  <changefreq>daily</changefreq>
+</url>
+<url>
+  <loc>https://www.syedbaqirali.com/learning</loc>
   <priority>0.5</priority>
   <changefreq>daily</changefreq>
 </url>

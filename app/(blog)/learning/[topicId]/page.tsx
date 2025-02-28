@@ -8,7 +8,6 @@ import SharePanel from "@/components/social-sharing/sharebar";
 import EditorLink from "@/components/editor/editorLink";
 
 async function getSubTopicById(subId: string) {
-  debugger;
   if (subId === null || subId === undefined || subId === "") {
     return;
   }
@@ -17,6 +16,7 @@ async function getSubTopicById(subId: string) {
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
   }
+  debugger;
   return res.json();
 }
 
