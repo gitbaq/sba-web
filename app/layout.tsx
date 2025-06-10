@@ -45,7 +45,7 @@ export default function RootLayout({
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body
-        className={`${inter.className} antialiased text-sm w-full h-fit min-h-screen max-w-full`}
+        className={`${inter.className} antialiased text-sm w-full h-fit min-h-lvh`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <TooltipProvider delayDuration={2000}>

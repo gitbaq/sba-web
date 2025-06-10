@@ -13,7 +13,7 @@ export default function Rightbar() {
   // });
 
   return (
-    <div className='flex flex-col h-full min-h-full space-y-5 p-2'>
+    <div className='flex flex-col space-y-5 p-2'>
       <div className='flex flex-col gap-5'>
         <Quote />
         <LinksPanel />
