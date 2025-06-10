@@ -140,6 +140,11 @@ body {
 .icons{
   @apply  hover:text-amber-600 hover:no-underline dark:hover:text-amber-500
 }
+
+.icons-size-lg{
+  @apply aspect-square h-6 min-h-6 items-baseline
+}
+
 .icons-size{
   @apply aspect-square h-4 min-h-4 items-baseline
 }
@@ -198,6 +203,22 @@ a.active {
 
 a.active_top {
   @apply text-amber-500 hover:text-amber-600 underline-offset-2 underline
+}
+
+.libutton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7px;
+  text-align: center;
+  outline: none;
+  text-decoration: none !important;
+  color: #ffffff !important;
+  width: 200px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #0A66C2;
+  font-family: "SF Pro Text", Helvetica, sans-serif;
 }
 
 

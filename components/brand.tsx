@@ -4,7 +4,7 @@ import Icons from "./Icons";
 
 const Brand = () => {
   return (
-    <div className='flex flex-row items-center gap-2  h-8 min-h-8'>
+    <div className='flex flex-row items-stretch gap-2 h-fit min-h-fit p-1'>
       <Icons.Bot className=' text-amber-500' strokeWidth={3} />
       <Link
         href='/'

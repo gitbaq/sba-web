@@ -12,7 +12,7 @@
 }
 
 .article img{
-    @apply max-h-60 max-w-md placeholder-accent place-content-center rounded-lg ml-auto mr-auto mt-10 mb-10 border-4 border-separate border-sky-100 shadow
+    @apply max-w-sm aspect-auto placeholder-accent place-content-center rounded-lg ml-auto mr-auto mt-10 mb-10 border-4 border-separate border-sky-100 shadow
 }
 
 .article ul{
