@@ -11,15 +11,13 @@ import {
   WhatsappShareButton,
 } from "react-share";
 import { web_url } from "@/utils/endpoints/endpoints";
+import Icons from "../Icons";
 
 export default function SharePanel({ subtopic }: { subtopic: SubTopic }) {
   return (
-<<<<<<< HEAD
-    <div className='flex flex-row items-center rounded gap-1'>
-=======
     <div className='flex flex-row items-center justify-center rounded-full p-2 gap-1 border border-accent'>
       <Icons.Share2 className='aspect-square min-h-5 h-5 w-5 min-w-5 rounded-full bg-accent' />
->>>>>>> dev
+
       <div className='flex flex-row items-center justify-center gap-1'>
         <LinkedinShareButton
           title={subtopic.heading}
