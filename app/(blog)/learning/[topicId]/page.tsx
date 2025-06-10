@@ -13,6 +13,7 @@ async function getSubTopicById(subId: string) {
     return;
   }
   const url = `${subtopics_url}/s/${subId}`;
+  // console.log("url", url);
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
