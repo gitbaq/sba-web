@@ -44,6 +44,7 @@ import {
   FaCalendarDays,
   FaGoogle,
   FaQuoteLeft,
+  FaRobot,
 } from "react-icons/fa6";
 import { PiLinktreeLogo } from "react-icons/pi";
 export const Icons = {
@@ -86,6 +87,7 @@ export const Icons = {
   FaGithub,
   FaGoogle,
   FaQuoteLeft,
+  FaRobot,
   CircleX,
   Bookmark,
   Dot,

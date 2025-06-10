@@ -20,9 +20,7 @@ export default function SidebarWrapper({
         <div className='flex flex-row w-full min-h-full h-full'>
           <LearningSidebar />
           <main className='flex flex-row w-full h-full items-start justify-center'>
-            <div className='lg:max-w-4xl md:max-w-lg w-full h-full'>
-              {children}
-            </div>
+            <div className=' w-full h-full'>{children}</div>
           </main>
           <div className='md:flex hidden flex-col min-h-full w-64 min-w-64'>
             <Rightbar />

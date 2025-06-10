@@ -177,9 +177,6 @@ export function LearningSidebar() {
         <Suspense>
           <SearchResults />
         </Suspense>
-        {/* <SidebarFooter>
-          <ThemeSelector />
-        </SidebarFooter> */}
       </SidebarContent>
     </Sidebar>
   );

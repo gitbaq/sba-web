@@ -222,3 +222,12 @@ a.active_top {
 }
 
 
+.glow-card{
+  @apply dark:border-t-slate-700 dark:border-l-slate-700
+  dark:border-r-slate-800 dark:border-b-slate-800 shadow-sm
+}
+
+.glow-card-header {
+  @apply bg-gradient-to-b from-slate-200 dark:from-slate-700 to-transparent rounded-lg 
+}
+
