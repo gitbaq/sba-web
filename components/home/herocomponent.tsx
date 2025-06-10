@@ -7,24 +7,24 @@ const HeroComponent = () => {
     {
       id: 1,
       heading: "Custom AI Solutions",
-      text: "Design and implement AI-powered applications (e.g., recommendation systems, predictive analytics, NLP tools) using AI technologies like TensorFlow, PyTorch, and OpenAI APIs.",
+      text: "Design and implement AI-powered applications (e.g., Generative AI, predictive analytics, NLP tools)",
     },
     {
       id: 7,
       heading: "AI-Driven CX",
-      text: "Positive Customer Experience increases customer retention and brand loyalty. Intelligent chatbots, virtual assistants, or automated support systems enhance customer engagement while minimizing the need for extensive human intervention",
+      text: "Positive Customer Experience, Intelligent chatbots, Virtual assistants, or Automated support systems enhance customer engagement while minimizing human intervention",
       icon: "FaRobot",
     },
     {
       id: 4,
       heading: "Cloud Integration",
-      text: "Modernize and migrate legacy Java applications to the cloud (AWS, Azure, GCP) for improved flexibility and reduced infrastructure costs while ensuring seamless integration with AI technologies",
+      text: "Modernize and migrate legacy Java applications to the cloud (AWS, Azure, GCP) for improved flexibility and reduced infrastructure costs and seamless integration with AI technologies",
     },
-    {
-      id: 6,
-      heading: "Data-Driven Insights",
-      text: "Develop and deploy big data solutions using Hadoop, Apache Spark, or Kafka, enabling businesses to harness data insights for informed decision-making",
-    },
+    // {
+    //   id: 6,
+    //   heading: "Data-Driven Insights",
+    //   text: "Develop and deploy big data solutions using Hadoop, Apache Spark, or Kafka, enabling businesses to harness data insights for informed decision-making",
+    // },
     // {
     //   id: 2,
     //   heading: "Cost Optimization",
@@ -43,22 +43,22 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full h-lvh items-center justify-center max-w-full p-5 z-50 bg-stone-300 dark:bg-stone-800'>
+    <div className='flex flex-row w-full h-lvh items-center justify-center max-w-full p-5 z-50'>
       <Icons.ChevronsRight className='hidden md:visible' />
       <div className='w-full overflow-auto '>
-        <div className='flex flex-col md:flex-row items-center md:gap-10 gap-10 h-lvh p-5 w-full'>
+        <div className='flex flex-col md:flex-row justify-center items-center md:gap-10 gap-10 h-lvh p-5 w-full'>
           {data.map((d) => (
             <Card
               key={d.id}
               className='h-64 md:w-64 w-full min-h-64 md:min-w-64 glow-card'
             >
-              <CardHeader className='glow-card-header'>
-                <CardTitle className='font-semibold  flex gap-2 justify-items-center '>
-                  <Icons.FaRobot className='text-yellow-400 h-8 w-8 min-h-8 min-w-8' />
-                  <div className='flex flex-row text-lg'>{d.heading}</div>
+              <CardHeader className='glow-card-header flex flex-row gap-2 items-center'>
+                <Icons.FaRobot className='text-yellow-400 h-8 w-8 min-h-8 min-w-8' />
+                <CardTitle className='font-semibold'>
+                  <div className='flex flex-row'>{d.heading}</div>
                 </CardTitle>
               </CardHeader>
-              <CardContent className='p-3'>{d.text}</CardContent>
+              <CardContent className='p-3 flex-inline'>{d.text}</CardContent>
             </Card>
           ))}
         </div>
