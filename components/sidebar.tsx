@@ -116,6 +116,7 @@ export function LearningSidebar() {
 
   return (
     <Sidebar
+      title='Learning Sidebar'
       variant='sidebar'
       className='border-none absolute h-full min-h-full'
     >

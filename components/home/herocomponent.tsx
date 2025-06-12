@@ -43,10 +43,10 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full h-lvh items-center justify-center max-w-full p-5 z-50'>
+    <div className='flex flex-row w-full items-center justify-center max-w-full p-5 z-50'>
       <Icons.ChevronsRight className='hidden md:visible' />
-      <div className='w-full overflow-auto '>
-        <div className='flex flex-col md:flex-row justify-center items-center md:gap-10 gap-10 h-lvh p-5 w-full'>
+      <div className='w-full h-full overflow-auto '>
+        <div className='flex flex-col md:flex-row justify-center items-center md:gap-10 gap-10 md:h-lvh p-5 w-full overflow-auto'>
           {data.map((d) => (
             <Card
               key={d.id}

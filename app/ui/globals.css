@@ -149,7 +149,7 @@ body {
   @apply aspect-square h-4 min-h-4 items-baseline
 }
 .icons-small{
-@apply h-3 w-3 min-h-3 min-w-3
+@apply h-4 w-4 min-h-4 min-w-4
 }
 
 .icons_diff{

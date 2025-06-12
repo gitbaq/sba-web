@@ -22,20 +22,22 @@ const ScreenTop = () => {
 
       <div className='flex flex-col h-full min-h-full w-full md:w-2/4 justify-center items-center'>
         <div className='flex flex-col sub-heading w-full'>
-          <div className='heading w-full md:py-0 pt-5'>Your Future</div>
-          <div>Powered by Innovation</div>
+          <div className='heading text-center w-full md:py-0 pt-5'>
+            Your Future
+          </div>
+          <div className=' w-full text-center'>Powered by Innovation</div>
         </div>
 
-        <div className='px-2 max-w-sm'>
+        <div className='p-2 max-w-sm'>
           AI is no longer a luxury—it`s a necessity. Take the leap into a
           promising future and position your business as a leader in your
           industry.
         </div>
-        <div className='flex flex-row gap-1 quote px-2 py-5'>
+        <div className='flex flex-row gap-1 p-5'>
           <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />{" "}
           Innovation distinguishes between a leader and a follower - Steve Jobs
         </div>
-        <div className='p-3'>
+        <div className='p-3 text-cyan-700 dark:text-cyan-400'>
           Ready to lead? Let`s build your AI-driven future today.
         </div>
         <div className='flex flex-row w-full'>

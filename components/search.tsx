@@ -20,11 +20,11 @@ function Search() {
       setQuery(event.target.value);
     }
     return (
-      <div className='flex flex-row items-center rounded-lg border border-sky-200'>
+      <div className='flex flex-row rounded border w-full h-full'>
         <Input
           type='text'
           placeholder='Quick Search...'
-          className='rounded-l-lg rounded-r-none text-primary w-full border border-secondary focus-visible:ring-stone-50'
+          className='rounded-l rounded-r-none text-primary w-full border border-accent focus-visible:ring-0'
           onChange={handleChange}
           onKeyUp={(e) =>
             e.key == "Enter" && query.length > 1 ? searchQuery() : null
@@ -39,11 +39,11 @@ function Search() {
         <Button
           disabled={query.length < 2 ? true : false}
           type='submit'
-          className='rounded-l-none rounded-r-lg bg-sidebar-accent-foreground'
+          className='rounded-l-none rounded-r'
           onClick={searchQuery}
           name='submit'
         >
-          <Icons.Search className='text-sky-600 icons-size' />
+          <Icons.Search className=' icons-size' />
         </Button>
       </div>
     );

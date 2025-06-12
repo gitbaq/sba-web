@@ -7,7 +7,7 @@ import Copyright from "./Copyright";
 
 const Footer = () => {
   return (
-    <footer className='flex md:flex-row flex-col min-h-24 h-fit w-full justify-center md:justify-normal items-center md:gap-5 gap-2 p-3 space-3 border-t border-accent'>
+    <footer className='flex md:flex-row min-h-24 h-24 flex-col w-full justify-center md:justify-normal items-center md:gap-5 gap-3 p-3 bg-gradient-to-b from-stone-100 via-stone-50 to-stone-200 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-800'>
       <div className='flex flex-row md:w-1/3 w-full md:justify-start justify-center font-thin px-2'>
         <Brand />
       </div>

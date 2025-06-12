@@ -28,25 +28,24 @@ function SearchResults() {
   }, [query]);
 
   return (
-    <div className='flex flex-col'>
-      <section className='bg-accent flex md:flex-row flex-col w-full items-center p-2 gap-2 rounded-lg justify-between'>
-        <div className='flex flex-row items-center gap-2 w-full'>
+    <div className='flex flex-col w-full md:max-w-4xl'>
+      <section className='flex flex-col w-full p-2 gap-5 rounded-t'>
+        <div className='flex flex-row gap-2 w-full items-center justify-center'>
           <div className='flex items-center text-accent rounded-full bg-cyan-400 border border-cyan-500 min-h-6 min-w-6 h-6 w-6'>
             <Icons.Search className='icons-size' />
           </div>
-          <h1 className='flex w-full font-semibold text-lg text-nowrap'>
-            Search Results
-          </h1>
+          <h1 className='flex font-bold text-nowrap'>Search Results</h1>
+        </div>
+        <div className='w-full flex flex-col'>
+          <Search />
           {subTopics && (
-            <span className='text-nowrap text-xs text-cyan-600 dark:text-cyan-400'>
-              ({subTopics.length} matches found)
+            <span className='w-full text-end text-nowrap text-sm text-cyan-600 dark:text-cyan-400 py-2'>
+              {subTopics.length} matches found
             </span>
           )}
         </div>
-        <div>
-          <Search />
-        </div>
       </section>
+      {/* <hr className='mb-5 text-accent' /> */}
       <section className='flex flex-col justify-start items-center w-full h-full py-1 gap-2'>
         {subTopics &&
           subTopics?.map((sub: SubTopic) => (

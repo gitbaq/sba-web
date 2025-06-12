@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { Viewport } from "next";
 import "./ui/globals.css";
 import { inter } from "@/app/ui/fonts";
-// import Footer from "@/components/footer";
+import Footer from "@/components/footer";
 // import { LearningSidebar } from "@/components/sidebar";
 // import Navbar from "@/components/navbar";
 // import { SidebarProvider } from "@/components/ui/sidebar";
@@ -33,7 +33,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
@@ -45,16 +44,18 @@ export default function RootLayout({
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
       </head>
       <body
-        className={`${inter.className} antialiased text-sm w-full h-fit min-h-lvh`}
+        className={`${inter.className} antialiased w-full h-full min-h-lvh`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <TooltipProvider delayDuration={2000}>
-            <SidebarWrapper>{children}</SidebarWrapper>
-          </TooltipProvider>
-          <Toaster />
-          <Analytics />
-          <SpeedInsights />
+          <SidebarWrapper>
+            <TooltipProvider delayDuration={1000}>{children}</TooltipProvider>
+
+            <Toaster />
+            <Analytics />
+            <SpeedInsights />
+          </SidebarWrapper>
         </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
