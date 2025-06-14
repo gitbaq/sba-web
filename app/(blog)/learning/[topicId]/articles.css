@@ -1,10 +1,10 @@
 .article h1{
-    @apply font-semibold text-lg pt-5 pb-0 text-cyan-700 dark:text-cyan-300;
+    @apply font-semibold text-xl pt-5 pb-0;
     /* @apply bg-gradient-to-r from-transparent to-stone-100; */
 }
 
 .article p{
-    @apply mb-5
+    @apply mb-5 leading-6
 }
 
 .article a{

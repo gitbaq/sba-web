@@ -44,7 +44,7 @@ export default function Portfolio() {
   const height = 150;
 
   return (
-    <div className='flex flex-col gap-3 w-full justify-center'>
+    <div className='flex flex-col gap-3 w-full justify-center place-items-center'>
       <div className='p-2'>
         <div className='sub-heading w-full text-start'>Portfolio</div>
         <div className='flex flex-row items-center justify-start '>
@@ -57,7 +57,7 @@ export default function Portfolio() {
           </Link>
         </div>
       </div>
-      <div className='flex flex-row justify-center p-2 w-full'>
+      <div className='flex flex-row justify-center p-2 w-full max-w-4xl'>
         <Carousel
           className='w-full '
           opts={{

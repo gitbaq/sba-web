@@ -43,26 +43,26 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex flex-row w-full items-center justify-center max-w-full p-5 z-50'>
+    <div className='flex lg:flex-row flex-col w-full items-center justify-center p-5 z-50 max-w-4xl'>
       <Icons.ChevronsRight className='hidden md:visible' />
-      <div className='w-full h-full overflow-auto '>
-        <div className='flex flex-col md:flex-row justify-center items-center md:gap-10 gap-10 md:h-lvh p-5 w-full overflow-auto'>
-          {data.map((d) => (
-            <Card
-              key={d.id}
-              className='h-64 md:w-64 w-full min-h-64 md:min-w-64 glow-card'
-            >
-              <CardHeader className='glow-card-header flex flex-row gap-2 items-center'>
-                <Icons.FaRobot className='text-yellow-400 h-8 w-8 min-h-8 min-w-8' />
-                <CardTitle className='font-semibold'>
-                  <div className='flex flex-row'>{d.heading}</div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='p-3 flex-inline'>{d.text}</CardContent>
-            </Card>
-          ))}
-        </div>
+      {/* <div className='w-full h-full overflow-auto'> */}
+      <div className='grid md:grid-cols-2 grid-cols-1 grid-flow-row md:gap-5 gap-2 p-5 w-full place-items-center'>
+        {data.map((d) => (
+          <Card
+            key={d.id}
+            className='h-64 md:w-64 w-full min-h-fit md:min-w-64 glow-card'
+          >
+            <CardHeader className='glow-card-header flex flex-row gap-2 items-center'>
+              <Icons.FaRobot className='text-yellow-400 h-8 w-8 min-h-8 min-w-8' />
+              <CardTitle className='font-semibold'>
+                <div className='flex flex-row'>{d.heading}</div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='p-3 flex-inline'>{d.text}</CardContent>
+          </Card>
+        ))}
       </div>
+      {/* </div> */}
     </div>
   );
 };

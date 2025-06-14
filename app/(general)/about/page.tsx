@@ -7,7 +7,7 @@ import Portfolio from "@/components/about/portfolio";
 export default function About() {
   return (
     <div className='flex flex-col gap-5 w-full h-full items-center p-3'>
-      <div className='flex h-full w-full lg:flex-row flex-col justify-center lg:items-center items-center'>
+      <div className='flex h-full w-full lg:flex-row flex-col max-w-4xl justify-center lg:items-center items-center'>
         <div className='rounded-ss-full bg-gradient-to-b bg-amber-400'>
           <Image
             className=' from-neutral-800 via-neutral-400 to-inherit'
@@ -21,7 +21,7 @@ export default function About() {
 
         <div className='flex flex-col h-full min-h-full w-full md:w-2/4 justify-center p-3 gap-5 items-center'>
           <div className='flex flex-col sub-heading items-center'>
-            <div className='heading w-full'>Syed Baqir</div>
+            <div className='heading w-full'>Syed Baqir Ali</div>
             <div>Software Innovation and AI Leader</div>
           </div>
 

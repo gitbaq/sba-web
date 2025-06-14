@@ -5,7 +5,8 @@ import "./articles.css";
 
 import parse from "html-react-parser";
 import SharePanel from "@/components/social-sharing/sharebar";
-import EditorLink from "@/components/editor/editorLink";
+// import EditorLink from "@/components/editor/editorLink";
+import Image from "next/image";
 
 async function getSubTopicById(subId: string) {
   if (subId === null || subId === undefined || subId === "") {
@@ -32,16 +33,16 @@ export default async function Page({ params }: { params: Params }) {
   return (
     <main className='flex flex-col h-full w-full  items-center overflow-y-auto px-2'>
       <section className='flex flex-col w-full lg:max-w-4xl h-full justify-center'>
-        <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full border-b border-accent'>
+        <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full'>
           <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
-            <div className='heading'>{subtopic.heading}</div>
+            <div className='text-gray-500'>{subtopic.heading}</div>
           </div>
           <div className='flex justify-between items-center w-full'>
-            <div className='flex flex-row justify-between w-full heading'>
-              {subtopic.subHeading} <EditorLink topicId={subtopic.id} />
+            <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
+              {subtopic.subHeading} {/*<EditorLink topicId={subtopic.id} />*/}
             </div>
           </div>
-          <div
+          {/* <div
             style={{
               backgroundImage: `url(${iURL})`,
             }}
@@ -50,18 +51,27 @@ export default async function Page({ params }: { params: Params }) {
            w-full min-h-96 my-5 rounded shadow`}
           >
             &nbsp;
+          </div> */}
+          <div className='bg-gray-300 min-h-96 aspect-video rounded-lg relative p-5'>
+            <Image
+              priority
+              fill
+              src={iURL}
+              alt={subtopic.heading}
+              className='object-cover w-full max-h-full rounded'
+            ></Image>
           </div>
-          <div className='flex flex-row justify-between items-end w-full'>
+          <div className='flex flex-row justify-between items-end w-full border-y my-5 py-5'>
             <div className='text-slate-500 dark:text-slate-400'>
               {format(subtopic.createDate, "MMM do, yyyy")}
             </div>
 
             <SharePanel subtopic={subtopic} />
           </div>
-          <div className='w-full border-b border-accent'>&nbsp;</div>
+          {/* <div className='w-full border-b border-accent'>&nbsp;</div> */}
         </div>
       </section>
-      <div className='w-full px-2 lg:max-w-4xl h-full article '>
+      <div className='w-full px-2 lg:max-w-4xl h-full article'>
         {parse(subtopic.content)}
       </div>
     </main>

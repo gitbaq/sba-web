@@ -47,13 +47,15 @@ export default function RootLayout({
         className={`${inter.className} antialiased w-full h-full min-h-lvh`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <SidebarWrapper>
-            <TooltipProvider delayDuration={1000}>{children}</TooltipProvider>
+          <TooltipProvider delayDuration={1000}>
+            <SidebarWrapper>
+              {children}
 
-            <Toaster />
-            <Analytics />
-            <SpeedInsights />
-          </SidebarWrapper>
+              <Toaster />
+              <Analytics />
+              <SpeedInsights />
+            </SidebarWrapper>
+          </TooltipProvider>
         </ThemeProvider>
         <Footer />
       </body>

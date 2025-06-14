@@ -2,7 +2,7 @@
 import React from 'react'
 import { SidebarProvider } from './ui/sidebar';
 
-import Rightbar from "./rightbar";
+// import Rightbar from "./rightbar";
 import { LearningSidebar } from "./sidebar";
 import Navbar from "./navbar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -22,9 +22,9 @@ export default function SidebarWrapper({
           <main className='w-full h-full'>
             <div className=' w-full h-full'>{children}</div>
           </main>
-          <div className='md:flex hidden flex-col min-h-full w-64 min-w-64'>
+          {/* <div className='md:flex hidden flex-col min-h-full w-64 min-w-64'>
             <Rightbar />
-          </div>
+          </div> */}
         </div>
       </div>
     </SidebarProvider>
