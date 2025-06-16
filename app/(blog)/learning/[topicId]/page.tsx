@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: Params }) {
           >
             &nbsp;
           </div> */}
-          <div className='bg-gray-300 min-h-96 aspect-video rounded-lg relative p-5'>
+          <div className='bg-gray-300 min-h-96 max-w-full aspect-video rounded-lg relative p-5'>
             <Image
               priority
               fill
