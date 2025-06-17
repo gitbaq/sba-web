@@ -26,3 +26,5 @@ export const contact_secure_url = baseURL + "/secure/contact/v1";
 export const signup_url = baseURL + "/public/signup/v1";
 export const login_url = baseURL + "/auth/v1/login3";
 // export const login_url = baseURLAuth + "/api/auth/signin";
+
+export const ids_url = baseURL + "/subtopics/v1";
