@@ -14,7 +14,11 @@ export default function SidebarWrapper({
 }) {
   const isMobile = useIsMobile();
   return (
-    <SidebarProvider defaultOpen={!isMobile} className='h-full w-full'>
+    <SidebarProvider
+      defaultOpen={!isMobile}
+      className='h-full w-full'
+      title='Sidebar'
+    >
       <div className='flex flex-col w-full h-full min-h-full'>
         <Navbar />
         <div className='flex flex-row w-full min-h-full h-full'>
@@ -22,9 +26,6 @@ export default function SidebarWrapper({
           <main className='w-full h-full'>
             <div className=' w-full h-full'>{children}</div>
           </main>
-          {/* <div className='md:flex hidden flex-col min-h-full w-64 min-w-64'>
-            <Rightbar />
-          </div> */}
         </div>
       </div>
     </SidebarProvider>
