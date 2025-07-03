@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: Params }) {
           {/* <div className='w-full border-b border-accent'>&nbsp;</div> */}
         </div>
       </section>
-      <div className='w-full px-2 lg:max-w-4xl h-full article'>
+      <div className='w-full px-2 lg:max-w-4xl h-full article mb-10'>
         {parse(subtopic.content)}
       </div>
     </main>
