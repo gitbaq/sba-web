@@ -8,11 +8,13 @@ import Link from "next/link";
 import React from "react";
 import Icons from "./Icons";
 import { usePathname } from "next/navigation";
+import ThemeComponent from "./ThemeComponent";
 
 export default function NavLinks() {
   const pathname = usePathname();
+
   return (
-    <div className='flex flex-row gap-3 items-start'>
+    <div className='flex flex-row gap-3 items-start text-sm'>
       <div className='md:flex flex-row hidden gap-5 items-center justify-center '>
         <Link
           href='/'
@@ -78,6 +80,9 @@ export default function NavLinks() {
 
                 <div>Contact</div>
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <ThemeComponent />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
