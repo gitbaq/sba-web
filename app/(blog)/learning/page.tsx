@@ -29,8 +29,8 @@ function SearchResults() {
 
   return (
     <div className='flex flex-col w-full md:max-w-4xl'>
-      <section className='flex flex-col w-full p-2 gap-5 rounded-t'>
-        <div className='flex flex-row gap-2 w-full items-center justify-center'>
+      <section className='flex flex-col w-full mt-5 gap-5 rounded-t'>
+        <div className='flex flex-row gap-2 w-full items-center justify-start'>
           <div className='flex items-center text-accent rounded-full bg-cyan-400 border border-cyan-500 min-h-6 min-w-6 h-6 w-6'>
             <Icons.Search className='icons-size' />
           </div>

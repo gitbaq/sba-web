@@ -19,28 +19,19 @@ export default function NavLinks() {
           className={`${pathname === "/" ? "active_top" : ""} icons`}
         >
           <Icons.House className='icons-small' />
-          {/* Home */}
         </Link>
         <Link
           href='/about'
           className={`${pathname === "/about" ? "active_top" : ""} icons`}
         >
           <Icons.Info className='icons-small' />
-          {/* About */}
         </Link>
         <Link
           href='/contact'
           className={`${pathname === "/contact" ? "active_top" : ""} icons`}
         >
           <Icons.MessageSquareCode className='icons-small' />
-          {/* Contact */}
         </Link>
-        {/* <Link
-          href='/learning?query=transform'
-          className={`${pathname === "/learning" ? "active_top" : ""} icons`}
-        >
-          Learning
-        </Link> */}
       </div>
       <div className='flex flex-row md:hidden'>
         <DropdownMenu>
