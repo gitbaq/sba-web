@@ -6,8 +6,7 @@ import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 function ThemeSelector() {
-  const { /*themes, systemTheme, resolvedTheme,*/ theme, setTheme } =
-    useTheme();
+  const { theme, setTheme } = useTheme();
   useEffect(() => {
     if (theme === "" || theme === null) {
       setTheme("system");
@@ -17,7 +16,7 @@ function ThemeSelector() {
   }, [setTheme, theme]);
 
   return (
-    <div className='flex flex-row gap-4 p-3 justify-center bg-accent rounded-full'>
+    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full'>
       <Tooltip>
         <TooltipTrigger asChild>
           <Icons.SunDim

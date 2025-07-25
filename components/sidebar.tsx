@@ -18,12 +18,12 @@ import {
   TooltipContent,
 } from "@radix-ui/react-tooltip";
 import Icons from "./Icons";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Search from "./search";
 
 import { getAllTopics } from "@/utils/services/getAllTopics";
-import NavbarBrand from "./navbarbrand";
+import NavbarTrigger from "./NavbarTrigger";
+import Link from "next/link";
 
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -41,19 +41,9 @@ function SearchResults() {
 
   return (
     <SidebarGroup className='overflow-y-scroll h-full'>
-      {/* <SidebarHeader className='flex flex-row items-center justify-between'>
-        <Link
-          href='/learning?query=transform'
-          className='flex flex-row gap-1 items-center font-bold icons'
-        >
-          <Icons.Bookmark className=' text-amber-600 icons-size' />
-          <span>Reading List</span>
-        </Link>
-        <Icons.ExternalLink className='icons-size' />
-      </SidebarHeader> */}
       <SidebarGroupContent>
         <Search />
-        <SidebarMenu>
+        <SidebarMenu className='mt-5'>
           {topics?.map((item) => (
             <div key={item.id}>
               <SidebarMenuItem>
@@ -112,65 +102,33 @@ function SearchResults() {
 }
 
 export function LearningSidebar() {
-  const pathname = usePathname();
-
   return (
     <Sidebar
-      title='Learning Sidebar'
+      title="Syed's Notes"
       variant='sidebar'
       className='border-none absolute h-full min-h-full'
     >
       <SidebarHeader className='p-4'>
-        <NavbarBrand />
+        <NavbarTrigger />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className='py-0'>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem key='home'>
-                <SidebarMenuButton asChild>
-                  <a
-                    href={`/`}
-                    className={`${pathname === "/" ? "active" : ""}`}
-                  >
-                    <Icons.House className='icons-size' />
-                    <span>Home</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem key='about'>
-                <SidebarMenuButton asChild>
-                  <Link
-                    href={`/about`}
-                    className={`${pathname === "/about" ? "active" : ""}`}
-                  >
-                    <Icons.Info className='icons-size' />
-                    <span>About</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem key='contact'>
-                <SidebarMenuButton asChild>
-                  <a
-                    href={`/contact`}
-                    className={`${pathname === "/contact" ? "active" : ""}`}
-                  >
-                    <Icons.MessageSquareCode />
-                    <span>Contact</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem key='learning'>
-                <SidebarMenuButton asChild>
-                  <a
-                    href={`/learning?query=transform`}
-                    className={`${pathname === "/learning" ? "active" : ""}`}
-                  >
-                    <Icons.Bookmark className='icons-size text-amber-600' />
-                    <span>Reading List</span>
-                  </a>
-                </SidebarMenuButton>
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton asChild>
+                      <div className='flex flex-row text-amber-600 dark:text-amber-400 font-semibold text-lg'>
+                        <Icons.Bookmark strokeWidth={2} />
+                        <Link href='/learning?query=nlp'>Recent Posts</Link>
+                      </div>
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  <TooltipContent side='right'>
+                    <div className='tooltips'>Recent Notes</div>
+                  </TooltipContent>
+                </Tooltip>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
