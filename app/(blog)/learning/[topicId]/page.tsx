@@ -7,7 +7,7 @@ import parse from "html-react-parser";
 import SharePanel from "@/components/social-sharing/sharebar";
 // import EditorLink from "@/components/editor/editorLink";
 import Image from "next/image";
-import EditorLink from "@/components/editor/editorLink";
+// import EditorLink from "@/components/editor/editorLink";
 
 async function getSubTopicById(subId: string) {
   if (subId === null || subId === undefined || subId === "") {
@@ -39,19 +39,11 @@ export default async function Page({ params }: { params: Params }) {
           </div>
           <div className='flex justify-between items-center w-full'>
             <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
-              {subtopic.subHeading} <EditorLink topicId={subtopic.id} />
+              {subtopic.subHeading}
+              {/* <EditorLink topicId={subtopic.id} /> */}
             </div>
           </div>
-          {/* <div
-            style={{
-              backgroundImage: `url(${iURL})`,
-            }}
-            className={`flex justify-center p-5 items-center
-               bg-auto opacity-80 bg-center
-           w-full min-h-96 my-5 rounded shadow`}
-          >
-            &nbsp;
-          </div> */}
+
           <div className='bg-gray-300 min-h-96 max-w-full aspect-video rounded-lg relative p-5'>
             <Image
               priority
