@@ -4,7 +4,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -19,12 +18,13 @@ import {
 } from "@radix-ui/react-tooltip";
 import Icons from "./Icons";
 import { usePathname } from "next/navigation";
-import Search from "./search";
+// import Search from "./search";
 
 import { getAllTopics } from "@/utils/services/getAllTopics";
-import NavbarTrigger from "./NavbarTrigger";
 import Link from "next/link";
-
+import Search from "./search";
+import { blox_url, cobu_url } from "@/utils/endpoints/endpoints";
+import Image from "next/image";
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const pathname = usePathname();
@@ -44,6 +44,21 @@ function SearchResults() {
       <SidebarGroupContent>
         <Search />
         <SidebarMenu className='mt-5'>
+          <SidebarMenuItem>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <SidebarMenuButton asChild>
+                  <div className='flex flex-row font-semibold text-amber-600 dark:text-amber-400 hover:underline'>
+                    <Icons.Bookmark strokeWidth={2} />
+                    <Link href='/learning?query=nlp'>View Recent Posts</Link>
+                  </div>
+                </SidebarMenuButton>
+              </TooltipTrigger>
+              <TooltipContent side='right'>
+                <div className='tooltips'>Click here to view Recent Posts</div>
+              </TooltipContent>
+            </Tooltip>
+          </SidebarMenuItem>
           {topics?.map((item) => (
             <div key={item.id}>
               <SidebarMenuItem>
@@ -68,7 +83,7 @@ function SearchResults() {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <SidebarMenuButton asChild>
-                            <a
+                            <Link
                               href={`/learning/${sub.id}`}
                               className={`${
                                 pathname === "/learning/" + sub.id
@@ -78,7 +93,7 @@ function SearchResults() {
                             >
                               <Icons.Text strokeWidth={1} />
                               <span>{sub.heading}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuButton>
                         </TooltipTrigger>
                         <TooltipContent className='tooltips' side='right'>
@@ -103,30 +118,59 @@ function SearchResults() {
 
 export function LearningSidebar() {
   return (
-    <Sidebar
-      title="Syed's Notes"
-      variant='sidebar'
-      className='border-none absolute h-full min-h-full'
-    >
-      <SidebarHeader className='p-4'>
-        <NavbarTrigger />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className='py-0'>
+    <Sidebar title="Syed's Notes" variant='sidebar' className='border-r h-full'>
+      <SidebarContent className='pt-16'>
+        <div className='sr-only'>Syed&apos;s Notes</div>
+        <SidebarGroup className=''>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row text-amber-600 dark:text-amber-400 font-semibold text-lg'>
-                        <Icons.Bookmark strokeWidth={2} />
-                        <Link href='/learning?query=nlp'>Recent Posts</Link>
+                      <div className='flex flex-row font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
+                        <Image
+                          className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
+                          src='/favicon.ico'
+                          alt='Visit Cobu: AI Agent'
+                          width={20}
+                          height={20}
+                          priority
+                        />
+                        <Link href={cobu_url} target='_blox'>
+                          Cobu: AI Agent
+                        </Link>
                       </div>
                     </SidebarMenuButton>
                   </TooltipTrigger>
                   <TooltipContent side='right'>
-                    <div className='tooltips'>Recent Notes</div>
+                    <div className='tooltips'>
+                      Click here to visit Cobu: AI Agent
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton asChild>
+                      <div className='flex flex-row font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
+                        <Image
+                          className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
+                          src='/favicon.ico'
+                          alt='Visit Cobu: AI Agent'
+                          width={20}
+                          height={20}
+                          priority
+                        />
+                        <Link href={blox_url} target='_blox'>
+                          Blox: Productivity
+                        </Link>
+                      </div>
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  <TooltipContent side='right'>
+                    <div className='tooltips'>Click here to visit Blox</div>
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>

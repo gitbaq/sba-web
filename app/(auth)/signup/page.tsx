@@ -84,7 +84,6 @@ export default function Signup() {
           "Content-Type": "application/json",
         },
       });
-      debugger;
       const data = await response.json();
       if (!response.ok) {
         throw new Error("" + data.errors);

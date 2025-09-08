@@ -5,8 +5,9 @@ export const web_url = "https://www.syedbaqirali.com";
 export const appBasePath = web_url;
 // export const appBasePath = "http://localhost:3100";
 // export const baseURL = "http://localhost:7300";
-const baseURL = "https://webdata.syedbaqirali.com";
+export const baseURL = "https://webdata.syedbaqirali.com";
 export const blox_url = "https://blox.syedbaqirali.com";
+export const cobu_url = "https://ai.syedbaqirali.com";
 const bucket_url = "https://sbaweb-bucket.s3.ap-southeast-2.amazonaws.com";
 export const bucket_url_public = bucket_url + "/public";
 
@@ -23,7 +24,7 @@ export const subs_url = baseURL + "/subs/v1";
 export const contact_url = baseURL + "/contact/v1";
 export const contact_secure_url = baseURL + "/secure/contact/v1";
 
-export const signup_url = baseURL + "/public/signup/v1";
+export const signup_url = baseURL + "/auth/v1/signup";
 export const login_url = baseURL + "/auth/v1/login3";
 // export const login_url = baseURLAuth + "/api/auth/signin";
 

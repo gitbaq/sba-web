@@ -29,7 +29,7 @@ export interface RandomQuote {
   category: string;
 }
 
-export interface Subscriber {
+export interface User {
   id: number;
   email: string;
   firstName: string;

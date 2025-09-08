@@ -45,14 +45,13 @@ export default function Portfolio() {
 
   return (
     <div className='flex flex-col gap-3 w-full justify-center place-items-center'>
-      <div className='p-2'>
-        <div className='sub-heading w-full text-start'>Portfolio</div>
-        <div className='flex flex-row items-center justify-start '>
-          <Link
-            href={blox_url}
-            target='_blox'
-            className='icons text-amber-500 dark:text-amber-400 font-semibold hover:underline underline-offset-8'
-          >
+      <div className='p-2 w-full max-w-4xl'>
+        <div className='w-full text-start text-xl text-stone-400'>
+          Portfolio
+        </div>
+        <div className='flex flex-row gap-2 items-center justify-start text-cyan-700 dark:text-amber-400'>
+          <Icons.ExternalLink size={16} />
+          <Link href={blox_url} target='_blox' className='icons  '>
             Blox: Productivity hub
           </Link>
         </div>

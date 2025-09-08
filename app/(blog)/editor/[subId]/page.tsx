@@ -1,27 +1,17 @@
-"use client";
 import Editor from "@/components/editor/page";
-import { useEffect, useState } from "react";
+import { subtopics_url } from "@/utils/endpoints/endpoints";
 
 type Params = Promise<{ subId: string }>;
-export default function EditorHome({ params }: { params: Params }) {
-  const [subId, setSubId] = useState<string>();
+export default async function EditorHome({ params }: { params: Params }) {
+  const { subId } = await params;
+  const url = `${subtopics_url}/s/${subId}`;
+  const data = await fetch(url);
+  const post = await data.json().then((data) => data);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setSubId((await params).subId);
-      console.log(`Sub Id: ${subId}`);
-    };
-
-    fetchData().catch((e) => {
-      console.error("An error occurred while fetching the data: ", e);
-    });
-  });
   return (
-    <div className='flex flex-col w-full h-full items-center'>
-      <div className='flex flex-row w-full h-full'>
-        <div className='h-full w-full min-h-screen'>
-          <Editor params={{ subId: subId }} />
-        </div>
+    <div className='flex justify-center h-screen'>
+      <div className='flex-1 w-full max-w-7xl h-full md:m-5 m-2'>
+        <Editor params={{ subId: subId, post: post }} />
       </div>
     </div>
   );

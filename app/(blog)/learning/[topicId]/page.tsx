@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import SharePanel from "@/components/social-sharing/sharebar";
 // import EditorLink from "@/components/editor/editorLink";
 import Image from "next/image";
+import EditorLink from "@/components/editor/editorLink";
 
 async function getSubTopicById(subId: string) {
   if (subId === null || subId === undefined || subId === "") {
@@ -31,7 +32,7 @@ export default async function Page({ params }: { params: Params }) {
   const iURL: string =
     subtopic.imageUrl === null ? "/ai4.png" : subtopic.imageUrl;
   return (
-    <main className='flex flex-col h-full w-full  items-center overflow-y-auto px-2'>
+    <main className='flex flex-col h-full w-full items-center overflow-y-auto px-2'>
       <section className='flex flex-col w-full lg:max-w-4xl h-full justify-center'>
         <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full'>
           <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
@@ -39,7 +40,7 @@ export default async function Page({ params }: { params: Params }) {
           </div>
           <div className='flex justify-between items-center w-full'>
             <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
-              {subtopic.subHeading} {/*<EditorLink topicId={subtopic.id} />*/}
+              {subtopic.subHeading} <EditorLink topicId={subtopic.id} />
             </div>
           </div>
           {/* <div
@@ -59,6 +60,7 @@ export default async function Page({ params }: { params: Params }) {
               src={iURL}
               alt={subtopic.heading}
               className='object-cover w-full max-h-full rounded'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             ></Image>
           </div>
           <div className='flex flex-row justify-between items-end w-full border-y my-5 py-5'>

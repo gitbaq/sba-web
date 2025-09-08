@@ -1,11 +1,27 @@
+// components/editor/EditorLink.tsx
 "use client";
-import Icons from "@/components/Icons";
+import { useAuth } from "@/utils/AuthContext";
 import Link from "next/link";
+import Icons from "../Icons";
 
-export default function EditorLink({ topicId }: { topicId: number }) {
+interface EditorLinkProps {
+  topicId: number;
+}
+
+export default function EditorLink({ topicId }: EditorLinkProps) {
+  const { isAuthenticated, userEmail } = useAuth();
+
+  if (!isAuthenticated || userEmail !== "email3@email.com") {
+    return null;
+  }
+
   return (
-    <Link href={`/editor/${topicId}`}>
-      <Icons.PencilLine className='text-amber-500 icons-size' />
+    <Link
+      href={`/editor/${topicId}`}
+      className='flex items-center gap-1 text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300'
+    >
+      <Icons.PencilLine size={16} />
+      <span className='text-sm'>Edit</span>
     </Link>
   );
 }

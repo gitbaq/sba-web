@@ -17,10 +17,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Icons from "@/components/Icons";
 import Link from "next/link";
-import { Suspense, /*useEffect,*/ useState } from "react";
+import { Suspense, useState } from "react";
 import { login_url } from "@/utils/endpoints/endpoints";
-import { /*useRouter,*/ useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import FormMessages from "@/components/FormMessages";
+import { useAuth } from "@/utils/AuthContext";
 
 const formSchema = z.object({
   usernameOrEmail: z.string().trim(),
@@ -36,15 +37,13 @@ const formSchema = z.object({
 });
 
 function LoginForm() {
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const nextUrl = callbackUrl === null ? "/" : callbackUrl;
-  // const [token, setToken] = useState<string | null>(null);
-  // const [ck, setCk] = useState<string | null>(null);
-  // const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,26 +65,20 @@ function LoginForm() {
         "Content-Type": "application/json",
       },
     });
-    const res = await response;
-    if (res.ok) {
-      const data = await res.json();
-      // setToken(JSON.stringify(res.headers.values));
-      // setCk(document.cookie);
-      // document.cookie = `token=${data.res.token}`;
+    if (response.ok) {
+      const data = await response.json();
+      login(data?.res.token, data?.res.username, data?.res.email);
       toast("Logged In!");
       setIsLoading(false);
-      // router.push(nextUrl);
-      // router.forward();
-      document.cookie = `token=${data?.res.token}`;
-      console.log(`Logged In: ${document.cookie}`);
+
       document.location.href = nextUrl;
-    } else if (res.status === 401) {
+    } else if (response.status === 401) {
       const message: string = "Username or password is incorrect";
       toast(message);
       setError(message);
       setIsLoading(false);
     } else {
-      const data = await res.json();
+      const data = await response.json();
       const error: string = "" + JSON.stringify(data);
       setError(error);
       setIsLoading(false);
@@ -94,12 +87,9 @@ function LoginForm() {
   }
 
   return (
-    <div className='w-full max-w-lg border-accent'>
-      <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-lg'>
+    <div className='w-full max-w-lg rounded-2xl border-2 border-stone-200 dark:border-gray-800 p-5'>
+      <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-2xl'>
         <div className='text-lg font-semibold '>Login</div>
-        {/* <span>Cookie: {ck}</span>
-        <span>{nextUrl}</span>
-        <span>Token: {token}</span> */}
       </section>
       <section className='border border-accent border-t-slate-200'>
         <FormMessages error={error} success={success} />
