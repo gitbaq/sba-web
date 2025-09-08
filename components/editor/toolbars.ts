@@ -1,7 +1,7 @@
 export const toolbars = `
 undo redo |
 blocks | 
-bold italic | 
+bold italic forecolor | 
 alignleft aligncenter alignright alignjustify | 
-bullist numlist outdent indent |
+bullist numlist outdent indent | removeformat |
 help`;

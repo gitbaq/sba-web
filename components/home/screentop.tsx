@@ -7,7 +7,7 @@ const ScreenTop = () => {
   return (
     <div
       className='flex md:flex-row flex-col md:gap-10 md:items-center items-center
-    px-5 py-3 max-w-4xl'
+    p-5 max-w-4xl'
     >
       <div className='rounded-ss-full bg-gradient-to-b bg-amber-400 p-3'>
         <Image

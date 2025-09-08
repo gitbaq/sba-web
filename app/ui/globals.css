@@ -102,7 +102,7 @@ body {
 }
 
 .heading{
-  @apply text-2xl md:text-4xl font-extrabold;
+  @apply text-xl md:text-2xl font-extrabold;
   
 }
 
@@ -198,7 +198,7 @@ body {
 }
 
 a.active {
-  @apply bg-accent text-primary hover:text-amber-600
+  @apply bg-accent text-amber-600
 }
 
 a.active_top {
