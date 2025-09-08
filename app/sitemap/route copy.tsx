@@ -30,10 +30,8 @@ function generateSiteMap(posts:  number[]) {
 }
 
 export async function GET() {
-  debugger;
   const request = await fetch(ids_url);
   const posts = await request.json();
-  
 
   // We generate the XML sitemap with the posts data
   const sitemap = generateSiteMap(posts);
@@ -44,5 +42,4 @@ export async function GET() {
       "Content-Type": "application/xml",
     },
   });
-  
 }

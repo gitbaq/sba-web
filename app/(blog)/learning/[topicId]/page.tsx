@@ -19,7 +19,6 @@ async function getSubTopicById(subId: string) {
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
   }
-  debugger;
   return res.json();
 }
 
