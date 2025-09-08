@@ -5,9 +5,8 @@ import "./articles.css";
 
 import parse from "html-react-parser";
 import SharePanel from "@/components/social-sharing/sharebar";
-// import EditorLink from "@/components/editor/editorLink";
 import Image from "next/image";
-// import EditorLink from "@/components/editor/editorLink";
+import EditorLink from "@/components/editor/editorLink";
 
 async function getSubTopicById(subId: string) {
   if (subId === null || subId === undefined || subId === "") {
@@ -40,7 +39,7 @@ export default async function Page({ params }: { params: Params }) {
           <div className='flex justify-between items-center w-full'>
             <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
               {subtopic.subHeading}
-              {/* <EditorLink topicId={subtopic.id} /> */}
+              <EditorLink topicId={subtopic.id} />
             </div>
           </div>
 

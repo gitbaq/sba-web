@@ -7,8 +7,8 @@ import Footer from "@/components/footer";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
-// import { Analytics } from "@vercel/analytics/react";
-// import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "next-themes";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import { AuthProvider } from "@/utils/AuthContext";
@@ -50,8 +50,8 @@ export default function RootLayout({
                   {children}
 
                   <Toaster />
-                  {/* <Analytics />
-              <SpeedInsights /> */}
+                  <Analytics />
+                  <SpeedInsights />
                 </SidebarWrapper>
               </div>
               <Footer />
