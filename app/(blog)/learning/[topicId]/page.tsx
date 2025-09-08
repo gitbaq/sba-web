@@ -26,7 +26,19 @@ type Params = Promise<{ topicId: string; subId: string | undefined }>;
 export default async function Page({ params }: { params: Params }) {
   const { topicId /*, subId*/ } = await params;
 
-  const subtopic: SubTopic = await getSubTopicById(topicId);
+  let subtopic: SubTopic | null = null;
+
+  try {
+    subtopic = await getSubTopicById(topicId);
+  } catch (error) {
+    console.error("Failed to fetch subtopic:", error);
+    // Return error page or redirect
+    return <div>Failed to load content</div>;
+  }
+
+  if (!subtopic) {
+    return <div>Content not found</div>;
+  }
   const iURL: string =
     subtopic.imageUrl === null ? "/ai4.png" : subtopic.imageUrl;
   return (
@@ -34,7 +46,7 @@ export default async function Page({ params }: { params: Params }) {
       <section className='flex flex-col w-full lg:max-w-4xl h-full justify-center'>
         <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full'>
           <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
-            <div className='text-gray-500'>{subtopic.heading}</div>
+            <div className='text-red-500'>{subtopic.heading}</div>
           </div>
           <div className='flex justify-between items-center w-full'>
             <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
