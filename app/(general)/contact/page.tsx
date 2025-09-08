@@ -85,77 +85,65 @@ export default function Contact() {
       .finally(() => setIsLoading(false));
   }
   return (
-    <main className='flex flex-col items-center h-full py-3 rounded-lg px-2'>
-      <section className='flex flex-col w-full justify-start gap-1 p-2 rounded-t-lg bg-accent'>
-        <div className='text-2xl font-semibold'>Contact me</div>
-        <div className='font-normal'>Looking forward to hearing from you</div>
-      </section>
-      <section className='flex flex-col w-full justify-center items-center shadow-inner py-5'>
-        <FormMessages error={error} success={success} />
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-4 w-full px-5'
-          >
-            {/* <ProfileFormField
-              name='firstName'
-              label='First Name'
-              placeholder='First Name'
-              readonly
-              formControl={form.control}
-            />
-            <ProfileFormField
-              name='lastName'
-              label='Last Name'
-              placeholder='Last Name'
-              readonly
-              formControl={form.control}
-            />*/}
-            <ProfileFormField
-              name='email'
-              label='Email'
-              placeholder='Email'
-              inputType='email'
-              formControl={form.control}
-            />
-            <ProfileFormField
-              name='subject'
-              label='Subject'
-              placeholder='Subject'
-              formControl={form.control}
-            />
-            <FormField
-              control={form.control}
-              name='message'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Message</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className='input-field focus-visible:ring-sky-100'
-                      placeholder='Message'
-                      rows={10}
-                      {...field}
-                    />
-                  </FormControl>
+    <main className='flex flex-col items-center justify-center w-full h-full py-3 rounded-lg px-2 '>
+      <div className='w-full max-w-5xl'>
+        <section className='flex flex-col w-full justify-start gap-1 p-2'>
+          <div className='text-2xl font-semibold'>Contact me</div>
+          <div className='font-normal'>Looking forward to hearing from you</div>
+        </section>
+        <section className='flex flex-col w-full justify-center items-center shadow-inner py-5'>
+          <FormMessages error={error} success={success} />
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='space-y-4 w-full px-5'
+            >
+              <ProfileFormField
+                name='email'
+                label='Email'
+                placeholder='Email'
+                inputType='email'
+                formControl={form.control}
+              />
+              <ProfileFormField
+                name='subject'
+                label='Subject'
+                placeholder='Subject'
+                formControl={form.control}
+              />
+              <FormField
+                control={form.control}
+                name='message'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className='input-field focus-visible:ring-sky-100'
+                        placeholder='Message'
+                        rows={10}
+                        {...field}
+                      />
+                    </FormControl>
 
-                  <FormDescription className='text-accent-foreground'>
-                    * Your suggestions and comments are important. I&apos;ll
-                    (try to) get back shortly.
-                  </FormDescription>
+                    <FormDescription className='text-accent-foreground'>
+                      * Your suggestions and comments are important. I&apos;ll
+                      (try to) get back shortly.
+                    </FormDescription>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className='flex justify-end'>
-              <Button type='submit' className='bg-amber-500'>
-                {isLoading ? "Loading..." : "🚀 Send Message"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </section>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className='flex justify-end'>
+                <Button type='submit' className='bg-amber-500'>
+                  {isLoading ? "Loading..." : "🚀 Send Message"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </section>
+      </div>
     </main>
   );
 }

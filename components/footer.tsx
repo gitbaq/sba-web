@@ -7,11 +7,11 @@ import Copyright from "./Copyright";
 
 const Footer = () => {
   return (
-    <footer className='flex md:flex-row min-h-fit h-24 flex-col w-full justify-center md:justify-normal items-center md:gap-5 gap-3 p-3 bg-gradient-to-b from-stone-100 via-stone-50 to-stone-200 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-800'>
-      <div className='flex flex-row md:w-1/3 w-full md:justify-start justify-center font-thin px-2'>
+    <footer className='flex md:flex-row min-h-fit h-24 flex-col w-full justify-center md:justify-normal items-center md:gap-5 gap-3 p-3 bg-gradient-to-b from-stone-100 via-stone-50 to-stone-200 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-800 z-50'>
+      <div className='flex flex-row md:w-1/3 w-full md:justify-start justify-center'>
         <Brand />
       </div>
-      <div className='flex flex-row md:w-1/3 gap-3 justify-center text-lg'>
+      <div className='flex flex-row md:w-1/3 gap-3 justify-center'>
         <Socials />
       </div>
 

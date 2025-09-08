@@ -8,39 +8,32 @@ import Link from "next/link";
 import React from "react";
 import Icons from "./Icons";
 import { usePathname } from "next/navigation";
+import ThemeComponent from "./ThemeComponent";
 
 export default function NavLinks() {
   const pathname = usePathname();
+
   return (
-    <div className='flex flex-row gap-3 items-start'>
+    <div className='flex flex-row gap-3 items-start text-sm'>
       <div className='md:flex flex-row hidden gap-5 items-center justify-center '>
         <Link
           href='/'
           className={`${pathname === "/" ? "active_top" : ""} icons`}
         >
           <Icons.House className='icons-small' />
-          {/* Home */}
         </Link>
         <Link
           href='/about'
           className={`${pathname === "/about" ? "active_top" : ""} icons`}
         >
           <Icons.Info className='icons-small' />
-          {/* About */}
         </Link>
         <Link
           href='/contact'
           className={`${pathname === "/contact" ? "active_top" : ""} icons`}
         >
           <Icons.MessageSquareCode className='icons-small' />
-          {/* Contact */}
         </Link>
-        {/* <Link
-          href='/learning?query=transform'
-          className={`${pathname === "/learning" ? "active_top" : ""} icons`}
-        >
-          Learning
-        </Link> */}
       </div>
       <div className='flex flex-row md:hidden'>
         <DropdownMenu>
@@ -87,6 +80,9 @@ export default function NavLinks() {
 
                 <div>Contact</div>
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <ThemeComponent />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

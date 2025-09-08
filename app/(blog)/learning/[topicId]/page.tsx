@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import SharePanel from "@/components/social-sharing/sharebar";
 // import EditorLink from "@/components/editor/editorLink";
 import Image from "next/image";
+// import EditorLink from "@/components/editor/editorLink";
 
 async function getSubTopicById(subId: string) {
   if (subId === null || subId === undefined || subId === "") {
@@ -18,7 +19,6 @@ async function getSubTopicById(subId: string) {
   if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
   }
-  debugger;
   return res.json();
 }
 
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: Params }) {
   const iURL: string =
     subtopic.imageUrl === null ? "/ai4.png" : subtopic.imageUrl;
   return (
-    <main className='flex flex-col h-full w-full  items-center overflow-y-auto px-2'>
+    <main className='flex flex-col h-full w-full items-center overflow-y-auto px-2'>
       <section className='flex flex-col w-full lg:max-w-4xl h-full justify-center'>
         <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full'>
           <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
@@ -39,19 +39,11 @@ export default async function Page({ params }: { params: Params }) {
           </div>
           <div className='flex justify-between items-center w-full'>
             <div className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
-              {subtopic.subHeading} {/*<EditorLink topicId={subtopic.id} />*/}
+              {subtopic.subHeading}
+              {/* <EditorLink topicId={subtopic.id} /> */}
             </div>
           </div>
-          {/* <div
-            style={{
-              backgroundImage: `url(${iURL})`,
-            }}
-            className={`flex justify-center p-5 items-center
-               bg-auto opacity-80 bg-center
-           w-full min-h-96 my-5 rounded shadow`}
-          >
-            &nbsp;
-          </div> */}
+
           <div className='bg-gray-300 min-h-96 max-w-full aspect-video rounded-lg relative p-5'>
             <Image
               priority
@@ -59,6 +51,7 @@ export default async function Page({ params }: { params: Params }) {
               src={iURL}
               alt={subtopic.heading}
               className='object-cover w-full max-h-full rounded'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             ></Image>
           </div>
           <div className='flex flex-row justify-between items-end w-full border-y my-5 py-5'>
@@ -71,7 +64,7 @@ export default async function Page({ params }: { params: Params }) {
           {/* <div className='w-full border-b border-accent'>&nbsp;</div> */}
         </div>
       </section>
-      <div className='w-full px-2 lg:max-w-4xl h-full article'>
+      <div className='w-full px-2 lg:max-w-4xl h-full article mb-10'>
         {parse(subtopic.content)}
       </div>
     </main>

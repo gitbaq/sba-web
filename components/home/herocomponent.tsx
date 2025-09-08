@@ -45,13 +45,9 @@ const HeroComponent = () => {
   return (
     <div className='flex lg:flex-row flex-col w-full items-center justify-center p-5 z-50 max-w-4xl'>
       <Icons.ChevronsRight className='hidden md:visible' />
-      {/* <div className='w-full h-full overflow-auto'> */}
-      <div className='grid md:grid-cols-2 grid-cols-1 grid-flow-row md:gap-5 gap-2 p-5 w-full place-items-center'>
+      <div className='grid md:grid-cols-2 grid-cols-1 grid-flow-row md:gap-5 gap-2 p-5 w-fit place-items-center justify-around'>
         {data.map((d) => (
-          <Card
-            key={d.id}
-            className='h-64 md:w-64 w-full min-h-fit md:min-w-64 glow-card'
-          >
+          <Card key={d.id} className='md:min-h-96 h-64 w-full glow-card'>
             <CardHeader className='glow-card-header flex flex-row gap-2 items-center'>
               <Icons.FaRobot className='text-yellow-400 h-8 w-8 min-h-8 min-w-8' />
               <CardTitle className='font-semibold'>
@@ -62,7 +58,6 @@ const HeroComponent = () => {
           </Card>
         ))}
       </div>
-      {/* </div> */}
     </div>
   );
 };
