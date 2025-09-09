@@ -46,9 +46,9 @@ export default function Portfolio() {
   return (
     <div className='flex flex-col gap-3 w-full justify-center place-items-center'>
       <div className='p-2 w-full max-w-4xl'>
-        <div className='w-full text-start text-xl text-stone-400'>
+        {/* <div className='w-full text-start text-xl text-stone-400'>
           Portfolio
-        </div>
+        </div> */}
         <div className='flex flex-row gap-2 items-center justify-start text-cyan-700 dark:text-amber-400'>
           <Icons.ExternalLink size={16} />
           <Link href={blox_url} target='_blox' className='icons  '>
