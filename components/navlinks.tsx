@@ -14,8 +14,8 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <div className='flex flex-row gap-3 items-start text-sm'>
-      <div className='md:flex flex-row hidden gap-5 items-center justify-center '>
+    <div className='flex flex-row gap-3 items-center text-lg h-full'>
+      <div className='md:flex flex-row hidden gap-5 items-center justify-center h-full'>
         <Link
           href='/'
           className={`${pathname === "/" ? "active_top" : ""} icons`}
@@ -26,7 +26,7 @@ export default function NavLinks() {
           href='/about'
           className={`${pathname === "/about" ? "active_top" : ""} icons`}
         >
-          <Icons.Info className='icons-small' />
+          <Icons.FcAbout className='icons-small' />
         </Link>
         <Link
           href='/contact'
@@ -40,7 +40,7 @@ export default function NavLinks() {
           <DropdownMenuTrigger>
             <Icons.EllipsisVertical />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='bg-accent text-primary z-50 rounded p-2 w-32 min-w-32'>
+          <DropdownMenuContent className='bg-accent text-primary z-50 rounded p-3 w-fit min-w-fit'>
             <DropdownMenuItem>
               <Link
                 href='/'
@@ -54,10 +54,9 @@ export default function NavLinks() {
             <DropdownMenuItem>
               <Link
                 href='/about'
-                className='flex flex-row gap-3 items-center w-full p-1  icons'
+                className='flex flex-row gap-3 items-center w-full p-1 icons'
               >
-                <Icons.Info className='icons-size' />
-
+                <Icons.FcAbout className='icons-size' color='primary' />
                 <div>About</div>
               </Link>
             </DropdownMenuItem>

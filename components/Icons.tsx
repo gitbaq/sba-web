@@ -47,6 +47,7 @@ import {
   FaRobot,
 } from "react-icons/fa6";
 import { PiLinktreeLogo } from "react-icons/pi";
+import { FcAbout } from "react-icons/fc";
 export const Icons = {
   Shield,
   FolderCode,
@@ -92,6 +93,7 @@ export const Icons = {
   Bookmark,
   Dot,
   PanelLeftOpen,
+  FcAbout,
 };
 
 export default Icons;
