@@ -44,21 +44,6 @@ function SearchResults() {
       <SidebarGroupContent>
         <Search />
         <SidebarMenu className='mt-5'>
-          <SidebarMenuItem>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <SidebarMenuButton asChild>
-                  <div className='flex flex-row font-semibold text-amber-600 dark:text-amber-400 hover:underline'>
-                    <Icons.Bookmark strokeWidth={2} />
-                    <Link href='/learning?query=nlp'>View Recent Posts</Link>
-                  </div>
-                </SidebarMenuButton>
-              </TooltipTrigger>
-              <TooltipContent side='right'>
-                <div className='tooltips'>Click here to view Recent Posts</div>
-              </TooltipContent>
-            </Tooltip>
-          </SidebarMenuItem>
           {topics?.map((item) => (
             <div key={item.id}>
               <SidebarMenuItem>
@@ -121,16 +106,16 @@ export function LearningSidebar() {
     <Sidebar title="Syed's Notes" variant='sidebar' className='border-r h-full'>
       <SidebarContent className='pt-16'>
         <div className='sr-only'>Syed&apos;s Notes</div>
-        <SidebarGroup className=''>
+        <SidebarGroup className='font-semibold text-cyan-600 dark:text-cyan-400 '>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
+                      <div className='flex flex-row hover:text-cyan-800 hover:dark:text-cyan-300'>
                         <Image
-                          className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
+                          className='rounded-full'
                           src={cobu_url + "/cb-logo.png"}
                           alt='Visit Cobu: AI Agent'
                           width={20}
@@ -154,10 +139,10 @@ export function LearningSidebar() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
+                      <div className='flex flex-row  hover:text-cyan-800 hover:dark:text-cyan-300'>
                         <Image
-                          className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
-                          src='/favicon.ico'
+                          className='rounded-full'
+                          src='/logos/blox.png'
                           alt='Visit Cobu: AI Agent'
                           width={20}
                           height={20}
@@ -174,9 +159,29 @@ export function LearningSidebar() {
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton asChild>
+                      <div className='flex flex-row text-cyan-800 dark:text-cyan-300 hover:text-cyan-700 hover:dark:text-cyan-400'>
+                        <Icons.Bookmark strokeWidth={2} />
+                        <Link href='/learning?query=nlp'>
+                          View Recent Posts
+                        </Link>
+                      </div>
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  <TooltipContent side='right'>
+                    <div className='tooltips'>
+                      Click here to view Recent Posts
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
         <Suspense>
           <SearchResults />
         </Suspense>

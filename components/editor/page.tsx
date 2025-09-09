@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/utils/AuthContext";
 import { subtopics_secure_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
+import Image from "next/image";
 
 type Params = { subId: string | undefined; post: SubTopic };
 
@@ -19,11 +20,16 @@ export default function XEditor({ params }: { params?: Params }) {
   const [formData, setFormData] = useState({
     id: post?.id || 0,
     topicId: post?.topicId,
-    isPublished: post?.isPublished,
-    heading: post?.heading || "",
-    subHeading: post?.subHeading || "",
-    slug: post?.slug || "",
-    content: post?.content || "",
+    publishDate: post?.publishDate,
+    publishedBy: post?.publishedBy,
+    createdBy: post?.createdBy,
+    updatedBy: post?.updatedBy,
+    isPublished: post?.isPublished || false,
+    heading: post?.heading,
+    subHeading: post?.subHeading,
+    slug: post?.slug,
+    imageUrl: post?.imageUrl,
+    content: post?.content,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,12 +48,12 @@ export default function XEditor({ params }: { params?: Params }) {
       });
 
       if (response.ok) {
-        toast("Post updated successfully!");
+        toast.success("Post updated successfully!");
       } else {
-        toast("Failed to update post");
+        toast.error("Failed to update post");
       }
     } catch (error) {
-      toast("Error updating post");
+      toast.error("Error updating post");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -56,7 +62,7 @@ export default function XEditor({ params }: { params?: Params }) {
 
   return (
     <div className='h-full flex flex-col gap-4 p-4'>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 border border-stone-200 bg-stone-100 dark:border-gray-800 dark:bg-gray-900 rounded-xl p-5'>
         <div>
           <Label htmlFor='heading'>Heading</Label>
           <Input
@@ -68,17 +74,7 @@ export default function XEditor({ params }: { params?: Params }) {
             placeholder='Enter heading'
           />
         </div>
-        <div>
-          <Label htmlFor='subHeading'>Sub Heading</Label>
-          <Input
-            id='subHeading'
-            value={formData.subHeading}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, subHeading: e.target.value }))
-            }
-            placeholder='Enter sub heading'
-          />
-        </div>
+
         <div>
           <Label htmlFor='slug'>Slug</Label>
           <Input
@@ -89,6 +85,50 @@ export default function XEditor({ params }: { params?: Params }) {
             }
             placeholder='Enter slug'
           />
+        </div>
+        <div className='md:col-span-2'>
+          <Label htmlFor='subHeading'>Sub Heading</Label>
+          <Input
+            id='subHeading'
+            value={formData.subHeading}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, subHeading: e.target.value }))
+            }
+            placeholder='Enter sub heading'
+          />
+        </div>
+        <div className='md:col-span-2'>
+          <Label htmlFor='imageUrl'>Image URL</Label>
+          <div className='flex gap-2 items-end'>
+            <Input
+              id='imageUrl'
+              value={formData.imageUrl || ""}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, imageUrl: e.target.value }))
+              }
+              placeholder='Enter image URL'
+            />
+            {formData.imageUrl && (
+              <div className='w-12 h-12 relative rounded border'>
+                <Image
+                  src={formData.imageUrl}
+                  alt='Thumbnail'
+                  fill
+                  className='object-cover rounded'
+                  onError={() => {}}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className='flex justify-end my-4 col-span-2'>
+          <Button
+            onClick={handleSave}
+            disabled={isLoading}
+            className='bg-green-600 hover:bg-green-700'
+          >
+            {isLoading ? "Saving..." : "Save"}
+          </Button>
         </div>
       </div>
 
