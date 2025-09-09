@@ -49,7 +49,7 @@ export default function RootLayout({
                 <SidebarWrapper>
                   {children}
 
-                  <Toaster />
+                  <Toaster position='top-right' />
                   <Analytics />
                   <SpeedInsights />
                 </SidebarWrapper>

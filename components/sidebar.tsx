@@ -131,7 +131,7 @@ export function LearningSidebar() {
                       <div className='flex flex-row font-semibold text-cyan-700 dark:text-cyan-400 hover:underline'>
                         <Image
                           className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
-                          src='/favicon.ico'
+                          src={cobu_url + "/cb-logo.png"}
                           alt='Visit Cobu: AI Agent'
                           width={20}
                           height={20}
