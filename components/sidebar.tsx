@@ -137,7 +137,7 @@ export function LearningSidebar() {
                           height={20}
                           priority
                         />
-                        <Link href={cobu_url} target='_blox'>
+                        <Link href={cobu_url} target='_cobu'>
                           Cobu: AI Agent
                         </Link>
                       </div>
