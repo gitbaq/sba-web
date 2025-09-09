@@ -20,7 +20,7 @@ function Search() {
       setQuery(event.target.value);
     }
     return (
-      <div className='flex flex-row rounded border w-full h-full'>
+      <div className='flex flex-row rounded border w-full h-full bg-secondary'>
         <Input
           type='text'
           placeholder='Quick Search...'

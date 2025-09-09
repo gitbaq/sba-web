@@ -4,6 +4,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -41,16 +42,16 @@ function SearchResults() {
 
   return (
     <SidebarGroup className='overflow-y-scroll h-full'>
+      <SidebarGroupLabel className='text-sm'>Recent Articles</SidebarGroupLabel>
       <SidebarGroupContent>
-        <Search />
-        <SidebarMenu className='mt-5'>
+        <SidebarMenu>
           {topics?.map((item) => (
             <div key={item.id}>
               <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row lead_text font-semibold text-lg'>
+                      <div className='flex flex-row lead_text'>
                         <Icons.BookOpen strokeWidth={2} />
                         <span>{item.sbaTopicName}</span>
                       </div>
@@ -107,6 +108,7 @@ export function LearningSidebar() {
       <SidebarContent className='pt-16'>
         <div className='sr-only'>Syed&apos;s Notes</div>
         <SidebarGroup className='font-semibold text-cyan-600 dark:text-cyan-400 '>
+          <SidebarGroupLabel className='text-sm'>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -178,6 +180,9 @@ export function LearningSidebar() {
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>
+              <div className='p-0.5 bg-gray-100 dark:bg-gray-700 rounded-md shadow-sm'>
+                <Search />
+              </div>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
