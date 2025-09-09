@@ -23,7 +23,7 @@ export default function SidebarWrapper({
         <Navbar />
         <div className='flex flex-row w-full min-h-full h-full'>
           <LearningSidebar />
-          <main className='w-full flex-1 md:pt-20 pt-20'>
+          <main className='w-full flex-1 md:pt-16 pt-16'>
             <div className='w-full h-full'>{children}</div>
           </main>
         </div>

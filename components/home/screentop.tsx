@@ -6,10 +6,10 @@ import Icons from "../Icons";
 const ScreenTop = () => {
   return (
     <div
-      className='flex md:flex-row flex-col md:gap-10 md:items-center items-center
-    p-5 max-w-4xl'
+      className='flex md:flex-row flex-col md:gap-10 min-h-fit h-fit
+    p-5 max-w-4xl lg:bg-gradient-to-r bg-gradient-to-b from-amber-200 via-amber-50 to-cyan-100 rounded-2xl'
     >
-      <div className='rounded-ss-full bg-gradient-to-b bg-amber-400 p-3'>
+      <div className='flex items-center justify-center rounded-ss-full bg-gradient-to-b from-amber-500 to-amber-400 p-3'>
         <Image
           className='from-neutral-800 via-neutral-400 to-inherit opacity-80 z-10'
           src='/ai4.png'
@@ -20,7 +20,7 @@ const ScreenTop = () => {
         />
       </div>
 
-      <div className='flex flex-col h-full min-h-full w-full md:w-2/4 justify-center items-center'>
+      <div className='flex flex-col w-full md:w-2/4 justify-center items-center text-gray-950'>
         <div className='flex flex-col sub-heading w-full'>
           <div className='heading text-center w-full md:py-0 pt-5'>
             Your Future
@@ -37,7 +37,7 @@ const ScreenTop = () => {
           <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />{" "}
           Innovation distinguishes between a leader and a follower - Steve Jobs
         </div>
-        <div className='p-3 text-cyan-700 dark:text-cyan-400'>
+        <div className='p-3 text-cyan-900'>
           Ready to lead? Let`s build your AI-driven future today.
         </div>
         <div className='flex flex-row w-full'>

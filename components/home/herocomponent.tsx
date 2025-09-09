@@ -20,21 +20,6 @@ const HeroComponent = () => {
       heading: "Cloud Integration",
       text: "Modernize and migrate legacy Java applications to the cloud (AWS, Azure, GCP) for improved flexibility and reduced infrastructure costs and seamless integration with AI technologies",
     },
-    // {
-    //   id: 6,
-    //   heading: "Data-Driven Insights",
-    //   text: "Develop and deploy big data solutions using Hadoop, Apache Spark, or Kafka, enabling businesses to harness data insights for informed decision-making",
-    // },
-    // {
-    //   id: 2,
-    //   heading: "Cost Optimization",
-    //   text: "Optimize existing applications for performance and scalability by employing efficient algorithms, asynchronous processing, microservices architecture, and serverless computing, reducing operational costs",
-    // },
-    // {
-    //   id: 3,
-    //   heading: "Adherence to Best Practices",
-    //   text: "Implement robust, maintainable, and scalable code following industry best practices, including SOLID principles, clean code standards, and secure coding guidelines to ensure high-quality software delivery",
-    // },
 
     {
       id: 5,
@@ -43,7 +28,7 @@ const HeroComponent = () => {
     },
   ];
   return (
-    <div className='flex lg:flex-row flex-col w-full items-center justify-center p-5 z-50 max-w-4xl'>
+    <div className='flex lg:flex-row flex-col w-full items-center justify-center p-1 z-50 max-w-4xl bg-gradient-to-b from-stone-100 to-stone-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl'>
       <Icons.ChevronsRight className='hidden md:visible' />
       <div className='grid md:grid-cols-2 grid-cols-1 grid-flow-row md:gap-5 gap-2 p-5 w-fit place-items-center justify-around'>
         {data.map((d) => (
