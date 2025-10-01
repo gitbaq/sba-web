@@ -14,10 +14,10 @@ export default function About() {
   return (
     <div className='flex flex-col gap-5 h-full items-center p-3'>
       <div className='flex lg:flex-row flex-col-reverse max-w-7xl justify-center items-center'>
-        <div className='rounded-ss-full bg-gradient-to-b bg-amber-400'>
+        <div className='rounded-ss-full bg-gradient-to-b bg-amber-500 w-full aspect-square flex items-center justify-center'>
           <Image
-            className=' from-neutral-800 via-neutral-400 to-inherit'
-            src='/sba-right.png'
+            className=' from-neutral-800 via-neutral-400 to-inherit rounded-full'
+            src='/sba-photo-2-small.png'
             alt='Syed Baqir Ali - AI Leadership.'
             width={320}
             height={320}
