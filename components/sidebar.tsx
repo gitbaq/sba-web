@@ -42,16 +42,21 @@ function SearchResults() {
 
   return (
     <SidebarGroup className='overflow-y-scroll h-full'>
-      <SidebarGroupLabel className='text-sm'>Recent Articles</SidebarGroupLabel>
+      <SidebarGroupLabel className='sidebar-group-labels'>
+        ARTICLES
+      </SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
+          <div className='p-0.5 bg-gray-100 dark:bg-gray-700 rounded-md shadow-sm'>
+            <Search />
+          </div>
           {topics?.map((item) => (
             <div key={item.id}>
               <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row lead_text'>
+                      <div className='flex flex-row font-bold'>
                         <Icons.BookOpen strokeWidth={2} />
                         <span>{item.sbaTopicName}</span>
                       </div>
@@ -73,7 +78,7 @@ function SearchResults() {
                               href={`/learning/${sub.id}`}
                               className={`${
                                 pathname === "/learning/" + sub.id
-                                  ? "active"
+                                  ? "active-article"
                                   : ""
                               }`}
                             >
@@ -104,11 +109,17 @@ function SearchResults() {
 
 export function LearningSidebar() {
   return (
-    <Sidebar title="Syed's Notes" variant='sidebar' className='border-r h-full'>
+    <Sidebar
+      title='Syed Baqir Ali (www.syedbaqirli.com)'
+      variant='sidebar'
+      className='border-r h-full'
+    >
       <SidebarContent className='pt-16'>
         <div className='sr-only'>Syed&apos;s Notes</div>
-        <SidebarGroup className='font-semibold text-cyan-600 dark:text-cyan-400 '>
-          <SidebarGroupLabel className='text-sm'>Projects</SidebarGroupLabel>
+        <SidebarGroup className='text-gray-700 dark:text-gray-200 '>
+          <SidebarGroupLabel className='sidebar-group-labels'>
+            PROJECTS
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -125,7 +136,7 @@ export function LearningSidebar() {
                           priority
                         />
                         <Link href={cobu_url} target='_cobu'>
-                          Cobu: AI Agent
+                          Cobu: AI RAG Agent
                         </Link>
                       </div>
                     </SidebarMenuButton>
@@ -161,14 +172,14 @@ export function LearningSidebar() {
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
                       <div className='flex flex-row text-cyan-800 dark:text-cyan-300 hover:text-cyan-700 hover:dark:text-cyan-400'>
                         <Icons.Bookmark strokeWidth={2} />
                         <Link href='/learning?query=nlp'>
-                          View Recent Posts
+                          View Recent Articles
                         </Link>
                       </div>
                     </SidebarMenuButton>
@@ -179,10 +190,10 @@ export function LearningSidebar() {
                     </div>
                   </TooltipContent>
                 </Tooltip>
-              </SidebarMenuItem>
-              <div className='p-0.5 bg-gray-100 dark:bg-gray-700 rounded-md shadow-sm'>
+              </SidebarMenuItem> */}
+              {/* <div className='p-0.5 bg-gray-100 dark:bg-gray-700 rounded-md shadow-sm'>
                 <Search />
-              </div>
+              </div> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

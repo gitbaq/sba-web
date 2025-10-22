@@ -16,13 +16,13 @@ function ThemeSelector() {
   }, [setTheme, theme]);
 
   return (
-    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full'>
+    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full bg-gray-100 bg-opacity-10 text-sm'>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Icons.SunDim
+          <Icons.FaSun
             onClick={() => setTheme("light")}
             className={`icons-small hover:cursor-pointer ${
-              theme === "light" ? "text-cyan-400" : ""
+              theme === "light" ? "text-amber-500" : ""
             }`}
           />
         </TooltipTrigger>
@@ -30,10 +30,10 @@ function ThemeSelector() {
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Icons.Moon
+          <Icons.FaMoon
             onClick={() => setTheme("dark")}
             className={` icons-small hover:cursor-pointer ${
-              theme === "dark" ? "text-cyan-400" : ""
+              theme === "dark" ? "text-amber-500" : ""
             }`}
           />
         </TooltipTrigger>
@@ -44,7 +44,7 @@ function ThemeSelector() {
           <Icons.MonitorCog
             onClick={() => setTheme("system")}
             className={`icons-small hover:cursor-pointer ${
-              theme === "system" ? "text-cyan-400" : ""
+              theme === "system" ? "text-amber-500" : ""
             }`}
           />
         </TooltipTrigger>
