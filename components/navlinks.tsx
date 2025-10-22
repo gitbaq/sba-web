@@ -15,24 +15,30 @@ export default function NavLinks() {
 
   return (
     <div className='flex flex-row gap-3 items-center text-lg h-full'>
-      <div className='md:flex flex-row hidden gap-5 items-center justify-center h-full'>
+      <div className='md:flex flex-row hidden gap-5 items-center justify-center h-full text-sm'>
         <Link
           href='/'
-          className={`${pathname === "/" ? "active_top" : ""} icons`}
+          className={`flex flex-row gap-2 items-center ${
+            pathname === "/" ? "active_top" : ""
+          } icons`}
         >
-          <Icons.House className='icons-small' />
+          <Icons.FaHouse className='icons-small' /> Home
         </Link>
         <Link
           href='/about'
-          className={`${pathname === "/about" ? "active_top" : ""} icons`}
+          className={`flex flex-row gap-2 items-center ${
+            pathname === "/about" ? "active_top" : ""
+          } icons`}
         >
-          <Icons.FcAbout className='icons-small' />
+          <Icons.FaUserTie className='icons-small' /> About
         </Link>
         <Link
           href='/contact'
-          className={`${pathname === "/contact" ? "active_top" : ""} icons`}
+          className={`flex flex-row gap-2 items-center ${
+            pathname === "/contact" ? "active_top" : ""
+          } icons`}
         >
-          <Icons.MessageSquareCode className='icons-small' />
+          <Icons.FaMessage className='icons-small' /> Contact
         </Link>
       </div>
       <div className='flex flex-row md:hidden'>
@@ -40,13 +46,13 @@ export default function NavLinks() {
           <DropdownMenuTrigger>
             <Icons.EllipsisVertical />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className='bg-accent text-primary z-50 rounded p-3 w-fit min-w-fit'>
+          <DropdownMenuContent className='bg-accent text-primary z-50 rounded p-3 w-fit min-w-fit text-sm'>
             <DropdownMenuItem>
               <Link
                 href='/'
                 className='flex flex-row gap-3 items-center w-full p-1 icons'
               >
-                <Icons.House className='icons-size' />
+                <Icons.FaHouse className='icons-size' />
 
                 <div>Home</div>
               </Link>
@@ -56,7 +62,7 @@ export default function NavLinks() {
                 href='/about'
                 className='flex flex-row gap-3 items-center w-full p-1 icons'
               >
-                <Icons.FcAbout className='icons-size' color='primary' />
+                <Icons.FaUserTie className='icons-size' />
                 <div>About</div>
               </Link>
             </DropdownMenuItem>
@@ -65,7 +71,7 @@ export default function NavLinks() {
                 href='/learning'
                 className='flex flex-row gap-3 items-center w-full p-1  icons'
               >
-                <Icons.Library className='icons-size' />
+                <Icons.FaReadme className='icons-size' />
 
                 <div>Learning</div>
               </Link>
@@ -75,7 +81,7 @@ export default function NavLinks() {
                 href='/contact'
                 className='flex flex-row gap-3 items-center w-full p-1  icons'
               >
-                <Icons.MessageSquareCode className='icons-size' />
+                <Icons.FaMessage className='icons-size' />
 
                 <div>Contact</div>
               </Link>

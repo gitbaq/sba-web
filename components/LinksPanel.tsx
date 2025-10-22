@@ -38,7 +38,7 @@ const data = [
 function LinksPanel() {
   return (
     <div className='flex flex-col p-2'>
-      <div className='lead_text font-semibold mb-5'>AI Blogs</div>
+      <div className='lead_text mb-5'>AI Blogs</div>
       {data.map((d) => (
         <Link
           key={d.id}

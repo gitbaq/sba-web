@@ -136,11 +136,11 @@ export default async function Page({ params }: { params: Params }) {
           }),
         }}
       />
-      <main className='flex flex-col h-full w-full items-center overflow-y-auto px-2'>
-        <section className='flex flex-col w-full lg:max-w-4xl h-full justify-center'>
+      <main className='flex flex-col h-full w-full items-center overflow-y-auto px-2 '>
+        <section className='flex flex-col w-full lg:max-w-5xl h-full justify-center'>
           <div className='flex flex-col rounded-t-xl px-2 py-2 self-center w-full'>
             <div className='flex flex-row items-center text-cyan-700 dark:text-cyan-500 w-full gap-2'>
-              <div className='text-red-500'>{subtopic.heading}</div>
+              <div className='text-amber-700 uppercase'>{subtopic.heading}</div>
             </div>
             <div className='flex justify-between items-center w-full'>
               <h1 className='flex flex-row justify-between w-full font-sans text-4xl font-bold py-3'>
@@ -172,7 +172,7 @@ export default async function Page({ params }: { params: Params }) {
             {/* <div className='w-full border-b border-accent'>&nbsp;</div> */}
           </div>
         </section>
-        <article className='w-full px-2 lg:max-w-4xl h-full article mb-10'>
+        <article className='w-full px-5 lg:max-w-4xl h-full article mb-10 bg-accent border rounded-lg'>
           {parse(subtopic.content)}
         </article>
       </main>

@@ -3,7 +3,6 @@ import {
   FolderCode,
   Library,
   PencilLine,
-  House,
   Info,
   MessageSquareCode,
   Menu,
@@ -45,15 +44,20 @@ import {
   FaGoogle,
   FaQuoteLeft,
   FaRobot,
+  FaUserTie,
+  FaHouse,
+  FaReadme,
+  FaMessage,
+  FaSun,
+  FaMoon,
 } from "react-icons/fa6";
 import { PiLinktreeLogo } from "react-icons/pi";
-import { FcAbout } from "react-icons/fc";
 export const Icons = {
   Shield,
   FolderCode,
   Library,
   PencilLine,
-  House,
+  FaHouse,
   Info,
   MessageSquareCode,
   Menu,
@@ -93,7 +97,11 @@ export const Icons = {
   Bookmark,
   Dot,
   PanelLeftOpen,
-  FcAbout,
+  FaUserTie,
+  FaReadme,
+  FaMessage,
+  FaSun,
+  FaMoon,
 };
 
 export default Icons;
