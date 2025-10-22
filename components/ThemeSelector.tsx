@@ -16,7 +16,7 @@ function ThemeSelector() {
   }, [setTheme, theme]);
 
   return (
-    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full bg-gray-100 bg-opacity-10 text-sm'>
+    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full bg-red-100 dark:bg-opacity-10 text-sm'>
       <Tooltip>
         <TooltipTrigger asChild>
           <Icons.FaSun
