@@ -24,7 +24,12 @@ import { usePathname } from "next/navigation";
 import { getAllTopics } from "@/utils/services/getAllTopics";
 import Link from "next/link";
 import Search from "./search";
-import { blox_url, cobu_url } from "@/utils/endpoints/endpoints";
+import {
+  blox_url,
+  cobu_url,
+  substack_image_url,
+  substack_url,
+} from "@/utils/endpoints/endpoints";
 import Image from "next/image";
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -172,28 +177,31 @@ export function LearningSidebar() {
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>
-              {/* <SidebarMenuItem>
+              <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <SidebarMenuButton asChild>
-                      <div className='flex flex-row text-cyan-800 dark:text-cyan-300 hover:text-cyan-700 hover:dark:text-cyan-400'>
-                        <Icons.Bookmark strokeWidth={2} />
-                        <Link href='/learning?query=nlp'>
-                          View Recent Articles
+                      <div className='flex flex-row hover:text-cyan-800 hover:dark:text-cyan-300'>
+                        <Image
+                          src={substack_image_url}
+                          width={20}
+                          height={20}
+                          alt='Reasoning Stack Magazine'
+                        />
+                        <Link href={substack_url} target='_blox'>
+                          The Reasoning Stack (Blog)
                         </Link>
                       </div>
                     </SidebarMenuButton>
                   </TooltipTrigger>
                   <TooltipContent side='right'>
                     <div className='tooltips'>
-                      Click here to view Recent Posts
+                      Click here to visit The Reasoning Stack - My Blog and
+                      Newsletter
                     </div>
                   </TooltipContent>
                 </Tooltip>
-              </SidebarMenuItem> */}
-              {/* <div className='p-0.5 bg-gray-100 dark:bg-gray-700 rounded-md shadow-sm'>
-                <Search />
-              </div> */}
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
