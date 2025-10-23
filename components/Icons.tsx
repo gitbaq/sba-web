@@ -50,6 +50,7 @@ import {
   FaMessage,
   FaSun,
   FaMoon,
+  FaBlog,
 } from "react-icons/fa6";
 import { PiLinktreeLogo } from "react-icons/pi";
 export const Icons = {
@@ -102,6 +103,7 @@ export const Icons = {
   FaMessage,
   FaSun,
   FaMoon,
+  FaBlog,
 };
 
 export default Icons;
