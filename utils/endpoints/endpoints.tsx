@@ -9,7 +9,7 @@ export const baseURL = "https://webdata.syedbaqirali.com";
 export const blox_url = "https://blox.syedbaqirali.com";
 export const substack_url = "https://syedbaqirali.substack.com/";
 export const substack_image_url = "/logos/substack.png";
-export const cobu_url = "https://ai.syedbaqirali.com";
+export const cobu_url = "https://www.codingburo.com";
 const bucket_url = "https://sbaweb-bucket.s3.ap-southeast-2.amazonaws.com";
 export const bucket_url_public = bucket_url + "/public";
 
