@@ -160,7 +160,7 @@ export function LearningSidebar() {
                     <SidebarMenuButton asChild>
                       <div className='flex flex-row  hover:text-cyan-800 hover:dark:text-cyan-300'>
                         <Image
-                          className='rounded-full'
+                          className='rounded-full border border-stone-300'
                           src='/logos/blox.png'
                           alt='Visit Cobu: AI Agent'
                           width={20}
@@ -187,6 +187,7 @@ export function LearningSidebar() {
                           src={substack_image_url}
                           width={20}
                           height={20}
+                          className='border rounded-full border-stone-300 dark:border-stone-600'
                           alt='Reasoning Stack Magazine'
                         />
                         <Link href={substack_url} target='_blog'>
