@@ -8,6 +8,7 @@ export const appBasePath = web_url;
 export const baseURL = "https://webdata.syedbaqirali.com";
 export const blox_url = "https://blox.syedbaqirali.com";
 export const substack_url = "https://syedbaqirali.substack.com/";
+export const github_url = "https://github.com/gitbaq";
 export const substack_image_url = "/logos/substack.png";
 export const cobu_url = "https://www.codingburo.com";
 const bucket_url = "https://sbaweb-bucket.s3.ap-southeast-2.amazonaws.com";

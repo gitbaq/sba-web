@@ -27,6 +27,7 @@ import Search from "./search";
 import {
   blox_url,
   cobu_url,
+  github_url,
   substack_image_url,
   substack_url,
 } from "@/utils/endpoints/endpoints";
@@ -188,7 +189,7 @@ export function LearningSidebar() {
                           height={20}
                           alt='Reasoning Stack Magazine'
                         />
-                        <Link href={substack_url} target='_blox'>
+                        <Link href={substack_url} target='_blog'>
                           The Reasoning Stack (Blog)
                         </Link>
                       </div>
@@ -198,6 +199,26 @@ export function LearningSidebar() {
                     <div className='tooltips'>
                       Click here to visit The Reasoning Stack - My Blog and
                       Newsletter
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton asChild>
+                      <div className='flex flex-row hover:text-cyan-800 hover:dark:text-cyan-300'>
+                        <Icons.FaGithub />
+                        <Link href={github_url} target='_github'>
+                          My Code Repos
+                        </Link>
+                      </div>
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  <TooltipContent side='right'>
+                    <div className='tooltips'>
+                      Click here to visit Github for my code repos
                     </div>
                   </TooltipContent>
                 </Tooltip>
