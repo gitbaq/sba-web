@@ -29,7 +29,7 @@ import FormMessages from "./FormMessages";
 const formSchema = z.object({
   firstName: z.string().min(1).max(255),
   email: z.string().email({
-    message: "Enter valid email.",
+    error: "Enter valid email.",
   }),
 });
 

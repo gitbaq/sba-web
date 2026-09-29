@@ -1,27 +1,91 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import "./ui/globals.css";
-import { inter } from "@/app/ui/fonts";
+import { outfit, sourceSans, sourceSerif } from "@/app/ui/fonts";
 import Footer from "@/components/footer";
+import SkipLink from "@/components/SkipLink";
+import JsonLd from "@/components/JsonLd";
+import { SITE, personJsonLd, websiteJsonLd } from "@/lib/seo";
 
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@wrksz/themes/next";
+import Script from "next/script";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import { AuthProvider } from "@/utils/AuthContext";
+
+const gsc = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
+
 export const metadata: Metadata = {
-  title: "Syed B - Innovate, Lead, Succeed",
-  description: "Syed B - Innovate, Lead, Succeed",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.title,
+    template: "%s | Syed Baqir Ali",
+  },
+  description: SITE.description,
+  applicationName: SITE.name,
+  authors: [{ name: SITE.name, url: SITE.url }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  keywords: [
+    "Syed Baqir Ali",
+    "AI writing",
+    "software essays",
+    "machine learning",
+    "product engineering",
+  ],
+  openGraph: {
+    type: "website",
+    locale: SITE.locale,
+    url: SITE.url,
+    siteName: SITE.name,
+    title: SITE.title,
+    description: SITE.description,
+    images: [
+      {
+        url: SITE.ogImage,
+        width: 1200,
+        height: 630,
+        alt: SITE.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.title,
+    description: SITE.description,
+    images: [SITE.ogImage],
+    creator: SITE.twitter,
+  },
+  alternates: {
+    types: {
+      "application/rss+xml": `${SITE.url}/feed.xml`,
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  ...(gsc
+    ? { verification: { google: gsc } }
+    : {}),
 };
+
+/** WCAG: allow pinch-zoom; support light + dark color schemes */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  colorScheme: "dark",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -30,20 +94,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <head>
-        <script
+    <html
+      lang='en'
+      suppressHydrationWarning
+      className={`${sourceSans.variable} ${outfit.variable} ${sourceSerif.variable}`}
+    >
+      <body className='font-sans antialiased w-full min-h-lvh flex flex-col'>
+        <JsonLd id='site-json-ld' data={[personJsonLd(), websiteJsonLd()]} />
+        <Script
+          id='adsense'
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600195581005817'
           crossOrigin='anonymous'
-        ></script>
+          strategy='afterInteractive'
+        />
         <GoogleAnalytics gaId='G-8EVK1ZF0L8' />
-      </head>
-      <body
-        className={`${inter.className} antialiased w-full min-h-lvh flex flex-col`}
-      >
-        <AuthProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+        <SkipLink />
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange={false}
+          storage='localStorage'
+        >
+          <AuthProvider>
             <TooltipProvider delayDuration={1000}>
               <div className='flex-1'>
                 <SidebarWrapper>
@@ -56,8 +130,8 @@ export default function RootLayout({
               </div>
               <Footer />
             </TooltipProvider>
-          </ThemeProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

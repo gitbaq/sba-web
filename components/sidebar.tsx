@@ -24,6 +24,7 @@ import { usePathname } from "next/navigation";
 import { getAllTopics } from "@/utils/services/getAllTopics";
 import Link from "next/link";
 import Search from "./search";
+import { articleHref } from "@/lib/articles";
 import {
   blox_url,
   cobu_url,
@@ -32,6 +33,7 @@ import {
   substack_url,
 } from "@/utils/endpoints/endpoints";
 import Image from "next/image";
+import { SubTopic } from "@/types/types";
 function SearchResults() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const pathname = usePathname();
@@ -81,9 +83,10 @@ function SearchResults() {
                         <TooltipTrigger asChild>
                           <SidebarMenuButton asChild>
                             <Link
-                              href={`/learning/${sub.id}`}
+                              href={articleHref(sub as SubTopic)}
                               className={`${
-                                pathname === "/learning/" + sub.id
+                                pathname.includes(`/writing/`) &&
+                                pathname.endsWith(`-${sub.id}`)
                                   ? "active-article"
                                   : ""
                               }`}

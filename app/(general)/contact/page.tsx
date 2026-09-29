@@ -1,9 +1,10 @@
 "use client";
+
 import React, { useState } from "react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-// import Socials from "@/components/socials";
 import {
   Form,
   FormField,
@@ -19,13 +20,14 @@ import { Control, FieldPath, useForm } from "react-hook-form";
 import { contact_secure_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
 import FormMessages from "@/components/FormMessages";
+import Socials from "@/components/socials";
+import Icons from "@/components/Icons";
+import { trackEvent } from "@/lib/analytics";
 
 const formSchema = z.object({
   email: z.string().email({
-    message: "Enter valid email.",
+    error: "Enter valid email.",
   }),
-  // firstName: z.string().min(1).max(255),
-  // lastName: z.string().min(1).max(255),
   subject: z.string().max(255),
   message: z.string().min(1).max(2000),
 });
@@ -36,15 +38,13 @@ export default function Contact() {
   const [success, setSuccess] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: {
       email: "",
-      // firstName: "",
-      // lastName: "",
       subject: "",
       message: "",
     },
   });
+
   function getCookie(name: string) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -64,51 +64,63 @@ export default function Contact() {
     };
     const fetchOption = {
       method: "POST",
-
-      headers: headers,
-
+      headers,
       body: JSON.stringify(values),
     };
     await fetch(contact_secure_url, fetchOption)
       .then((res) => {
-        console.log(token);
-        console.log(res);
         if (!res.ok) {
           throw new Error("Error: " + res.status + ": " + res.statusText);
         }
-        setSuccess(`Thank you, we have received your message`);
-        toast("Thank You! we have received your message");
+        setSuccess("Thank you — your message was received.");
+        toast("Thank you — message received.");
+        trackEvent("contact_submit", { status: "success" });
+        form.reset();
       })
-      .catch((error) => {
-        setError(error.message);
+      .catch((err) => {
+        trackEvent("contact_submit", { status: "error" });
+        setError(err.message);
       })
       .finally(() => setIsLoading(false));
   }
+
   return (
-    <main className='flex flex-col items-center justify-center w-full h-full py-3 rounded-lg px-2 '>
-      <div className='w-full max-w-5xl'>
-        <section className='flex flex-col w-full justify-start gap-1 p-2'>
-          <div className='text-2xl font-semibold'>Contact me</div>
-          <div className='font-normal'>Looking forward to hearing from you</div>
-        </section>
-        <section className='flex flex-col w-full justify-center items-center shadow-inner py-5'>
+    <div className='w-full'>
+      <div className='life-hero'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-14 pb-16 md:pt-20 md:pb-24'>
+          <p className='accent-label'>Get in touch</p>
+          <h1 className='display-title text-4xl md:text-5xl text-foreground'>
+            Contact
+          </h1>
+          <p className='text-lg leading-relaxed text-foreground/80 max-w-xl'>
+            Questions about writing, work, or a possible engagement — send a
+            note. I read every message.
+          </p>
+        </header>
+      </div>
+
+      <main className='mx-auto flex w-full max-w-3xl flex-col gap-14 px-4 py-10 md:py-14'>
+        <section aria-labelledby='contact-form-heading' className='flex flex-col gap-6'>
+          <h2 id='contact-form-heading' className='sr-only'>
+            Contact form
+          </h2>
           <FormMessages error={error} success={success} />
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-4 w-full px-5'
+              className='flex flex-col gap-6'
             >
               <ProfileFormField
                 name='email'
                 label='Email'
-                placeholder='Email'
+                placeholder='you@company.com'
                 inputType='email'
                 formControl={form.control}
               />
               <ProfileFormField
                 name='subject'
                 label='Subject'
-                placeholder='Subject'
+                placeholder='What is this about?'
                 formControl={form.control}
               />
               <FormField
@@ -116,35 +128,66 @@ export default function Contact() {
                 name='message'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel className='font-semibold'>Message</FormLabel>
                     <FormControl>
                       <Textarea
-                        className='input-field focus-visible:ring-sky-100'
-                        placeholder='Message'
-                        rows={10}
+                        className='input-field min-h-[10rem] bg-transparent'
+                        placeholder='How can I help?'
+                        rows={8}
                         {...field}
                       />
                     </FormControl>
-
-                    <FormDescription className='text-accent-foreground'>
-                      * Your suggestions and comments are important. I&apos;ll
-                      (try to) get back shortly.
+                    <FormDescription>
+                      Suggestions and comments are welcome — I&apos;ll try to
+                      reply shortly.
                     </FormDescription>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className='flex justify-end'>
-                <Button type='submit' className='bg-amber-500'>
-                  {isLoading ? "Loading..." : "🚀 Send Message"}
+              <div className='pt-1'>
+                <Button
+                  type='submit'
+                  className='craft-cta-primary border-0'
+                  disabled={isLoading}
+                >
+                  <Icons.Mails className='craft-cta-icon' aria-hidden />
+                  {isLoading ? "Sending…" : "Send message"}
                 </Button>
               </div>
             </form>
           </Form>
         </section>
-      </div>
-    </main>
+
+        <section className='flex flex-col gap-3 border-t border-border/80 pt-10'>
+          <p className='accent-label'>Elsewhere</p>
+          <Socials />
+          <p className='text-sm text-muted-foreground'>
+            Or browse{" "}
+            <Link
+              href='/writing'
+              className='text-brand font-medium underline-offset-4 hover:underline'
+            >
+              Writing
+            </Link>
+            {" · "}
+            <Link
+              href='/work'
+              className='text-brand font-medium underline-offset-4 hover:underline'
+            >
+              Work
+            </Link>
+            {" · "}
+            <Link
+              href='/about'
+              className='text-brand font-medium underline-offset-4 hover:underline'
+            >
+              About
+            </Link>
+          </p>
+        </section>
+      </main>
+    </div>
   );
 }
 
@@ -174,11 +217,11 @@ const ProfileFormField: React.FC<ProfileFormFieldsProps> = ({
       render={({ field }) => (
         <FormItem className='w-full'>
           {inputType != "hidden" && (
-            <FormLabel className='ml-1 font-semibold'>{label}</FormLabel>
+            <FormLabel className='font-semibold'>{label}</FormLabel>
           )}
           <FormControl>
             <Input
-              className='input-field w-full focus-visible:ring-sky-100'
+              className='input-field w-full bg-transparent'
               placeholder={placeholder}
               type={inputType || "text"}
               readOnly={readonly}

@@ -28,20 +28,20 @@ const formSchema = z
     email: z.string().email(),
     password: z
       .string()
-      .min(8, { message: "Be at least 8 characters long" })
-      .regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-      .regex(/[0-9]/, { message: "Contain at least one number." })
+      .min(8, { error: "Be at least 8 characters long" })
+      .regex(/[a-zA-Z]/, { error: "Contain at least one letter." })
+      .regex(/[0-9]/, { error: "Contain at least one number." })
       .regex(/[^a-zA-Z0-9]/, {
-        message: "Contain at least one special character.",
+        error: "Contain at least one special character.",
       })
       .trim(),
     confirm_password: z
       .string()
-      .min(8, { message: "Be at least 8 characters long" })
-      .regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-      .regex(/[0-9]/, { message: "Contain at least one number." })
+      .min(8, { error: "Be at least 8 characters long" })
+      .regex(/[a-zA-Z]/, { error: "Contain at least one letter." })
+      .regex(/[0-9]/, { error: "Contain at least one number." })
       .regex(/[^a-zA-Z0-9]/, {
-        message: "Contain at least one special character.",
+        error: "Contain at least one special character.",
       })
       .trim(),
     username: z.string(),
@@ -51,7 +51,7 @@ const formSchema = z
   })
   .refine((data) => data.password === data.confirm_password, {
     path: ["confirm_password"],
-    message: "Passwords do not match",
+    error: "Passwords do not match",
   });
 
 export default function Signup() {

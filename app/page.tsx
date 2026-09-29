@@ -1,36 +1,38 @@
-import HeroComponent from "@/components/home/herocomponent";
-import ScreenTop from "@/components/home/screentop";
-import Rightbar from "@/components/rightbar";
 import { Metadata } from "next";
+import HomeGate from "@/components/home/HomeGate";
+import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
+import { getAllTopicsSafe } from "@/utils/services/getTopics";
+import { SITE } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Syed Baqir Ali - AI & Software Innovation Leader",
-  description:
-    "Expert in AI solutions, cloud integration, and software innovation. Transform your business with custom AI applications, DevOps automation, and modern cloud architecture.",
+  title: {
+    absolute: SITE.title,
+  },
+  description: SITE.description,
   keywords: [
-    "AI solutions",
+    "AI writing",
     "software innovation",
-    "cloud integration",
-    "DevOps",
-    "custom AI applications",
+    "research essays",
+    "Syed Baqir Ali",
   ],
+  alternates: { canonical: SITE.url },
+  openGraph: {
+    title: SITE.title,
+    description: SITE.description,
+    url: SITE.url,
+    type: "website",
+  },
 };
 
-export default function Home() {
+export default async function Home() {
+  const [posts, topics] = await Promise.all([
+    getLatestSubtopics(10),
+    getAllTopicsSafe(),
+  ]);
+
   return (
-    <div className='flex flex-row w-full h-full min-h-lvh gap-2'>
-      <div className='flex flex-1 flex-col items-center justify-center w-full p-1 gap-5'>
-        <header>
-          <h1 className='sr-only'>
-            Syed Baqir Ali - AI & Software Innovation Leader
-          </h1>
-        </header>
-        <ScreenTop />
-        <HeroComponent />
-      </div>
-      <div className='lg:flex hidden flex-col min-h-full w-64 min-w-64'>
-        <Rightbar />
-      </div>
+    <div className='w-full min-h-[70vh]'>
+      <HomeGate posts={posts} topics={topics} />
     </div>
   );
 }

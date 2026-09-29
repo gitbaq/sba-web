@@ -1,20 +1,19 @@
 import React from "react";
 import Link from "next/link";
-import Icons from "./Icons";
+import BrandMark from "./BrandMark";
 
 const Brand = () => {
   return (
-    <div className='flex flex-row gap-3 h-full items-center'>
-      <span>
-        <Icons.Bot className='text-amber-500' strokeWidth={3} size='32' />
+    <Link
+      href='/'
+      className='flex flex-row gap-2.5 h-full items-center hover:no-underline min-w-0'
+      aria-label='Syed Baqir Ali — home'
+    >
+      <BrandMark className='h-8 w-8 shrink-0' />
+      <span className='font-display text-xl md:text-2xl text-nowrap tracking-tight font-semibold text-foreground'>
+        Syed <span className='text-muted-foreground'>Baqir Ali</span>
       </span>
-      <Link
-        href='/'
-        className='items-center font-russo text-3xl text-nowrap gap-1 hover:no-underline'
-      >
-        Syed <span className='text-slate-500'>Baqir Ali</span>
-      </Link>
-    </div>
+    </Link>
   );
 };
 
