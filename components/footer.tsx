@@ -1,22 +1,71 @@
 import React from "react";
+import Link from "next/link";
 import Socials from "./socials";
-import Brand from "./brand";
-import Copyright from "./Copyright";
-// import Copyright from "./Copyright";
-// import Footer_links from "./footer_links";
+
+const NAV = [
+  { href: "/writing", label: "Writing" },
+  { href: "/work", label: "Work" },
+  { href: "/about", label: "About" },
+  { href: "/subscribe", label: "Subscribe" },
+  { href: "/writing/series", label: "Series" },
+  { href: "/contact", label: "Contact" },
+  { href: "/feed.xml", label: "RSS", external: true },
+] as const;
 
 const Footer = () => {
-  return (
-    <footer className='flex md:flex-row min-h-fit md:h-24 h-48 flex-col w-full justify-center md:justify-normal items-center md:gap-5 gap-3 p-3 bg-gradient-to-b from-stone-100 via-stone-50 to-stone-200 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-800 z-50'>
-      <div className='flex flex-row md:w-1/3 w-full md:justify-start justify-center'>
-        <Brand />
-      </div>
-      <div className='flex flex-row md:w-1/3 gap-3 justify-center'>
-        <Socials />
-      </div>
+  const year = new Date().getFullYear();
 
-      <div className='flex flex-row md:w-1/3 w-full md:justify-end justify-center'>
-        <Copyright />
+  return (
+    <footer className='border-t border-border/80 bg-background'>
+      <div className='mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-10 md:flex-row md:items-start md:justify-between md:gap-10 md:py-12'>
+        <div className='flex flex-col gap-2'>
+          <Link
+            href='/'
+            className='font-display text-base font-semibold tracking-tight text-foreground hover:no-underline'
+          >
+            Syed <span className='text-muted-foreground'>Baqir Ali</span>
+          </Link>
+          <p className='max-w-xs text-sm text-muted-foreground leading-relaxed'>
+            Research-depth writing on AI and software.
+          </p>
+          <p className='text-xs text-muted-foreground pt-1'>
+            © {year} Syed Baqir Ali
+          </p>
+        </div>
+
+        <nav aria-label='Footer' className='flex flex-col gap-3'>
+          <p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+            Explore
+          </p>
+          <ul className='flex flex-wrap gap-x-4 gap-y-2 list-none m-0 p-0 md:max-w-sm'>
+            {NAV.map((item) => (
+              <li key={item.href}>
+                {"external" in item && item.external ? (
+                  <a
+                    href={item.href}
+                    className='text-sm text-muted-foreground transition-colors hover:text-brand'
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className='text-sm text-muted-foreground transition-colors hover:text-brand'
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className='flex flex-col gap-3'>
+          <p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+            Connect
+          </p>
+          <Socials />
+        </div>
       </div>
     </footer>
   );

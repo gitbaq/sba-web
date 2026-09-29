@@ -11,7 +11,7 @@ function Search() {
     const router = useRouter();
     const [query, setQuery] = useState<string>("");
     function searchQuery(): void {
-      router.push(`/learning?query=${query}`);
+      router.push(`/writing?query=${encodeURIComponent(query)}`);
     }
 
     function handleChange(event: {

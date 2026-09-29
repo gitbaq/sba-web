@@ -1,3 +1,5 @@
+@reference "../../../ui/globals.css";
+
 .article h1{
     @apply font-semibold text-xl pt-5 pb-0;
     /* @apply bg-gradient-to-r from-transparent to-stone-100; */

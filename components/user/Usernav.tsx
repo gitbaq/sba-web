@@ -41,7 +41,7 @@ export default function Usernav() {
         <Avatar className='cursor-pointer'>
           <AvatarImage
             src={`${bucket_url_public}/profile_sba.jpg`}
-            className='w-8 h-8 min-h-8 min-w-8 rounded-full hover:border-2 hover:border-amber-400'
+            className='w-8 h-8 min-h-8 min-w-8 rounded-full hover:border-2 hover:border-brand'
           />
           <AvatarFallback>{displayName.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>

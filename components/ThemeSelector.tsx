@@ -1,55 +1,55 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Icons from "./Icons";
-import { useTheme } from "next-themes";
+import { useTheme } from "@wrksz/themes/client";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
+const modes = [
+  { id: "light" as const, label: "Light", Icon: Icons.FaSun },
+  { id: "dark" as const, label: "Dark", Icon: Icons.FaMoon },
+  { id: "system" as const, label: "System", Icon: Icons.MonitorCog },
+];
+
 function ThemeSelector() {
-  const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    if (theme === "" || theme === null) {
-      setTheme("system");
-    } else {
-      setTheme(theme + "");
-    }
-  }, [setTheme, theme]);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const active = theme ?? "system";
 
   return (
-    <div className='flex flex-row gap-4 p-3 justify-center border border-accent rounded-full bg-red-100 dark:bg-opacity-10 text-sm'>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Icons.FaSun
-            onClick={() => setTheme("light")}
-            className={`icons-small hover:cursor-pointer ${
-              theme === "light" ? "text-amber-500" : ""
-            }`}
-          />
-        </TooltipTrigger>
-        <TooltipContent>Light</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Icons.FaMoon
-            onClick={() => setTheme("dark")}
-            className={` icons-small hover:cursor-pointer ${
-              theme === "dark" ? "text-amber-500" : ""
-            }`}
-          />
-        </TooltipTrigger>
-        <TooltipContent>Dark</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Icons.MonitorCog
-            onClick={() => setTheme("system")}
-            className={`icons-small hover:cursor-pointer ${
-              theme === "system" ? "text-amber-500" : ""
-            }`}
-          />
-        </TooltipTrigger>
-        <TooltipContent>System</TooltipContent>
-      </Tooltip>
+    <div
+      role='group'
+      aria-label='Color theme'
+      className='flex flex-row items-center gap-0.5'
+    >
+      {modes.map(({ id, label, Icon }) => {
+        const isActive = active === id;
+        return (
+          <Tooltip key={id}>
+            <TooltipTrigger asChild>
+              <button
+                type='button'
+                aria-label={`${label} theme`}
+                aria-pressed={isActive}
+                onClick={() => setTheme(id)}
+                className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  isActive
+                    ? "text-brand bg-brand-muted"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/70"
+                }`}
+              >
+                <Icon className='h-3.5 w-3.5' aria-hidden />
+                <span className='sr-only'>
+                  {label}
+                  {isActive
+                    ? ` (active${resolvedTheme ? `, resolved ${resolvedTheme}` : ""})`
+                    : ""}
+                </span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side='bottom'>{label}</TooltipContent>
+          </Tooltip>
+        );
+      })}
     </div>
   );
 }

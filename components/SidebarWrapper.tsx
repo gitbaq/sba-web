@@ -1,11 +1,17 @@
-"use client"
-import React from 'react'
-import { SidebarProvider } from './ui/sidebar';
+"use client";
 
-// import Rightbar from "./rightbar";
+import React from "react";
+import { usePathname } from "next/navigation";
+import { SidebarProvider } from "./ui/sidebar";
 import { LearningSidebar } from "./sidebar";
 import Navbar from "./navbar";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+function pathUsesSidebar(pathname: string) {
+  return (
+    pathname.startsWith("/editor") || pathname.startsWith("/admin")
+  );
+}
 
 export default function SidebarWrapper({
   children,
@@ -13,6 +19,24 @@ export default function SidebarWrapper({
   children: React.ReactNode;
 }) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
+  const showSidebar = pathUsesSidebar(pathname);
+
+  if (!showSidebar) {
+    return (
+      <div className='flex flex-col w-full h-full min-h-full'>
+        <Navbar />
+        <main
+          id='main-content'
+          tabIndex={-1}
+          className='w-full flex-1 pt-16 outline-none'
+        >
+          {children}
+        </main>
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider
       defaultOpen={!isMobile}
@@ -23,7 +47,11 @@ export default function SidebarWrapper({
         <Navbar />
         <div className='flex flex-row w-full min-h-full h-full'>
           <LearningSidebar />
-          <main className='w-full flex-1 md:pt-16 pt-16'>
+          <main
+            id='main-content'
+            tabIndex={-1}
+            className='w-full flex-1 pt-16 outline-none'
+          >
             <div className='w-full h-full'>{children}</div>
           </main>
         </div>
@@ -31,4 +59,3 @@ export default function SidebarWrapper({
     </SidebarProvider>
   );
 }
-

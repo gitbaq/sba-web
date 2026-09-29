@@ -2,15 +2,51 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   crossOrigin: "anonymous",
-};
-
-module.exports = {
+  experimental: {
+    // TypeScript 7 has no JS compiler API yet — use local `tsc` CLI (TS7 via @typescript/native).
+    useTypeScriptCli: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/learning",
+        destination: "/writing",
+        permanent: true,
+      },
+      {
+        source: "/learning/:id",
+        destination: "/writing/:id",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
-      new URL("https://sbaweb-bucket.s3.ap-southeast-2.amazonaws.com/**"),
-      new URL("https://ai.syedbaqirali.com/**"),
-      new URL("https://www.syedbaqirali.com/**"),
-      new URL("https://www.codingburo.com/**"),
+      {
+        protocol: "https",
+        hostname: "sbaweb-bucket.s3.ap-southeast-2.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "substack-post-media.s3.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ai.syedbaqirali.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.syedbaqirali.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.codingburo.com",
+        pathname: "/**",
+      },
     ],
   },
 };
