@@ -24,7 +24,7 @@ export default function AudiencePicker({ onSelect }: Props) {
       aria-labelledby='audience-heading'
       className='life-hero relative w-full min-h-[70vh]'
     >
-      <div className='relative z-[2] mx-auto flex w-full max-w-2xl flex-col px-4 pt-16 pb-24 md:pt-24 md:pb-32'>
+      <div className='relative z-[2] mx-auto flex w-full max-w-2xl flex-col px-4 pt-6 pb-16 md:pt-8 md:pb-20'>
         <Reveal as='header' immediate className='mb-10 flex flex-col gap-4'>
           <p className='accent-label'>Welcome</p>
           <h1

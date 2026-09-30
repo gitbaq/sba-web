@@ -17,12 +17,13 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Control, FieldPath, useForm } from "react-hook-form";
-import { contact_secure_url } from "@/utils/endpoints/endpoints";
+import { contact_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
 import FormMessages from "@/components/FormMessages";
 import Socials from "@/components/socials";
 import Icons from "@/components/Icons";
 import { trackEvent } from "@/lib/analytics";
+import { LINKEDIN_URL } from "@/lib/audience";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -45,55 +46,47 @@ export default function Contact() {
     },
   });
 
-  function getCookie(name: string) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts?.pop()?.split(";").shift();
-  }
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    const token = getCookie("token");
 
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
-      accept: "*/*",
-      authorization: "Bearer " + token,
-    };
-    const fetchOption = {
-      method: "POST",
-      headers,
-      body: JSON.stringify(values),
-    };
-    await fetch(contact_secure_url, fetchOption)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Error: " + res.status + ": " + res.statusText);
-        }
-        setSuccess("Thank you — your message was received.");
-        toast("Thank you — message received.");
-        trackEvent("contact_submit", { status: "success" });
-        form.reset();
-      })
-      .catch((err) => {
-        trackEvent("contact_submit", { status: "error" });
-        setError(err.message);
-      })
-      .finally(() => setIsLoading(false));
+    try {
+      const res = await fetch(contact_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (!res.ok) {
+        throw new Error(
+          "Message couldn’t be sent right now. Try LinkedIn or email below."
+        );
+      }
+      setSuccess("Thank you. Your message was received.");
+      toast("Thank you. Message received.");
+      trackEvent("contact_submit", { status: "success" });
+      form.reset();
+    } catch (err) {
+      trackEvent("contact_submit", { status: "error" });
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <div className='w-full'>
       <div className='life-hero'>
-        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-14 pb-16 md:pt-20 md:pb-24'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <p className='accent-label'>Get in touch</p>
           <h1 className='display-title text-4xl md:text-5xl text-foreground'>
             Contact
           </h1>
           <p className='text-lg leading-relaxed text-foreground/80 max-w-xl'>
-            Questions about writing, work, or a possible engagement — send a
+            Questions about writing, work, or a possible engagement. Send a
             note. I read every message.
           </p>
         </header>
@@ -138,7 +131,7 @@ export default function Contact() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Suggestions and comments are welcome — I&apos;ll try to
+                      Suggestions and comments are welcome. I&apos;ll try to
                       reply shortly.
                     </FormDescription>
                     <FormMessage />
@@ -161,6 +154,25 @@ export default function Contact() {
 
         <section className='flex flex-col gap-3 border-t border-border/80 pt-10'>
           <p className='accent-label'>Elsewhere</p>
+          <p className='text-sm text-muted-foreground max-w-md leading-relaxed'>
+            Prefer a direct channel? Reach out on{" "}
+            <a
+              href={LINKEDIN_URL}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-brand font-medium underline-offset-4 hover:underline'
+            >
+              LinkedIn
+            </a>{" "}
+            or email{" "}
+            <a
+              href='mailto:hello@syedbaqirali.com'
+              className='text-brand font-medium underline-offset-4 hover:underline'
+            >
+              hello@syedbaqirali.com
+            </a>
+            .
+          </p>
           <Socials />
           <p className='text-sm text-muted-foreground'>
             Or browse{" "}

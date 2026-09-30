@@ -10,7 +10,7 @@ import Link from "next/link";
 import React from "react";
 import Icons from "./Icons";
 import { usePathname } from "next/navigation";
-import ThemeComponent from "./ThemeComponent";
+import ThemeToggleComponent from "./ThemeToggleComponent";
 
 const links = [
   { href: "/writing", label: "Writing" },
@@ -73,7 +73,7 @@ export default function NavLinks() {
               onSelect={(e) => e.preventDefault()}
               className='focus:bg-transparent'
             >
-              <ThemeComponent />
+              <ThemeToggleComponent />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

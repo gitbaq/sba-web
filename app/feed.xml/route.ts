@@ -40,9 +40,9 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Syed Baqir Ali — Writing</title>
+    <title>Syed Baqir Ali | Writing</title>
     <link>${web_url}/writing</link>
-    <description>Research-depth essays on AI and software — thorough, practical, and easy to follow.</description>
+    <description>Research-depth essays on AI and software. Thorough, practical, and easy to follow.</description>
     <language>en-us</language>
     <lastBuildDate>${buildDate}</lastBuildDate>
     <atom:link href="${web_url}/feed.xml" rel="self" type="application/rss+xml"/>

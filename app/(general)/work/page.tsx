@@ -4,22 +4,22 @@ import CaseStudyCard from "@/components/work/CaseStudyCard";
 import { CASE_STUDIES } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Work — Syed Baqir Ali",
+  title: "Work | Syed Baqir Ali",
   description:
-    "Case studies and products — Cobu, Blox, and more. Problem, approach, outcome, and stack.",
+    "Case studies and products: Cobu, Blox, and more. Problem, approach, outcome, and stack.",
 };
 
 export default function WorkPage() {
   return (
     <div className='w-full'>
       <div className='life-hero'>
-        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-14 pb-16 md:pt-20 md:pb-24'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <p className='accent-label'>Portfolio</p>
           <h1 className='display-title text-4xl md:text-5xl text-foreground'>
             Work
           </h1>
           <p className='text-lg leading-relaxed text-foreground/80 max-w-xl'>
-            Selected products — how the problem was framed, what shipped, and
+            Selected products. How the problem was framed, what shipped, and
             what changed. Essays live on{" "}
             <Link
               href='/writing'

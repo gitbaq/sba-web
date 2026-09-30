@@ -3,9 +3,9 @@ import Link from "next/link";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 
 export const metadata: Metadata = {
-  title: "Series — Writing",
+  title: "Series | Writing",
   description:
-    "Browse researched essays by series — Deep Learning, NLP, Rust, Blockchain, and more.",
+    "Browse researched essays by series: Deep Learning, NLP, Rust, Blockchain, and more.",
 };
 
 export default async function SeriesIndexPage() {

@@ -32,7 +32,7 @@ export default defineConfig([
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
       ...reactHooks.configs.recommended.rules,
-      // New React Compiler / hooks rules — warn during migration; fix incrementally.
+      // New React Compiler / hooks rules - warn during migration; fix incrementally.
       "react-hooks/set-state-in-effect": "warn",
       "react-hooks/static-components": "warn",
       "react-hooks/immutability": "warn",

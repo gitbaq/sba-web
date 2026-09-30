@@ -21,7 +21,7 @@ function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
 
   return `# Syed Baqir Ali
 
-> Research-depth writing on AI and software. Personal site of Syed Baqir Ali — essays, case studies, and audience paths for hiring managers, clients, and readers.
+> Research-depth writing on AI and software. Personal site of Syed Baqir Ali. Essays, case studies, and audience paths for hiring managers, clients, and readers.
 
 ## About
 

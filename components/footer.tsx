@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Socials from "./socials";
+import ThemeComponent from "./ThemeComponent";
 
 const NAV = [
   { href: "/writing", label: "Writing" },
@@ -26,7 +27,7 @@ const Footer = () => {
             Syed <span className='text-muted-foreground'>Baqir Ali</span>
           </Link>
           <p className='max-w-xs text-sm text-muted-foreground leading-relaxed'>
-            Research-depth writing on AI and software.
+            Practical notes on software, AI, and leading teams.
           </p>
           <p className='text-xs text-muted-foreground pt-1'>
             © {year} Syed Baqir Ali
@@ -65,6 +66,12 @@ const Footer = () => {
             Connect
           </p>
           <Socials />
+          <div className='pt-2'>
+            <p className='mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+              Theme
+            </p>
+            <ThemeComponent />
+          </div>
         </div>
       </div>
     </footer>

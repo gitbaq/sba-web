@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/** Subtle reading progress — respects reduced motion via CSS transitions only. */
+/** Subtle reading progress - respects reduced motion via CSS transitions only. */
 export default function ReadingProgress() {
   const [progress, setProgress] = useState(0);
 

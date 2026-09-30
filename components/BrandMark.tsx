@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * Brand mark — AI insight spark: central hexagon with six radiating nodes.
+ * Brand mark - AI insight spark: central hexagon with six radiating nodes.
  * Strong silhouette at 32px; identifiable without letterforms.
  */
 export default function BrandMark({
@@ -14,7 +14,7 @@ export default function BrandMark({
   const ink = "hsl(var(--brand-foreground))";
   const tile = "hsl(var(--brand))";
 
-  // Hexagon center 16,16 — flat-top, radius ~5.2
+  // Hexagon center 16,16 - flat-top, radius ~5.2
   const hex = "16 10.8 20.5 13.4 20.5 18.6 16 21.2 11.5 18.6 11.5 13.4";
 
   const nodes = [

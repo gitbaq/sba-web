@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SubTopic, Topic } from "@/types/types";
 import { articleHref } from "@/lib/articles";
 import { LINKEDIN_URL } from "@/lib/audience";
+import { CTA } from "@/lib/ctas";
 import { seriesHref } from "@/utils/services/getTopics";
 import Icons from "@/components/Icons";
 
@@ -17,17 +18,16 @@ export default function ArticleEndCta({ related, series }: Props) {
         <p className='accent-label'>Newsletter</p>
         <h2 className='display-title text-2xl md:text-3xl'>Stay in the loop</h2>
         <p className='text-muted-foreground leading-relaxed'>
-          Get the next researched essay by email — about once a week. Or follow
-          via RSS.
+          Get the next essay by email. About once a week. Or follow via RSS.
         </p>
         <div className='flex flex-wrap gap-3 pt-1'>
           <Link href='/subscribe' className='craft-cta-primary'>
             <Icons.Mail className='craft-cta-icon' aria-hidden />
-            Subscribe
+            {CTA.subscribe}
           </Link>
           <a href='/feed.xml' className='craft-cta-secondary'>
             <Icons.Rss className='craft-cta-icon' aria-hidden />
-            RSS
+            {CTA.rss}
           </a>
           <a
             href={LINKEDIN_URL}
@@ -36,7 +36,7 @@ export default function ArticleEndCta({ related, series }: Props) {
             className='craft-cta-secondary'
           >
             <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
-            LinkedIn
+            {CTA.linkedin}
           </a>
         </div>
         {series && (

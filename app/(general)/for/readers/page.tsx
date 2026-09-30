@@ -7,17 +7,19 @@ import {
   getLatestSubtopics,
 } from "@/utils/services/getLatestSubtopics";
 import { articleHref, estimateReadingMinutes } from "@/lib/articles";
+import { LINKEDIN_URL } from "@/lib/audience";
+import { CTA } from "@/lib/ctas";
 
 export const metadata: Metadata = {
-  title: "Read the essays — Syed Baqir Ali",
+  title: "Read the essays | Syed Baqir Ali",
   description:
-    "Research-depth writing on AI and software — thorough, practical, newest first.",
+    "Research-depth writing on AI and software. Thorough, practical, newest first.",
 };
 
 const habits = [
   {
     title: "One careful piece a week",
-    text: "Cadence over firehose — essays meant to be finished, not skimmed forever.",
+    text: "Cadence over firehose. Essays meant to be finished, not skimmed forever.",
   },
   {
     title: "Depth without opacity",
@@ -38,11 +40,27 @@ export default async function ForReadersPage() {
     <AudienceShell
       eyebrow='Read the essays'
       title='Read deeply. Stay curious.'
-      description='Essays are written to be thorough without being opaque — one carefully researched piece most weeks.'
+      description='Essays are written to be thorough without being opaque. One carefully researched piece most weeks.'
       ctas={[
-        { href: "/subscribe", label: "Subscribe", variant: "primary", icon: "mail" },
-        { href: "/writing", label: "All writing", variant: "secondary", icon: "writing" },
-        { href: "/work", label: "Work", variant: "ghost", icon: "work" },
+        {
+          href: "/subscribe",
+          label: CTA.subscribe,
+          variant: "primary",
+          icon: "mail",
+        },
+        {
+          href: "/writing",
+          label: CTA.writing,
+          variant: "secondary",
+          icon: "writing",
+        },
+        {
+          href: LINKEDIN_URL,
+          label: CTA.linkedin,
+          external: true,
+          variant: "secondary",
+          icon: "linkedin",
+        },
       ]}
     >
       <section aria-labelledby='how-to-read' className='flex flex-col gap-6'>

@@ -162,7 +162,7 @@ export default async function WritingArticlePage({
       <StickySubscribeBar />
 
       <div className='life-hero'>
-        <div className='relative z-[2] mx-auto w-full max-w-3xl px-4 pt-12 pb-14 md:pt-16 md:pb-20'>
+        <div className='relative z-[2] mx-auto w-full max-w-3xl px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <nav
             aria-label='Breadcrumb'
             className='mb-6 text-sm text-muted-foreground'

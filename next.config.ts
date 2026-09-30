@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   crossOrigin: "anonymous",
   experimental: {
-    // TypeScript 7 has no JS compiler API yet — use local `tsc` CLI (TS7 via @typescript/native).
+    // TypeScript 7 has no JS compiler API yet - use local `tsc` CLI (TS7 via @typescript/native).
     useTypeScriptCli: true,
   },
   async redirects() {

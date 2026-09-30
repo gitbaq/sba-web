@@ -112,7 +112,7 @@ export default function RootLayout({
         <SkipLink />
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
+          defaultTheme='light'
           enableSystem
           disableTransitionOnChange={false}
           storage='localStorage'

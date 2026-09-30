@@ -1,4 +1,4 @@
-/** JSON-LD for crawlers — render in the document body (not `<head>`). */
+/** JSON-LD for crawlers - render in the document body (not `<head>`). */
 export default function JsonLd({
   data,
   id = "json-ld",

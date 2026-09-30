@@ -113,13 +113,13 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Design tokens — navy ink + steel (business / professional / research)      */
+/* Design tokens - navy ink + steel (business / professional / research)      */
 /* Cool gray-white paper; deep navy CTAs; soft gold spark for “New” only      */
 /* -------------------------------------------------------------------------- */
 
 @layer base {
   :root {
-    /* Surfaces — cool gray-white */
+    /* Surfaces - cool gray-white */
     --background: 210 25% 98%;
     --foreground: 215 40% 12%;
     --card: 210 30% 99%;
@@ -127,7 +127,7 @@
     --popover: 210 30% 99%;
     --popover-foreground: 215 40% 12%;
 
-    /* Ink — navy */
+    /* Ink - navy */
     --primary: 215 45% 14%;
     --primary-foreground: 210 25% 98%;
     --secondary: 214 18% 94%;
@@ -137,12 +137,12 @@
     --accent: 214 16% 92%;
     --accent-foreground: 215 40% 14%;
 
-    /* Brand — deep navy; steel feel on hover via brightness */
+    /* Brand - deep navy; steel feel on hover via brightness */
     --brand: 215 55% 28%;
     --brand-foreground: 0 0% 100%;
     --brand-muted: 214 42% 93%;
 
-    /* Rare highlight — soft gold (“New” only) */
+    /* Rare highlight - soft gold (“New” only) */
     --spark: 38 55% 42%;
     --spark-foreground: 215 40% 12%;
 
@@ -267,7 +267,7 @@
     letter-spacing: -0.03em;
   }
 
-  /* Visible keyboard focus — WCAG 2.2 */
+  /* Visible keyboard focus - WCAG 2.2 */
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 3px;
@@ -278,7 +278,7 @@
   }
 }
 
-/* Skip link — Phase 0 a11y */
+/* Skip link - Phase 0 a11y */
 .skip-link {
   position: absolute;
   left: 1rem;
@@ -320,7 +320,7 @@
   }
 }
 
-/* Toasts — use semantic tokens */
+/* Toasts - use semantic tokens */
 [data-sonner-toast] {
   background-color: hsl(var(--success)) !important;
   color: hsl(var(--success-foreground)) !important;
@@ -342,7 +342,7 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Legacy utility classes — remapped to new type/token system                 */
+/* Legacy utility classes - remapped to new type/token system                 */
 /* -------------------------------------------------------------------------- */
 
 .brand {
@@ -475,7 +475,7 @@ a.active_top::after {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Craft minimal — Phase V                                                    */
+/* Craft minimal - Phase V                                                    */
 /* -------------------------------------------------------------------------- */
 
 .surface-raised {
@@ -548,11 +548,14 @@ a.active_top::after {
     );
 }
 
-/* Livelier filled hero — organic blobs + wave (navy + steel) */
+/* Livelier filled hero - organic blobs + wave (navy + steel) */
 .life-hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  /* Pull up into main's nav clearance so the wash sits flush under the bar */
+  margin-top: -4rem;
+  padding-top: 3.5rem; /* match fixed nav height */
   background:
     radial-gradient(
       55% 70% at 8% 18%,
@@ -602,76 +605,130 @@ a.active_top::after {
     );
 }
 
+/* Soft page blend - no hard cutout */
 .life-hero::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
-  height: clamp(2.5rem, 8vw, 4.5rem);
-  background: hsl(var(--background));
-  clip-path: ellipse(55% 100% at 50% 100%);
+  bottom: 0;
+  height: clamp(3.5rem, 12vw, 6rem);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(214 30% 96% / 0.55) 50%,
+    hsl(214 30% 96%) 100%
+  );
   pointer-events: none;
   z-index: 1;
 }
 
-/* Home hero — darker contrasted navy + animated blobs (Josh-inspired) */
+.dark .life-hero::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(215 28% 9% / 0.55) 50%,
+    hsl(215 28% 9%) 100%
+  );
+}
+
+/* Home hero - richer cousin of life-hero; stays in the light page family */
 .life-hero-home {
-  color: hsl(210 40% 98%);
+  color: inherit;
+  padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
   background:
+    radial-gradient(
+      55% 60% at 10% 8%,
+      hsl(214 55% 72% / 0.6),
+      transparent 55%
+    ),
+    radial-gradient(
+      45% 50% at 92% 6%,
+      hsl(200 50% 78% / 0.45),
+      transparent 50%
+    ),
     linear-gradient(
       165deg,
-      hsl(215 55% 18%) 0%,
-      hsl(214 48% 22%) 42%,
-      hsl(210 40% 16%) 100%
+      hsl(214 42% 90%) 0%,
+      hsl(210 35% 95%) 55%,
+      hsl(var(--background)) 100%
     );
 }
 
+/* Reset dark-navy text/CTA overrides | home uses page foreground colors */
 .life-hero-home .accent-label {
-  color: hsl(200 70% 72%);
-}
-
-.life-hero-home .display-title,
-.life-hero-home [id="home-brand"] {
-  color: hsl(210 40% 98%);
-}
-
-.life-hero-home .text-foreground\/80,
-.life-hero-home p.text-lg {
-  color: hsl(210 30% 88% / 0.92);
-}
-
-.life-hero-home .text-muted-foreground {
-  color: hsl(210 25% 78% / 0.85);
-}
-
-.life-hero-home .text-foreground {
-  color: hsl(210 40% 98%);
-}
-
-.life-hero-home .text-brand {
-  color: hsl(200 75% 72%);
-}
-
-.life-hero-home .craft-cta-secondary {
-  background: hsl(215 40% 14% / 0.35);
-  border-color: hsl(210 40% 88% / 0.28);
-  color: hsl(210 40% 98%);
-  backdrop-filter: blur(8px);
-}
-
-.life-hero-home .craft-cta-secondary:hover {
-  border-color: hsl(200 70% 72% / 0.65);
-  color: hsl(200 80% 82%);
+  color: hsl(var(--brand));
 }
 
 .life-hero-home .craft-cta-primary {
-  background: hsl(200 70% 58%);
-  color: hsl(215 55% 12%);
+  background: hsl(var(--brand));
+  color: hsl(var(--brand-foreground));
+  border-color: transparent;
 }
 
 .life-hero-home .craft-cta-primary:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.06);
+}
+
+.life-hero-home .craft-cta-secondary {
+  background: hsl(var(--card) / 0.72);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.life-hero-home .craft-cta-secondary:hover {
+  border-color: hsl(var(--brand) / 0.45);
+  color: hsl(var(--brand));
+}
+
+.life-hero-home::after {
+  height: clamp(2.5rem, 8vw, 4rem);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(var(--background) / 0.5) 50%,
+    hsl(var(--background)) 100%
+  );
+}
+
+.dark .life-hero-home {
+  background:
+    radial-gradient(
+      60% 70% at 8% 12%,
+      hsl(214 45% 28% / 0.5),
+      transparent 58%
+    ),
+    radial-gradient(
+      50% 55% at 92% 8%,
+      hsl(200 40% 26% / 0.4),
+      transparent 55%
+    ),
+    linear-gradient(
+      165deg,
+      hsl(215 28% 12%) 0%,
+      hsl(214 24% 10%) 50%,
+      hsl(215 28% 8%) 100%
+    );
+}
+
+.dark .life-hero-home::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    hsl(var(--background) / 0.45) 45%,
+    hsl(var(--background)) 100%
+  );
+}
+
+.dark .life-hero-home .craft-cta-primary {
+  background: hsl(var(--brand));
+  color: hsl(var(--brand-foreground));
+}
+
+.dark .life-hero-home .craft-cta-secondary {
+  background: hsl(var(--card) / 0.55);
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
 }
 
 .life-hero-blobs {
@@ -696,8 +753,8 @@ a.active_top::after {
   top: -28%;
   background: radial-gradient(
     circle at 40% 40%,
-    hsl(210 60% 38% / 0.85),
-    hsl(215 55% 22% / 0.2) 65%,
+    hsl(214 55% 70% / 0.55),
+    hsl(214 45% 88% / 0.2) 65%,
     transparent 70%
   );
   animation: life-blob-drift-a 22s ease-in-out infinite;
@@ -710,8 +767,8 @@ a.active_top::after {
   top: -18%;
   background: radial-gradient(
     circle at 50% 50%,
-    hsl(200 55% 42% / 0.7),
-    hsl(215 45% 20% / 0.15) 60%,
+    hsl(200 50% 72% / 0.45),
+    hsl(210 40% 90% / 0.15) 60%,
     transparent 70%
   );
   animation: life-blob-drift-b 28s ease-in-out infinite;
@@ -722,9 +779,10 @@ a.active_top::after {
   height: min(50vw, 28rem);
   left: 28%;
   bottom: -22%;
+  opacity: 0.7;
   background: radial-gradient(
     circle at 50% 40%,
-    hsl(225 45% 36% / 0.55),
+    hsl(214 40% 78% / 0.4),
     transparent 68%
   );
   animation: life-blob-drift-c 26s ease-in-out infinite;
@@ -737,10 +795,44 @@ a.active_top::after {
   bottom: 8%;
   background: radial-gradient(
     circle at 40% 40%,
-    hsl(38 55% 52% / 0.22),
+    hsl(38 50% 78% / 0.28),
     transparent 70%
   );
   animation: life-blob-drift-a 30s ease-in-out infinite reverse;
+}
+
+.dark .life-blob-1 {
+  background: radial-gradient(
+    circle at 40% 40%,
+    hsl(210 60% 38% / 0.7),
+    hsl(215 55% 22% / 0.15) 65%,
+    transparent 70%
+  );
+}
+
+.dark .life-blob-2 {
+  background: radial-gradient(
+    circle at 50% 50%,
+    hsl(200 55% 42% / 0.55),
+    hsl(215 45% 20% / 0.12) 60%,
+    transparent 70%
+  );
+}
+
+.dark .life-blob-3 {
+  background: radial-gradient(
+    circle at 50% 40%,
+    hsl(225 45% 36% / 0.45),
+    transparent 68%
+  );
+}
+
+.dark .life-blob-4 {
+  background: radial-gradient(
+    circle at 40% 40%,
+    hsl(38 55% 52% / 0.22),
+    transparent 70%
+  );
 }
 
 @keyframes life-blob-drift-a {
@@ -779,19 +871,57 @@ a.active_top::after {
   }
 }
 
-.life-hero-home::after {
-  height: clamp(3rem, 10vw, 5.5rem);
-  clip-path: ellipse(58% 100% at 50% 100%);
+/* Home body - continuous with soft hero */
+/* Home body - clean page surface after hero */
+.home-body {
+  position: relative;
+  background: hsl(var(--background));
 }
 
-.dark .life-hero-home {
+.dark .home-body {
+  background: hsl(var(--background));
+}
+
+.home-section {
+  position: relative;
+  padding-block: 0.25rem;
+}
+
+.home-section + .home-section {
+  margin-top: 0.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid hsl(var(--border) / 0.9);
+}
+
+.home-section + .home-section-band,
+.home-section-band + .home-section {
+  border-top: none;
+  padding-top: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.home-section-band {
+  padding: 1.75rem 1.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid hsl(var(--border) / 0.75);
   background:
-    linear-gradient(
-      165deg,
-      hsl(215 50% 12%) 0%,
-      hsl(214 42% 16%) 45%,
-      hsl(215 48% 10%) 100%
-    );
+    radial-gradient(
+      80% 90% at 0% 0%,
+      hsl(214 42% 93% / 0.9),
+      transparent 55%
+    ),
+    hsl(214 28% 97% / 0.85);
+}
+
+.dark .home-section-band {
+  background:
+    radial-gradient(
+      80% 90% at 0% 0%,
+      hsl(214 35% 18% / 0.7),
+      transparent 55%
+    ),
+    hsl(215 24% 10% / 0.9);
+  border-color: hsl(var(--border) / 0.55);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -953,11 +1083,12 @@ a.active_top::after {
 }
 
 .craft-cta-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-muted-foreground underline-offset-4 transition-all duration-200;
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border border-border bg-background/70 text-foreground backdrop-blur-xs transition-all duration-200;
 }
 
 .craft-cta-ghost:hover {
-  @apply text-brand underline;
+  border-color: hsl(var(--brand) / 0.45);
+  color: hsl(var(--brand));
 }
 
 .craft-cta-icon {

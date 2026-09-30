@@ -5,13 +5,13 @@ import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
 
 export const metadata: Metadata = {
-  title: "Subscribe — Syed Baqir Ali",
+  title: "Subscribe | Syed Baqir Ali",
   description:
-    "Get researched essays on AI and software by email — roughly one careful piece a week. Also available via RSS.",
+    "Get researched essays on AI and software by email. Roughly one careful piece a week. Also available via RSS.",
 };
 
 const perks = [
-  "About one researched essay most weeks — not a daily firehose",
+  "About one researched essay most weeks. Not a daily firehose",
   "Topics: AI, software systems, and building in public",
   "Unsubscribe anytime; no spam",
 ];
@@ -22,14 +22,14 @@ export default async function SubscribePage() {
   return (
     <div className='w-full'>
       <div className='life-hero'>
-        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-14 pb-16 md:pt-20 md:pb-24'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <p className='accent-label'>Newsletter</p>
           <h1 className='display-title text-4xl md:text-5xl text-foreground'>
             Subscribe
           </h1>
           <p className='text-lg leading-relaxed text-foreground/80 max-w-xl'>
             Occasional email when something new and worthwhile ships. Prefer
-            feeds? Use RSS — same writing, your reader.
+            feeds? Use RSS. Same writing, your reader.
           </p>
         </header>
       </div>
@@ -50,7 +50,7 @@ export default async function SubscribePage() {
             ))}
           </ul>
 
-          <SubscribeForm submitLabel='Subscribe' />
+          <SubscribeForm submitLabel='Get Weekly Insights' />
 
           <p className='text-sm text-muted-foreground'>
             Prefer RSS?{" "}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CTA } from "@/lib/ctas";
 
 const STORAGE_KEY = "sba-dismiss-subscribe-bar";
 
@@ -47,14 +48,11 @@ export default function StickySubscribeBar() {
     >
       <div className='mx-auto max-w-3xl flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4'>
         <p className='text-sm text-muted-foreground flex-1'>
-          Enjoying this? Get the next essay by email — about once a week.
+          Enjoying this? Get the next essay by email. About once a week.
         </p>
         <div className='flex items-center gap-2 shrink-0'>
-          <Link
-            href='/subscribe'
-            className='craft-cta-primary'
-          >
-            Subscribe
+          <Link href='/subscribe' className='craft-cta-primary'>
+            {CTA.subscribe}
           </Link>
           <button
             type='button'

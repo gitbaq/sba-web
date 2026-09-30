@@ -1,6 +1,6 @@
 "use client";
 
-import { SubTopic, Topic } from "@/types/types";
+import { SubTopic, Topic, RandomQuote } from "@/types/types";
 import { useAudience } from "@/hooks/useAudience";
 import AudiencePicker from "./AudiencePicker";
 import BrandHome from "./BrandHome";
@@ -8,9 +8,10 @@ import BrandHome from "./BrandHome";
 type Props = {
   posts: SubTopic[];
   topics: Topic[];
+  quote: RandomQuote | null;
 };
 
-export default function HomeGate({ posts, topics }: Props) {
+export default function HomeGate({ posts, topics, quote }: Props) {
   const { audience, ready, setAudience, clearAudience } = useAudience();
 
   if (!ready) {
@@ -33,6 +34,7 @@ export default function HomeGate({ posts, topics }: Props) {
     <BrandHome
       posts={posts}
       topics={topics}
+      quote={quote}
       audience={audience}
       onChangePath={clearAudience}
     />

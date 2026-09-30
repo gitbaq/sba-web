@@ -71,7 +71,7 @@ export default function SharePanel({
             <WhatsappShareButton
               title={title}
               url={url}
-              separator=' — '
+              separator=' · '
               className={shareBtn}
               aria-label='Share on WhatsApp'
             >
