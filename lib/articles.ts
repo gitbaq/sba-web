@@ -66,7 +66,7 @@ export function extractToc(html: string): TocItem[] {
   return items;
 }
 
-/** Inject id attributes into h1–h3 for TOC anchors (order must match extractToc). */
+/** Inject id attributes into h1-h3 for TOC anchors (order must match extractToc). */
 export function injectHeadingIds(html: string): string {
   const toc = extractToc(html);
   let i = 0;

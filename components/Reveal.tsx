@@ -11,7 +11,7 @@ type Props = {
   immediate?: boolean;
 };
 
-/** Subtle enter-on-view motion — no-op when reduced motion. */
+/** Subtle enter-on-view motion - no-op when reduced motion. */
 export default function Reveal({
   children,
   className = "",

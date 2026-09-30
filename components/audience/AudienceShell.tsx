@@ -1,8 +1,16 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import Icons from "@/components/Icons";
+import { CTA, CTA_ORDER, type CtaKey } from "@/lib/ctas";
 
-type CtaIcon = "linkedin" | "mail" | "contact" | "work" | "writing" | "calendar" | "external";
+type CtaIcon =
+  | "linkedin"
+  | "mail"
+  | "contact"
+  | "work"
+  | "writing"
+  | "calendar"
+  | "external";
 
 type Cta = {
   href: string;
@@ -20,6 +28,21 @@ type Props = {
   children: ReactNode;
 };
 
+const LABEL_TO_KEY = new Map<string, CtaKey>(
+  (Object.entries(CTA) as [CtaKey, string][]).map(([key, label]) => [
+    label,
+    key,
+  ])
+);
+
+function sortCtas(ctas: Cta[]): Cta[] {
+  return [...ctas].sort((a, b) => {
+    const ai = CTA_ORDER.indexOf(LABEL_TO_KEY.get(a.label) ?? "linkedin");
+    const bi = CTA_ORDER.indexOf(LABEL_TO_KEY.get(b.label) ?? "linkedin");
+    return ai - bi;
+  });
+}
+
 function CtaGlyph({ icon }: { icon?: CtaIcon }) {
   if (!icon) return null;
   const cls = "craft-cta-icon";
@@ -33,7 +56,7 @@ function CtaGlyph({ icon }: { icon?: CtaIcon }) {
     case "work":
       return <Icons.FolderCode className={cls} aria-hidden />;
     case "writing":
-      return <Icons.PencilLine className={cls} aria-hidden />;
+      return <Icons.BookOpen className={cls} aria-hidden />;
     case "calendar":
       return <Icons.FaCalendarDays className={cls} aria-hidden />;
     case "external":
@@ -45,11 +68,7 @@ function CtaGlyph({ icon }: { icon?: CtaIcon }) {
 
 function CtaLink({ href, label, external, variant = "secondary", icon }: Cta) {
   const styles =
-    variant === "primary"
-      ? "craft-cta-primary"
-      : variant === "ghost"
-        ? "craft-cta-ghost"
-        : "craft-cta-secondary";
+    variant === "primary" ? "craft-cta-primary" : "craft-cta-secondary";
 
   const content = (
     <>
@@ -84,10 +103,12 @@ export default function AudienceShell({
   ctas,
   children,
 }: Props) {
+  const ordered = sortCtas(ctas);
+
   return (
     <div className='w-full'>
       <div className='life-hero'>
-        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 pt-14 pb-16 md:pt-20 md:pb-24'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <p className='accent-label'>{eyebrow}</p>
           <h1 className='display-title text-4xl md:text-5xl text-foreground'>
             {title}
@@ -96,7 +117,7 @@ export default function AudienceShell({
             {description}
           </p>
           <div className='flex flex-wrap gap-3 pt-2'>
-            {ctas.map((c) => (
+            {ordered.map((c) => (
               <CtaLink key={c.label + c.href} {...c} />
             ))}
           </div>

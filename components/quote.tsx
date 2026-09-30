@@ -1,40 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { RandomQuote } from "@/types/types";
+import type { RandomQuote } from "@/types/types";
 
-import { toast } from "sonner";
-import { getRandomQuote } from "@/utils/services/getRandomQuote";
-import Icons from "./Icons";
-
-export default function Quote() {
-  const [quote, setQuote] = useState<RandomQuote | null>(null);
-  const runthis = 1;
-  useEffect(() => {
-    const fetchData = async () => {
-      setQuote(await getRandomQuote());
-    };
-
-    fetchData().catch((e) => {
-      toast("An error occurred while fetching data: ", e);
-    });
-  }, [runthis]);
+/** Soft aside: no heading, no CTA. Rendered from server-fetched data. */
+export default function Quote({ quote }: { quote: RandomQuote | null }) {
+  if (!quote?.quoteText) return null;
 
   return (
-    <div className='flex flex-col h-fit justify-center w-full p-2 items-center'>
-      {quote && (
-        <div className='flex flex-col gap-2 py-5 px-2 '>
-          <div className='flex flex-row gap-1'>
-            <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />
-            <span className='p-2  borderx border-accent rounded-lg text-sm'>
-              {quote?.quoteText}
-            </span>
-            {/* <FaQuoteRight className='text-cyan-600  min-h-4 min-w-4 self-end' /> */}
-          </div>
-
-          <div className='text-cyan-900 dark:text-cyan-500 self-center text-xs'>
-            {quote?.author}
-          </div>
-        </div>
-      )}
-    </div>
+    <aside
+      aria-label='A short quote'
+      className='mx-auto max-w-lg border-y border-border/70 py-8 text-center'
+    >
+      <blockquote className='m-0'>
+        <p className='font-article text-base md:text-lg leading-relaxed text-foreground/80 italic'>
+          “{quote.quoteText}”
+        </p>
+        {quote.author ? (
+          <footer className='mt-3 text-xs tracking-wide text-muted-foreground not-italic'>
+            {quote.author}
+          </footer>
+        ) : null}
+      </blockquote>
+    </aside>
   );
 }

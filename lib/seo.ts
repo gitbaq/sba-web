@@ -3,9 +3,9 @@ import { web_url } from "@/utils/endpoints/endpoints";
 export const SITE = {
   name: "Syed Baqir Ali",
   url: web_url,
-  title: "Syed Baqir Ali — AI & Software Writing",
+  title: "Syed Baqir Ali | AI Research and Enterprise Engineering",
   description:
-    "Research-depth writing on AI and software. Subscribe for new essays, explore work, or find your path.",
+    "Practical notes on software, AI integration, and leading teams. One careful essay at a time.",
   locale: "en_US",
   twitter: "@baq2coaching",
   linkedin: "https://www.linkedin.com/in/syedbaqirali",

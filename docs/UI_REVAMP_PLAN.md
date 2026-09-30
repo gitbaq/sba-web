@@ -1,6 +1,6 @@
-# UI Revamp Plan — syedbaqirali.com
+# UI Revamp Plan - syedbaqirali.com
 
-**Status:** Phase 0–5 + **V** complete.  
+**Status:** Phase 0-5 + **V** complete.  
 **Last updated:** 2026-09-30  
 **Site:** https://www.syedbaqirali.com  
 **Repo:** `sbaweb_frontend` (Next.js App Router)
@@ -52,7 +52,7 @@
 - Home sells services; latest writing is not the hero.
 - One generic home; no audience routing.
 - Portfolio nested under About; thin (one product carousel).
-- Visual language: Inter, amber/cyan cards, glow cards — not DeepMind/Anthropic calm editorial.
+- Visual language: Inter, amber/cyan cards, glow cards - not DeepMind/Anthropic calm editorial.
 - `viewport.userScalable: false` harms accessibility.
 - Learning index empty state hurts first impression.
 
@@ -95,7 +95,7 @@
 | Color | Soft warm neutrals + one precise accent (not amber carnival; not purple-AI cliché). Deep charcoal text. |
 | Layout | Full-bleed brand/atmosphere on home; **no card grids in hero**; cards only where interaction needs them |
 | Motion | Subtle section enter + link underlines; respect `prefers-reduced-motion` |
-| References | [DeepMind](https://deepmind.google/), [Anthropic](https://www.anthropic.com/), top AI/ML blogs — adapted to personal brand, not lab clone |
+| References | [DeepMind](https://deepmind.google/), [Anthropic](https://www.anthropic.com/), top AI/ML blogs - adapted to personal brand, not lab clone |
 
 ---
 
@@ -112,7 +112,7 @@ First viewport:
 
 Below fold:
 
-- **Latest** — 3–5 newest posts; “New” for &lt;14 days
+- **Latest** - 3-5 newest posts; “New” for &lt;14 days
 - Soft recall of chosen audience path
 - Optional featured case study teaser → `/work`
 
@@ -152,10 +152,10 @@ Three calm paths (not glow cards):
 3. Series / topic hubs (map existing `Topic` / `SubTopic`)
 4. Reading time + depth cue (“~18 min · deep dive”)
 5. “Start here” curated list for new readers
-6. Slug URLs (`/writing/my-slug`) — `slug` already on `SubTopic`
+6. Slug URLs (`/writing/my-slug`) - `slug` already on `SubTopic`
 7. Subtle article progress + sticky subscribe (a11y-safe)
 8. WCAG pass: pinch-zoom, focus rings, contrast, skip-link, reduced motion
-9. Optional later: short “lab notes” vs long research — only if cadence needs it
+9. Optional later: short “lab notes” vs long research - only if cadence needs it
 
 ---
 
@@ -164,21 +164,21 @@ Three calm paths (not glow cards):
 | Phase | Scope | Outcome | Code status |
 | --- | --- | --- | --- |
 | **0** | Design tokens, type, light/dark, a11y baseline | Visual foundation | **Done** (2026-09-29) |
-| **0.5** | Upgrade to **latest Next.js** and project dependencies (align `@next/third-parties` / `eslint-config-next` with `next`; bump React types, Tailwind/tooling, Radix, etc. within compatibility) | Modern, supported toolchain before IA rebuild | **Done** (2026-09-29) — `next@16.3.7`, `react@19.3.0`; see notes below |
+| **0.5** | Upgrade to **latest Next.js** and project dependencies (align `@next/third-parties` / `eslint-config-next` with `next`; bump React types, Tailwind/tooling, Radix, etc. within compatibility) | Modern, supported toolchain before IA rebuild | **Done** (2026-09-29) - `next@16.3.7`, `react@19.3.0`; see notes below |
 | **1** | Audience picker + new home + nav + latest Writing surface | Newer content highlighted; first-visit routing | **Done** (2026-09-29) |
 | **2** | Writing index/article redesign + `/learning` redirects | Modern research-blog UX | **Done** (2026-09-29) |
 | **3** | `/work` + audience homes | Separate journeys | **Done** (2026-09-29) |
 | **4** | Subscribe/RSS polish + series hubs | Retention & habit | **Done** (2026-09-29) |
-| **5** | **Complete SEO + Google Analytics + LLM / AI-search optimization** (after Phases 3–4 UI are done) | Discoverability in Google, Analytics fidelity, and AI/LLM citation readiness | **Done** (2026-09-30) |
+| **5** | **Complete SEO + Google Analytics + LLM / AI-search optimization** (after Phases 3-4 UI are done) | Discoverability in Google, Analytics fidelity, and AI/LLM citation readiness | **Done** (2026-09-30) |
 | **V** | **Craft-minimal visual polish** (type scale, hairlines, soft elevation, restrained motion) | Less flat; precise presence without loud decoration | **Done** (2026-09-30) |
 
 **Rule:** No implementation until categorical approval for that phase (or an explicit “start Phase N”).
 
 **Stack note (Phase 0.5):** Completed. Key versions: `next@16.3.7`, `react@19.3.0`, `@next/third-parties@16.3.7`.
 
-**Deferred majors — Done (2026-09-30):** Tailwind CSS 4.3, Zod 4.6, TypeScript 7 (CLI via `@typescript/native`; TS6 API aliased as `typescript` for eslint), ESLint 10 flat config, `@daypicker/react` 10.
+**Deferred majors - Done (2026-09-30):** Tailwind CSS 4.3, Zod 4.6, TypeScript 7 (CLI via `@typescript/native`; TS6 API aliased as `typescript` for eslint), ESLint 10 flat config, `@daypicker/react` 10.
 
-### Phase 5 scope — **Done** (2026-09-30)
+### Phase 5 scope - **Done** (2026-09-30)
 
 **SEO**
 - Sitewide `metadataBase`, Open Graph / Twitter defaults in root layout (`lib/seo.ts`)
@@ -189,7 +189,7 @@ Three calm paths (not glow cards):
 
 **Google Analytics**
 - GA4 `G-8EVK1ZF0L8` + Vercel Analytics / Speed Insights audited (still wired)
-- Events: subscribe, audience_select, cta_click, article_read_depth, contact_submit — see `docs/ANALYTICS.md`
+- Events: subscribe, audience_select, cta_click, article_read_depth, contact_submit - see `docs/ANALYTICS.md`
 - Consent CMP deferred (document only) until region traffic requires it
 
 **LLM & AI-search**
@@ -228,18 +228,18 @@ Three calm paths (not glow cards):
 | D22 | First-time visitors **pick audience first**; returning get brand home | **Accepted** |
 | D23 | Public content label = **Writing** | **Accepted** |
 | D24 | Type: **Newsreader** (display) + **Source Sans 3** (UI) + **Source Serif 4** (articles) | **Superseded by D41** |
-| D25 | Accent: **navy ink + steel** — cool gray-white paper, deep navy `--brand`, soft gold `--spark` for “New” only (supersedes warm-paper teal / ink+signal teal) | **Accepted** |
+| D25 | Accent: **navy ink + steel** - cool gray-white paper, deep navy `--brand`, soft gold `--spark` for “New” only (supersedes warm-paper teal / ink+signal teal) | **Accepted** |
 | D26 | Viewport allows zoom; `colorScheme: light dark`; skip-link → `#main-content` | Phase 0 |
 | D27 | `prefers-reduced-motion` respected globally; `:focus-visible` ring on brand | Phase 0 |
 | D28 | Theme control = accessible button group (light/dark/system) | Phase 0 |
-| D29 | Upgrade to **latest Next.js and dependencies** before / as Phase 0.5 (toolchain first, then Phase 1 UI) | **Done** — see Phase 0.5 |
-| D30 | Defer Tailwind 4 / Zod 4 / TS 7 / ESLint 10 / day-picker 9+ to later migrations | **Done** (2026-09-30) — see stack note |
+| D29 | Upgrade to **latest Next.js and dependencies** before / as Phase 0.5 (toolchain first, then Phase 1 UI) | **Done** - see Phase 0.5 |
+| D30 | Defer Tailwind 4 / Zod 4 / TS 7 / ESLint 10 / day-picker 9+ to later migrations | **Done** (2026-09-30) - see stack note |
 | D31 | Public shell: sidebar only on `/learning`, `/editor`, `/admin` | Phase 1 |
 | D32 | Nav: Writing · Work · About · Contact · Subscribe | Phase 1 |
 | D33 | Article links still `/learning/[id]` until Phase 2 slug migration | **Superseded by D34** |
 | D34 | Canonical article URLs: `/writing/{slugified-title}-{id}`; `/learning` → `/writing` redirects | Phase 2 |
 | D35 | Writing UX: TOC, reading time, progress, related + subscribe end CTA | Phase 2 |
-| D36 | After Phases 3–4: **Phase 5** = complete SEO + Google Analytics + LLM/AI-search optimization | **Done** |
+| D36 | After Phases 3-4: **Phase 5** = complete SEO + Google Analytics + LLM/AI-search optimization | **Done** |
 | D37 | Work = case studies (problem → approach → outcome → stack); Blox first; About links to `/work` | Phase 3 |
 | D38 | Audience homes share shell; hiring/clients/readers each have distinct sections + CTAs | Phase 3 |
 | D39 | RSS at `/feed.xml`; series hubs at `/writing/series` + `/writing/series/{name}-{id}` | Phase 4 |
@@ -247,18 +247,18 @@ Three calm paths (not glow cards):
 | D41 | Brand/display type: **Outfit** (modern sans); articles keep Source Serif 4 | Accepted |
 | D42 | Audience cards use function labels: Review for a role / Explore the work / Read the essays | Accepted |
 | D43 | Brand wordmark lives in the header; page H1 is purpose (not the name), except About | Accepted |
-| D45 | Home/Writing density: Josh-inspired **lively & filled** — organic life-hero, excerpted article blocks, series chips, inline subscribe; keep ink+teal then **navy** | **Accepted** |
+| D45 | Home/Writing density: Josh-inspired **lively & filled** - organic life-hero, excerpted article blocks, series chips, inline subscribe; keep ink+teal then **navy** | **Accepted** |
 | D46 | Sitewide centered `max-w-3xl` + life-hero; email-first subscribe; stable series color map | **Accepted** |
 
-### Phase V — Visual polish (craft minimal)
+### Phase V - Visual polish (craft minimal)
 
 **Status:** **Done** (2026-09-30)  
-**After:** Phases 0–4 UI; can run before or after Phase 5 SEO.
+**After:** Phases 0-4 UI; can run before or after Phase 5 SEO.
 
 Shipped:
 - Stronger type scale (`display-title`, Outfit display vs Source Sans body)
 - Hairline rules / separators; soft `--elev-1` / `--elev-2` surfaces
-- `Reveal` scroll enter (2–3 staged delays; `prefers-reduced-motion` safe)
+- `Reveal` scroll enter (2-3 staged delays; `prefers-reduced-motion` safe)
 - Glass header; craft hero + CTA variants; path-row audience picker
 - Writing / audience shells aligned to display titles + craft CTAs
 - Keep light-first + **ink + signal teal**; copper `--spark` for rare “New” marks only; no purple glow / terracotta cream
@@ -275,7 +275,7 @@ Shipped:
 
 ## 10. Next ask for the owner
 
-Phase 0–5 + **V** complete. Deferred toolchain majors shipped.
+Phase 0-5 + **V** complete. Deferred toolchain majors shipped.
 
 Optional follow-ups:
 - Set `NEXT_PUBLIC_GSC_VERIFICATION` and submit sitemap in Search Console

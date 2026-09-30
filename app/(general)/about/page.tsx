@@ -4,18 +4,19 @@ import Link from "next/link";
 import Icons from "@/components/Icons";
 import { Metadata } from "next";
 import { LINKEDIN_URL, AUDIENCES } from "@/lib/audience";
+import { CTA } from "@/lib/ctas";
 
 export const metadata: Metadata = {
-  title: "About Syed Baqir Ali — AI & Software Innovation",
+  title: "About Syed Baqir Ali | AI & Software Innovation",
   description:
-    "Software innovation and AI leadership — researched writing, shipped products, and practical delivery for teams.",
+    "Software innovation and AI leadership. Researched writing, shipped products, and practical delivery for teams.",
 };
 
 export default function About() {
   return (
     <div className='w-full'>
       <div className='life-hero'>
-        <div className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 pt-14 pb-16 text-center md:pt-20 md:pb-24'>
+        <div className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col items-center gap-6 px-4 pt-20 pb-12 text-center md:pt-24 md:pb-16'>
           <div className='relative h-36 w-36 shrink-0 overflow-hidden rounded-full bg-brand/15 ring-2 ring-border/80 shadow-elev1 md:h-44 md:w-44'>
             <Image
               className='object-cover'
@@ -37,16 +38,16 @@ export default function About() {
             <p className='mx-auto max-w-xl text-muted-foreground leading-relaxed'>
               Through writing and shipped work, I help individuals and teams
               harness technology, streamline processes, and build projects that
-              make an impact — research-depth, still easy to follow.
+              make an impact. Research-depth, still easy to follow.
             </p>
             <div className='flex flex-wrap gap-3 justify-center pt-2'>
               <Link href='/writing' className='craft-cta-secondary'>
-                <Icons.PencilLine className='craft-cta-icon' aria-hidden />
-                Writing
+                <Icons.BookOpen className='craft-cta-icon' aria-hidden />
+                {CTA.writing}
               </Link>
               <Link href='/work' className='craft-cta-secondary'>
                 <Icons.FolderCode className='craft-cta-icon' aria-hidden />
-                Work
+                {CTA.work}
               </Link>
               <a
                 href={LINKEDIN_URL}
@@ -55,7 +56,7 @@ export default function About() {
                 className='craft-cta-secondary'
               >
                 <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
-                LinkedIn
+                {CTA.linkedin}
               </a>
             </div>
           </header>
@@ -93,7 +94,7 @@ export default function About() {
             Work, separate from Writing
           </h2>
           <p className='text-muted-foreground leading-relaxed mb-4'>
-            Case studies live under Work — problem, approach, outcome, and stack.
+            Case studies live under Work: problem, approach, outcome, and stack.
           </p>
           <Link
             href='/work'

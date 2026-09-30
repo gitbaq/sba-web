@@ -68,7 +68,7 @@ export default function SubscribeForm({
         toast("Error: " + data.errors);
         throw new Error("Error: " + data.errors);
       }
-      setSuccess("You are subscribed — thank you.");
+      setSuccess("You are subscribed. Thank you.");
       trackEvent("subscribe_submit", { status: "success" });
       router.push(`/profile/${data.data.id}`);
     } catch (err) {

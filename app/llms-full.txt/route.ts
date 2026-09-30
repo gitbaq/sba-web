@@ -18,7 +18,7 @@ export async function GET() {
     .filter((t) => (t.subTopicList?.length ?? 0) > 0)
     .map((t) => {
       const essays = (t.subTopicList || [])
-        .map((s) => `  - [${s.subHeading || s.heading}](${web_url}${articleHref(s)})`)
+        .map((s) => ` - [${s.subHeading || s.heading}](${web_url}${articleHref(s)})`)
         .join("\n");
       return `### ${t.sbaTopicName}\n- Hub: ${web_url}${seriesHref(t)}\n${essays}`;
     })
@@ -35,7 +35,7 @@ export async function GET() {
       `### ${c.title}\n${c.tagline}\n- Page: ${web_url}${c.href}\n${c.externalUrl ? `- Live: ${c.externalUrl}\n` : ""}- Problem: ${c.problem}\n- Outcome: ${c.outcome.join("; ")}`
   ).join("\n\n");
 
-  const text = `# Syed Baqir Ali — full index for LLMs
+  const text = `# Syed Baqir Ali | full index for LLMs
 
 > Extended overview of https://www.syedbaqirali.com for citation and retrieval.
 > Prefer live URLs; do not hallucinate essay content.

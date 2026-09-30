@@ -1,13 +1,14 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { LINKEDIN_URL } from "@/lib/audience";
+import { CTA } from "@/lib/ctas";
 import { CREDENTIAL_LINKS } from "@/lib/work";
 import AudienceShell from "@/components/audience/AudienceShell";
 import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
 
 export const metadata: Metadata = {
-  title: "Review for a role — Syed Baqir Ali",
+  title: "Review for a role | Syed Baqir Ali",
   description:
     "Background, writing samples, and systems approach for role evaluation.",
 };
@@ -15,15 +16,15 @@ export const metadata: Metadata = {
 const signals = [
   {
     title: "Communication under complexity",
-    text: "Writing that makes AI and systems topics accurate without gatekeeping — a proxy for how I explain trade-offs in interviews and on teams.",
+    text: "Writing that makes AI and systems topics accurate without gatekeeping. A proxy for how I explain trade-offs in interviews and on teams.",
   },
   {
     title: "Builder’s instinct",
-    text: "Shipped product work (Cobu, Blox) alongside research-depth essays — not slides detached from delivery.",
+    text: "Shipped product work (Cobu, Blox) alongside research-depth essays. Not slides detached from delivery.",
   },
   {
     title: "Architecture & AI literacy",
-    text: "Comfort across cloud, DevOps, and applied AI — with enough depth to challenge and enough clarity to align stakeholders.",
+    text: "Comfort across cloud, DevOps, and applied AI. Enough depth to challenge. Enough clarity to align stakeholders.",
   },
 ];
 
@@ -34,12 +35,28 @@ export default async function ForHiringPage() {
     <AudienceShell
       eyebrow='Review for a role'
       title='Clarity on how I think and build'
-      description='I write and ship at the intersection of AI, cloud, and product engineering. Use the materials below to assess depth, communication, and fit — then reach out if there is a match.'
+      description='I write and ship at the intersection of AI, cloud, and product engineering. Use the materials below to assess depth, communication, and fit. Reach out if there is a match.'
       ctas={[
-        { href: LINKEDIN_URL, label: "LinkedIn", external: true, variant: "primary", icon: "linkedin" },
-        { href: "/contact", label: "Contact", variant: "secondary", icon: "contact" },
-        { href: "/work", label: "Work", variant: "ghost", icon: "work" },
-        { href: "/writing", label: "All writing", variant: "ghost", icon: "writing" },
+        {
+          href: "/contact",
+          label: CTA.contact,
+          variant: "primary",
+          icon: "contact",
+        },
+        {
+          href: "/writing",
+          label: CTA.writing,
+          variant: "secondary",
+          icon: "writing",
+        },
+        { href: "/work", label: CTA.work, variant: "secondary", icon: "work" },
+        {
+          href: LINKEDIN_URL,
+          label: CTA.linkedin,
+          external: true,
+          variant: "secondary",
+          icon: "linkedin",
+        },
       ]}
     >
       <section aria-labelledby='signals' className='flex flex-col gap-6'>

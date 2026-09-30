@@ -4,7 +4,7 @@ export type AudienceId = "hiring" | "clients" | "readers";
 
 export const AUDIENCES: {
   id: AudienceId;
-  /** Function-oriented card title — what someone came to do */
+  /** Function-oriented card title - what someone came to do */
   label: string;
   href: string;
   description: string;
@@ -30,7 +30,7 @@ export const AUDIENCES: {
     label: "Read the essays",
     pathName: "reading path",
     href: "/for/readers",
-    description: "Research-depth writing on AI and software — newest first.",
+    description: "Research-depth writing on AI and software. Newest first.",
   },
 ];
 

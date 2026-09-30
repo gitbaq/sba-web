@@ -21,10 +21,10 @@ Set `NEXT_PUBLIC_GSC_VERIFICATION` to the Google HTML-tag verification token to 
 
 ## Consent
 
-No CMP yet — personal site, GA loads with the page. Add region-aware consent if EU traffic requires it.
+No CMP yet - personal site, GA loads with the page. Add region-aware consent if EU traffic requires it.
 
 ## LLM surfaces
 
-- `/llms.txt` — short brand + IA index
-- `/llms-full.txt` — series, work, recent abstracts
-- `/robots.txt` — allows GPTBot, ClaudeBot, Google-Extended, PerplexityBot; blocks Bytespider
+- `/llms.txt` - short brand + IA index
+- `/llms-full.txt` - series, work, recent abstracts
+- `/robots.txt` - allows GPTBot, ClaudeBot, Google-Extended, PerplexityBot; blocks Bytespider

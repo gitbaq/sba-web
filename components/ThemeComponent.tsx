@@ -1,11 +1,11 @@
-import dynamic from 'next/dynamic';
-import React from 'react'
+"use client";
 
-const ThemeComponent = () => {
-    const ThemeSelectorNoSSR = dynamic(() => import("./ThemeSelector"), {
-        ssr: false,
-      });
+import dynamic from "next/dynamic";
+
+const ThemeSelectorNoSSR = dynamic(() => import("./ThemeSelector"), {
+  ssr: false,
+});
+
+export default function ThemeComponent() {
   return <ThemeSelectorNoSSR />;
 }
-
-export default ThemeComponent

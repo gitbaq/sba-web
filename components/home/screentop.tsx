@@ -29,13 +29,13 @@ const ScreenTop = () => {
         </div>
 
         <div className='p-2 max-w-sm'>
-          AI is no longer a luxury—it`s a necessity. Take the leap into a
+          AI is no longer a luxury. It`s a necessity. Take the leap into a
           promising future and position your business as a leader in your
           industry.
         </div>
         <div className='flex flex-row gap-1 p-5'>
           <Icons.FaQuoteLeft className='text-cyan-600 min-h-4 min-w-4' />{" "}
-          Innovation distinguishes between a leader and a follower - Steve Jobs
+          Innovation distinguishes between a leader and a follower. Steve Jobs
         </div>
         <div className='p-3 text-cyan-900'>
           Ready to lead? Let`s build your AI-driven future today.

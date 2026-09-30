@@ -1,13 +1,16 @@
-import { toast } from "sonner";
 import { quotes_url } from "../endpoints/endpoints";
+import type { RandomQuote } from "@/types/types";
 
-export async function getRandomQuote() {
-  const res = await fetch(`${quotes_url}`);
-
-  if (!res.ok) {
-    toast("Failed to fetch Quote");
-    throw new Error("failed to fetch Quote");
+export async function getRandomQuote(): Promise<RandomQuote | null> {
+  try {
+    const res = await fetch(quotes_url, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as RandomQuote;
+    if (!data?.quoteText) return null;
+    return data;
+  } catch {
+    return null;
   }
-
-  return res.json();
 }

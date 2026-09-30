@@ -7,7 +7,7 @@ const Brand = () => {
     <Link
       href='/'
       className='flex flex-row gap-2.5 h-full items-center hover:no-underline min-w-0'
-      aria-label='Syed Baqir Ali — home'
+      aria-label='Syed Baqir Ali | home'
     >
       <BrandMark className='h-8 w-8 shrink-0' />
       <span className='font-display text-xl md:text-2xl text-nowrap tracking-tight font-semibold text-foreground'>

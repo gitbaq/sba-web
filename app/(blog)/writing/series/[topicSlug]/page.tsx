@@ -24,7 +24,7 @@ export async function generateMetadata({
   const topic = getTopicById(topics, parsed.id);
   if (!topic) return {};
   return {
-    title: `${topic.sbaTopicName} — Series`,
+    title: `${topic.sbaTopicName} | Series`,
     description: `Essays in the ${topic.sbaTopicName} series by Syed Baqir Ali.`,
   };
 }

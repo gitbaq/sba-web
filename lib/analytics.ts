@@ -1,4 +1,4 @@
-/** GA4 helpers — safe no-ops when gtag is unavailable (SSR / blocked). */
+/** GA4 helpers - safe no-ops when gtag is unavailable (SSR / blocked). */
 
 export type AnalyticsEvent =
   | "subscribe_submit"

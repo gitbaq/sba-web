@@ -201,7 +201,7 @@ export function LearningSidebar() {
                   </TooltipTrigger>
                   <TooltipContent side='right'>
                     <div className='tooltips'>
-                      Click here to visit The Reasoning Stack - My Blog and
+                      Click here to visit The Reasoning Stack. My Blog and
                       Newsletter
                     </div>
                   </TooltipContent>

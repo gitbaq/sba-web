@@ -3,9 +3,11 @@ import Link from "next/link";
 import AudienceShell from "@/components/audience/AudienceShell";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
 import { CALENDLY_URL, CASE_STUDIES } from "@/lib/work";
+import { LINKEDIN_URL } from "@/lib/audience";
+import { CTA } from "@/lib/ctas";
 
 export const metadata: Metadata = {
-  title: "Explore the work — Syed Baqir Ali",
+  title: "Explore the work | Syed Baqir Ali",
   description:
     "Delivery approach, outcomes, and selected case studies for project work.",
 };
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
 const outcomes = [
   {
     title: "Custom AI solutions",
-    text: "Design and implement AI-powered applications — generative AI, predictive analytics, NLP tools — grounded in real product constraints.",
+    text: "Design and implement AI-powered applications. Generative AI, predictive analytics, and NLP tools, grounded in real product constraints.",
   },
   {
     title: "AI-driven customer experience",
@@ -38,7 +40,7 @@ const process = [
   {
     step: "02",
     title: "Build the thin slice",
-    text: "Ship a credible vertical slice early — proof over promises.",
+    text: "Ship a credible vertical slice early. Proof over promises.",
   },
   {
     step: "03",
@@ -54,18 +56,29 @@ export default function ForClientsPage() {
     <AudienceShell
       eyebrow='Explore the work'
       title='Outcomes over slide decks'
-      description='Practical delivery across AI, cloud, and software systems — with writing that explains the why, not just the what.'
+      description='Practical delivery across AI, cloud, and software systems. Writing that explains the why, not just the what.'
       ctas={[
-        { href: "/contact", label: "Start a conversation", variant: "primary", icon: "contact" },
+        {
+          href: "/contact",
+          label: CTA.contact,
+          variant: "primary",
+          icon: "contact",
+        },
         {
           href: CALENDLY_URL,
-          label: "Book 30 min",
+          label: CTA.calendly,
           external: true,
           variant: "secondary",
           icon: "calendar",
         },
-        { href: "/work", label: "See work", variant: "ghost", icon: "work" },
-        { href: "/subscribe", label: "Subscribe", variant: "ghost", icon: "mail" },
+        { href: "/work", label: CTA.work, variant: "secondary", icon: "work" },
+        {
+          href: LINKEDIN_URL,
+          label: CTA.linkedin,
+          external: true,
+          variant: "secondary",
+          icon: "linkedin",
+        },
       ]}
     >
       <section aria-labelledby='outcomes' className='flex flex-col gap-6'>

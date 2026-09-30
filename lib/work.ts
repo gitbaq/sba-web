@@ -6,7 +6,7 @@ export type CaseStudy = {
   tagline: string;
   href: string;
   externalUrl?: string;
-  /** Brand mark path — shown as an icon tile, not a screenshot */
+  /** Brand mark path - shown as an icon tile, not a screenshot */
   mark: string;
   problem: string;
   approach: string[];
@@ -19,12 +19,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "cobu",
     title: "Cobu",
     tagline:
-      "AI brainstorm buddy — chat, explore ideas, and think with OpenAI or Anthropic.",
+      "AI brainstorm buddy. Chat, explore ideas, and think with OpenAI or Anthropic.",
     href: "/work/cobu",
     externalUrl: cobu_url,
     mark: "/portfolio/cobu/mark.png",
     problem:
-      "Most AI chat tools are either generic assistants or opaque enterprise stacks. People need a focused place to brainstorm, discuss, and pressure-test ideas — with a real choice of models and fresh web context when it matters.",
+      "Most AI chat tools are either generic assistants or opaque enterprise stacks. People need a focused place to brainstorm, discuss, and pressure-test ideas, with a real choice of models and fresh web context when it matters.",
     approach: [
       "Center the product on brainstorming and natural conversation, not command menus.",
       "Let people choose OpenAI or Anthropic so the model fits the task.",
@@ -52,10 +52,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     externalUrl: blox_url,
     mark: "/portfolio/blox/mark.png",
     problem:
-      "Most productivity tools reward complexity — long setups, rigid systems, and guilt when life gets busy. People need a calm place to set achievable goals, build habits, and see what actually won the week.",
+      "Most productivity tools reward complexity: long setups, rigid systems, and guilt when life gets busy. People need a calm place to set achievable goals, build habits, and see what actually won the week.",
     approach: [
       "Start from outcomes: habits and weekly wins, not feature checklists.",
-      "Keep the first session short — goals that feel achievable on day one.",
+      "Keep the first session short. Goals that feel achievable on day one.",
       "Surface progress visually so momentum is obvious without dashboards.",
       "Ship iteratively as a real product at blox.syedbaqirali.com.",
     ],

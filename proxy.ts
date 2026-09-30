@@ -26,7 +26,7 @@ export async function proxy(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/editor/:path*", "/contact", "/admin/:path*", "/logout"],
+  matcher: ["/editor/:path*", "/admin/:path*", "/logout"],
   // matcher: ["/:path*"],
 };
 
