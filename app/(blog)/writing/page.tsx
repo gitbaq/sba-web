@@ -10,11 +10,18 @@ import { seriesStyle } from "@/lib/seriesColors";
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Essays on AI, software, and systems. Newest first. About one piece a week.",
+    "Essays on AI, software, and systems. Newest first. New essays as they publish.",
   alternates: {
+    canonical: "/writing",
     types: {
       "application/rss+xml": "/feed.xml",
     },
+  },
+  openGraph: {
+    title: "Writing | Syed Baqir Ali",
+    description:
+      "Essays on AI, software, and systems. Newest first. New essays as they publish.",
+    url: "/writing",
   },
 };
 
@@ -40,15 +47,15 @@ export default async function WritingPage({
             Writing
           </h1>
           <p className='text-muted-foreground text-lg leading-relaxed max-w-xl'>
-            Essays on AI, software, and systems. Newest first.
-            About one piece a week.
+            Essays on AI, software, and systems. Newest first. New essays as
+            they publish.
           </p>
           <p className='flex flex-wrap gap-x-3 gap-y-1 text-sm pt-1'>
             <Link
               href='/subscribe'
               className='text-brand font-semibold underline-offset-4 hover:underline'
             >
-              Get Weekly Insights
+              Subscribe
             </Link>
             <a
               href='/feed.xml'

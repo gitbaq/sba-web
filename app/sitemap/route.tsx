@@ -84,6 +84,24 @@ function generateSiteMap(posts: SubTopic[], seriesUrls: string[]) {
   </url>
   ${workCaseUrls}
   <url>
+    <loc>${web_url}/contact</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>${web_url}/subscribe</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${web_url}/privacy</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>${web_url}/for/hiring</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>

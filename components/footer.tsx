@@ -10,7 +10,9 @@ const NAV = [
   { href: "/subscribe", label: "Subscribe" },
   { href: "/writing/series", label: "Series" },
   { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
   { href: "/feed.xml", label: "RSS", external: true },
+  { href: "/login", label: "Login" },
 ] as const;
 
 const Footer = () => {
@@ -26,10 +28,10 @@ const Footer = () => {
           >
             Syed <span className='text-muted-foreground'>Baqir Ali</span>
           </Link>
-          <p className='max-w-xs text-sm text-muted-foreground leading-relaxed'>
+          <p className='max-w-xs text-sm leading-relaxed text-muted-foreground'>
             Practical notes on software, AI, and leading teams.
           </p>
-          <p className='text-xs text-muted-foreground pt-1'>
+          <p className='pt-1 text-xs text-muted-foreground'>
             © {year} Syed Baqir Ali
           </p>
         </div>
@@ -38,7 +40,7 @@ const Footer = () => {
           <p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
             Explore
           </p>
-          <ul className='flex flex-wrap gap-x-4 gap-y-2 list-none m-0 p-0 md:max-w-sm'>
+          <ul className='m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 md:max-w-sm'>
             {NAV.map((item) => (
               <li key={item.href}>
                 {"external" in item && item.external ? (
@@ -51,7 +53,11 @@ const Footer = () => {
                 ) : (
                   <Link
                     href={item.href}
-                    className='text-sm text-muted-foreground transition-colors hover:text-brand'
+                    className={`text-sm transition-colors hover:text-brand ${
+                      item.href === "/login"
+                        ? "text-muted-foreground/80"
+                        : "text-muted-foreground"
+                    }`}
                   >
                     {item.label}
                   </Link>

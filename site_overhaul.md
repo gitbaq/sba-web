@@ -63,18 +63,19 @@ Acceptance: `docs/audit-baseline.md` exists and answers the four questions above
 
 ### 4.1 Rendering and metadata
 
-- [ ] P1-01 Make every public route server-rendered or statically generated. No "Loading…" in initial HTML. Use server components and fetch on the server.
-- [ ] P1-02 Add a metadata system with `generateMetadata` per route.
+- [x] P1-01 Make every public route server-rendered or statically generated. No "Loading…" in initial HTML. Use server components and fetch on the server.
+- [x] P1-02 Add a metadata system with `generateMetadata` per route.
   - Title template: `%s | Syed Baqir Ali`. Never repeat the site name twice.
   - Unique `description` per page, 120 to 155 characters.
   - Correct `og:title`, `og:description`, `og:url`, and `og:image` per page.
   - `alternates.canonical` on every page.
   - Remove the meta keywords tag.
-- [ ] P1-03 Align homepage title and tagline. Title: `Syed Baqir Ali | Practical Writing on AI and Software`. Tagline: `Practical notes on software, AI, and leading teams.`
-- [ ] P1-04 Add `app/sitemap.ts` (dynamic, from the API) and `app/robots.ts`.
+- [x] P1-03 Align homepage title and tagline. Title: `Syed Baqir Ali | Practical Writing on AI and Software`. Tagline: `Practical notes on software, AI, and leading teams.`
+- [x] P1-04 Add `app/sitemap.ts` (dynamic, from the API) and `app/robots.ts`.
+  - *(Kept existing `/sitemap` and `/robots.txt` route handlers; extended with privacy + AI crawler comment.)*
   - Sitemap lists only indexable URLs with `lastModified`.
   - Robots allows all crawlers, including AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended). Add a code comment so the owner can change this.
-- [ ] P1-05 Add `link rel="alternate" type="application/rss+xml"` in the head.
+- [x] P1-05 Add `link rel="alternate" type="application/rss+xml"` in the head.
 
 ### 4.2 Slugs, redirects, and essay data
 
@@ -95,20 +96,22 @@ Acceptance: `docs/audit-baseline.md` exists and answers the four questions above
 - [ ] P1-11 Replace dead `#` links in the Blockchain 101 list. Render published parts as links and unpublished parts as plain text, or remove them. `TODO(owner): decide whether to publish the series or shorten the promise.`
 - [ ] P1-12 Fix "Related reading". Rank by shared series, then shared tags, then recency. Exclude the current post.
 
+**P1B note (2026-10-02):** P1-06…12 blocked on `sba_backend_monorepo` schema/API work. Frontend continues to use `{title}-{id}` URLs until then.
+
 ### 4.3 Copy and links
 
-- [ ] P1-13 Remove cadence claims. Use "New essays as they publish." Apply on writing index, subscribe, and essay footer.
-- [ ] P1-14 Subscribe copy:
+- [x] P1-13 Remove cadence claims. Use "New essays as they publish." Apply on writing index, subscribe, and essay footer.
+- [x] P1-14 Subscribe copy:
   - H1: `Get new essays by email`
   - Bullets: `New essays as they publish`, `AI, software systems, and engineering leadership`, `Unsubscribe anytime`
   - Button: `Subscribe`
   - Keep the RSS link as secondary.
-- [ ] P1-15 Header: remove public "Login". Move it to the footer as a small link.
-- [ ] P1-16 Links: replace the LinkedIn URL with the profile URL (`TODO(owner): confirm exact profile URL`). Change `twitter.com` to `x.com`. Give every icon or URL link a readable label. Keep Calendly. Drop Linktree from the footer.
-- [ ] P1-17 Writing index cards: remove the repeated title from the excerpt. Show title, `dek`, date, reading time. Remove "Read more".
-- [ ] P1-18 Clients page: one primary button `Book a 30 minute call` (Calendly). One secondary link `Contact`. Remove the LinkedIn and View Work buttons from the hero. Add Blox to featured work.
-- [ ] P1-19 Contact page: add a "Reason" select (`Project`, `Role`, `Question about writing`, `Other`). Add `TODO(owner): reply-time promise`.
-- [ ] P1-20 Add `/privacy` with a short plain-language policy covering contact form and newsletter data.
+- [x] P1-15 Header: remove public "Login". Move it to the footer as a small link.
+- [x] P1-16 Links: replace the LinkedIn URL with the profile URL (`TODO(owner): confirm exact profile URL`). Change `twitter.com` to `x.com`. Give every icon or URL link a readable label. Keep Calendly. Drop Linktree from the footer.
+- [x] P1-17 Writing index cards: remove the repeated title from the excerpt. Show title, `dek`, date, reading time. Remove "Read more".
+- [x] P1-18 Clients page: one primary button `Book a 30 minute call` (Calendly). One secondary link `Contact`. Remove the LinkedIn and View Work buttons from the hero. Add Blox to featured work.
+- [x] P1-19 Contact page: add a "Reason" select (`Project`, `Role`, `Question about writing`, `Other`). Add `TODO(owner): reply-time promise`.
+- [x] P1-20 Add `/privacy` with a short plain-language policy covering contact form and newsletter data.
 
 Acceptance for Phase 1:
 

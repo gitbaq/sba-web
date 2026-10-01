@@ -29,57 +29,60 @@ function ArticleBlock({
   const dateStr = postDate(post);
   const showNew = isNewPost(dateStr);
   const minutes = estimateReadingMinutes(post.content || "");
-  const excerpt = extractTextFromHtml(post.content || "", featured ? 220 : 160);
+  // Prefer subHeading as dek when it differs from the card title; else excerpt.
   const title = post.subHeading || post.heading;
+  const dekSource =
+    post.subHeading && post.heading && post.subHeading !== post.heading
+      ? ""
+      : extractTextFromHtml(post.content || "", featured ? 180 : 140);
+  // Avoid repeating the title inside the excerpt line.
+  const excerpt = dekSource
+    .replace(new RegExp(`^${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[.…]?\\s*`, "i"), "")
+    .trim();
   const topic = post.sbaTopicName || post.heading;
 
   return (
     <Link
       href={articleHref(post)}
       className={
-        featured
-          ? "article-entry-featured group"
-          : "article-entry group"
+        featured ? "article-entry-featured group" : "article-entry group"
       }
     >
-      <div className='flex flex-wrap items-center gap-x-3 gap-y-1 mb-2'>
+      <div className='mb-2 flex flex-wrap items-center gap-x-3 gap-y-1'>
         {showNew && (
           <span className='text-[10px] font-bold uppercase tracking-wider text-spark'>
             New
           </span>
         )}
-        {topic && (
+        {topic && topic !== title && (
           <span className='series-label' style={seriesStyle(topic)}>
             {topic}
           </span>
         )}
-        <span className='text-xs text-muted-foreground tabular-nums'>
+        <span className='text-xs tabular-nums text-muted-foreground'>
           {minutes} min read
-          {dateStr
-            ? ` · ${format(new Date(dateStr), "MMM d, yyyy")}`
-            : ""}
+          {dateStr ? ` · ${format(new Date(dateStr), "MMM d, yyyy")}` : ""}
         </span>
       </div>
       <h3
-        className={`font-display font-bold tracking-tight text-foreground group-hover:text-brand transition-colors ${
+        className={`font-display font-bold tracking-tight text-foreground transition-colors group-hover:text-brand ${
           featured
-            ? "text-2xl sm:text-3xl md:text-[2rem] leading-[1.15] mb-3"
-            : "text-xl sm:text-2xl leading-snug mb-2"
+            ? "mb-3 text-2xl leading-[1.15] sm:text-3xl md:text-[2rem]"
+            : "mb-2 text-xl leading-snug sm:text-2xl"
         }`}
       >
         {title}
       </h3>
-      <p
-        className={`text-muted-foreground leading-relaxed ${
-          featured ? "text-base md:text-lg max-w-2xl" : "text-[0.95rem] max-w-2xl"
-        }`}
-      >
-        {excerpt}
-        {excerpt.length >= (featured ? 220 : 160) ? "…" : ""}
-      </p>
-      <span className='inline-flex mt-3 text-sm font-semibold text-brand underline-offset-4 group-hover:underline'>
-        Read more
-      </span>
+      {excerpt ? (
+        <p
+          className={`leading-relaxed text-muted-foreground ${
+            featured ? "max-w-2xl text-base md:text-lg" : "max-w-2xl text-[0.95rem]"
+          }`}
+        >
+          {excerpt}
+          {excerpt.length >= (featured ? 180 : 140) ? "…" : ""}
+        </p>
+      ) : null}
     </Link>
   );
 }
@@ -97,19 +100,19 @@ export default function LatestWriting({
         <p className='accent-label mb-3'>Writing</p>
         <h2
           id='latest-writing'
-          className='display-title text-3xl md:text-4xl mb-4'
+          className='display-title mb-4 text-3xl md:text-4xl'
         >
           {title}
         </h2>
-        <p className='text-muted-foreground text-lg'>
-          New essays land here weekly.{" "}
+        <p className='text-lg text-muted-foreground'>
+          New essays as they publish.{" "}
           <Link
             href='/subscribe'
             className='text-brand underline-offset-4 hover:underline'
           >
             Subscribe
           </Link>{" "}
-          to get them first.
+          to get them by email.
         </p>
       </section>
     );
@@ -120,12 +123,12 @@ export default function LatestWriting({
 
   return (
     <section className={`w-full ${className}`} aria-labelledby='latest-writing'>
-      <div className='flex flex-row items-end justify-between gap-4 mb-6'>
+      <div className='mb-6 flex flex-row items-end justify-between gap-4'>
         <div>
-          <p className='accent-label mb-2'>Articles &amp; essays</p>
+          <p className='accent-label mb-2'>Articles and essays</p>
           <h2
             id='latest-writing'
-            className='display-title text-3xl md:text-4xl text-foreground'
+            className='display-title text-3xl text-foreground md:text-4xl'
           >
             {title}
           </h2>
@@ -133,7 +136,7 @@ export default function LatestWriting({
         {showViewAll && (
           <Link
             href='/writing'
-            className='text-sm font-semibold text-brand underline-offset-4 hover:underline shrink-0 pb-1'
+            className='shrink-0 pb-1 text-sm font-semibold text-brand underline-offset-4 hover:underline'
           >
             View all
           </Link>
@@ -142,7 +145,7 @@ export default function LatestWriting({
 
       <div className='flex flex-col'>
         {featuredPost && <ArticleBlock post={featuredPost} featured />}
-        <ul className='flex flex-col list-none p-0 m-0'>
+        <ul className='m-0 flex list-none flex-col p-0'>
           {list.map((post) => (
             <li key={post.id}>
               <ArticleBlock post={post} />

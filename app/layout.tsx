@@ -30,13 +30,6 @@ export const metadata: Metadata = {
   authors: [{ name: SITE.name, url: SITE.url }],
   creator: SITE.name,
   publisher: SITE.name,
-  keywords: [
-    "Syed Baqir Ali",
-    "AI writing",
-    "software essays",
-    "machine learning",
-    "product engineering",
-  ],
   openGraph: {
     type: "website",
     locale: SITE.locale,
@@ -62,7 +55,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     types: {
-      "application/rss+xml": `${SITE.url}/feed.xml`,
+      "application/rss+xml": [
+        { url: `${SITE.url}/feed.xml`, title: "Writing RSS" },
+      ],
     },
   },
   robots: {
@@ -76,9 +71,7 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  ...(gsc
-    ? { verification: { google: gsc } }
-    : {}),
+  ...(gsc ? { verification: { google: gsc } } : {}),
 };
 
 /** WCAG: allow pinch-zoom; support light + dark color schemes */

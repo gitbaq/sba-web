@@ -25,10 +25,18 @@ import Icons from "@/components/Icons";
 import { trackEvent } from "@/lib/analytics";
 import { LINKEDIN_URL } from "@/lib/audience";
 
+const REASONS = [
+  "Project",
+  "Role",
+  "Question about writing",
+  "Other",
+] as const;
+
 const formSchema = z.object({
   email: z.string().email({
     error: "Enter valid email.",
   }),
+  reason: z.enum(REASONS),
   subject: z.string().max(255),
   message: z.string().min(1).max(2000),
 });
@@ -41,6 +49,7 @@ export default function Contact() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      reason: "Project",
       subject: "",
       message: "",
     },
@@ -52,17 +61,22 @@ export default function Contact() {
     setSuccess(null);
 
     try {
+      const payload = {
+        email: values.email,
+        subject: `[${values.reason}] ${values.subject}`.slice(0, 255),
+        message: values.message,
+      };
       const res = await fetch(contact_url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         throw new Error(
-          "Message couldn’t be sent right now. Try LinkedIn or email below."
+          "Message could not be sent right now. Try LinkedIn or email below."
         );
       }
       setSuccess("Thank you. Your message was received.");
@@ -110,6 +124,28 @@ export default function Contact() {
                 inputType='email'
                 formControl={form.control}
               />
+              <FormField
+                control={form.control}
+                name='reason'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel className='font-semibold'>Reason</FormLabel>
+                    <FormControl>
+                      <select
+                        className='input-field w-full bg-transparent'
+                        {...field}
+                      >
+                        {REASONS.map((r) => (
+                          <option key={r} value={r}>
+                            {r}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <ProfileFormField
                 name='subject'
                 label='Subject'
@@ -131,8 +167,8 @@ export default function Contact() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Suggestions and comments are welcome. I&apos;ll try to
-                      reply shortly.
+                      {/* TODO(owner): reply-time promise */}
+                      Suggestions and comments are welcome.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
