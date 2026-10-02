@@ -252,7 +252,7 @@ export default function XEditor({ params }: { params?: Params }) {
   }
 
   return (
-    <div className='h-full flex flex-col gap-4 p-4'>
+    <div className='flex flex-col gap-4 p-4 pb-8'>
       <div className='flex flex-wrap items-center justify-between gap-3'>
         <div>
           <p className='accent-label mb-1'>Editor</p>

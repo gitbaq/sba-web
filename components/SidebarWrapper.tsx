@@ -83,10 +83,10 @@ function AdminShell({ children }: { children: React.ReactNode }) {
       <SidebarInset
         id='main-content'
         tabIndex={-1}
-        className='admin-main min-h-svh outline-none'
+        className='admin-main min-h-svh outline-none pb-0'
       >
         <Navbar />
-        <div className='w-full flex-1 pt-16'>{children}</div>
+        <div className='w-full flex-1 pt-16 pb-4'>{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

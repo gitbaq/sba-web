@@ -37,7 +37,7 @@ export default function MediaPicker({
   label = "Image",
   roundPreview = false,
 }: Props) {
-  const { token } = useAuth();
+  const { token, handleUnauthorized } = useAuth();
   const [open, setOpen] = useState(false);
   const [prefix, setPrefix] = useState(defaultPrefix);
   const [items, setItems] = useState<MediaItem[]>([]);
@@ -66,14 +66,16 @@ export default function MediaPicker({
             res,
             null
           );
+          if (res.status === 401) {
+            handleUnauthorized();
+            throw new Error("Session expired — sign in again on this host (localhost cookies are separate from production).");
+          }
           throw new Error(
             body?.message ||
               body?.detail ||
-              (res.status === 401
-                ? "Session expired — sign in again"
-                : res.status === 503
-                  ? "S3 is not configured"
-                  : "Could not list media")
+              (res.status === 503
+                ? "S3 is not configured"
+                : "Could not list media")
           );
         }
         const data = await readJson<{
@@ -99,7 +101,7 @@ export default function MediaPicker({
         setLoading(false);
       }
     },
-    [token, prefix]
+    [token, prefix, handleUnauthorized]
   );
 
   useEffect(() => {

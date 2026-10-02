@@ -114,7 +114,7 @@ export default function RootLayout({
           <AuthProvider>
             <RefreshOnBack />
             <TooltipProvider delayDuration={1000}>
-              <div className='flex-1'>
+              <div className='flex min-h-0 w-full flex-1 flex-col'>
                 <SidebarWrapper>
                   {children}
 

@@ -7,6 +7,7 @@ import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import { forwardRef, useImperativeHandle } from "react";
 import { Button } from "@/components/ui/button";
+import "@/app/(blog)/writing/[slug]/article.css";
 
 type Props = {
   value: string;
@@ -36,7 +37,7 @@ const FreeRichTextEditor = forwardRef<FreeRichTextEditorHandle, Props>(
       editorProps: {
         attributes: {
           class:
-            "prose-article min-h-[28rem] max-w-none px-4 py-3 focus:outline-none text-foreground",
+            "article-prose tiptap-editor max-w-none min-h-[28rem] px-4 py-3 focus:outline-none",
         },
       },
       onUpdate: ({ editor: ed }) => {
@@ -134,7 +135,7 @@ const FreeRichTextEditor = forwardRef<FreeRichTextEditorHandle, Props>(
             }}
           />
         </div>
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} className='tiptap-shell' />
       </div>
     );
   }
