@@ -43,7 +43,7 @@ Single root layout: `app/layout.tsx` (nav via `SidebarWrapper`, footer). No nest
 
 ### Env
 
-- `.env` / `.env.local` (gitignored). Used: `NEXT_PUBLIC_GSC_VERIFICATION`, `SESSION_SECRET`, `NEXT_PUBLIC_TINYMCE_API_KEY`.
+- `.env` / `.env.local` (gitignored). Used: `NEXT_PUBLIC_GSC_VERIFICATION`, `SESSION_SECRET`. (TinyMCE API key removed; editor is TipTap self-hosted.)
 
 ### Assumption corrections vs `site_overhaul.md`
 

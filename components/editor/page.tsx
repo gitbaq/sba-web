@@ -1,68 +1,246 @@
 "use client";
-import { Editor } from "@tinymce/tinymce-react";
-import { toolbars } from "./toolbars";
-import { SubTopic } from "@/types/types";
-import { useState } from "react";
+
+import { SubTopic, Topic } from "@/types/types";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/utils/AuthContext";
-import { subtopics_secure_url } from "@/utils/endpoints/endpoints";
+import {
+  subtopics_secure_url,
+  topics_secure_url,
+} from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
 import Image from "next/image";
+import Link from "next/link";
+import FreeRichTextEditor from "@/components/editor/FreeRichTextEditor";
+import { Switch } from "@/components/ui/switch";
 
 type Params = { subId: string | undefined; post: SubTopic };
 
-export default function XEditor({ params }: { params?: Params }) {
-  const post: SubTopic | undefined = params?.post;
-  const { token } = useAuth();
+type FormState = {
+  id: number;
+  topicId: number;
+  publishDate: string;
+  publishedBy: string;
+  createdBy: string;
+  updatedBy: string;
+  isPublished: boolean;
+  heading: string;
+  subHeading: string;
+  slug: string;
+  imageUrl: string;
+  content: string;
+  dek: string;
+  tldr: string;
+  tags: string;
+  seriesOrder: number | "";
+  noindex: boolean;
+};
 
-  const [formData, setFormData] = useState({
+function toForm(post?: SubTopic): FormState {
+  return {
     id: post?.id || 0,
-    topicId: post?.topicId,
-    publishDate: post?.publishDate,
-    publishedBy: post?.publishedBy,
-    createdBy: post?.createdBy,
-    updatedBy: post?.updatedBy,
-    isPublished: post?.isPublished || false,
-    heading: post?.heading,
-    subHeading: post?.subHeading,
-    slug: post?.slug,
-    imageUrl: post?.imageUrl,
-    content: post?.content,
-  });
+    topicId: Number(post?.topicId) || 0,
+    publishDate: post?.publishDate ? toLocalInput(post.publishDate) : "",
+    publishedBy: post?.publishedBy || "",
+    createdBy: post?.createdBy || "",
+    updatedBy: post?.updatedBy || "",
+    isPublished: Boolean(post?.isPublished),
+    heading: post?.heading || "",
+    subHeading: post?.subHeading || "",
+    slug: post?.slug || "",
+    imageUrl: post?.imageUrl || "",
+    content: post?.content || "",
+    dek: post?.dek || "",
+    tldr: post?.tldr || "",
+    tags: post?.tags || "",
+    seriesOrder:
+      post?.seriesOrder === undefined || post?.seriesOrder === null
+        ? ""
+        : Number(post.seriesOrder),
+    noindex: Boolean(post?.noindex),
+  };
+}
+
+function toLocalInput(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function fromLocalInput(local: string): string | null {
+  if (!local) return null;
+  const d = new Date(local);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString();
+}
+
+function statusLabel(form: FormState): string {
+  if (form.isPublished) return "Published";
+  if (form.publishDate) {
+    const when = new Date(form.publishDate);
+    if (!Number.isNaN(when.getTime()) && when.getTime() > Date.now()) {
+      return "Scheduled";
+    }
+  }
+  return "Draft";
+}
+
+export default function XEditor({ params }: { params?: Params }) {
+  const post = params?.post;
+  const { token } = useAuth();
+  const [formData, setFormData] = useState<FormState>(() => toForm(post));
+  const [series, setSeries] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSave = async () => {
-    if (!token || !formData.id) return;
+  useEffect(() => {
+    if (!token) return;
+    fetch(topics_secure_url, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setSeries(Array.isArray(data) ? data : []))
+      .catch(() => setSeries([]));
+  }, [token]);
 
+  const status = useMemo(() => statusLabel(formData), [formData]);
+
+  async function save(patch?: Partial<FormState>) {
+    if (!token || !formData.id) {
+      toast.error("Sign in required to save.");
+      return;
+    }
+    const next = { ...formData, ...patch };
     setIsLoading(true);
     try {
-      const response = await fetch(`${subtopics_secure_url}`, {
+      const body = {
+        ...post,
+        id: next.id,
+        topicId: Number(next.topicId) || 0,
+        heading: next.heading,
+        subHeading: next.subHeading,
+        slug: next.slug,
+        imageUrl: next.imageUrl || null,
+        content: next.content,
+        isPublished: next.isPublished,
+        publishDate: fromLocalInput(next.publishDate),
+        publishedBy: next.publishedBy || null,
+        dek: next.dek || null,
+        tldr: next.tldr || null,
+        tags: next.tags || null,
+        seriesOrder:
+          next.seriesOrder === "" ? null : Number(next.seriesOrder),
+        noindex: next.noindex,
+      };
+
+      const response = await fetch(subtopics_secure_url, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       });
 
-      if (response.ok) {
-        toast.success("Post updated successfully!");
-      } else {
-        toast.error("Failed to update post");
+      if (!response.ok) {
+        toast.error("Failed to update essay");
+        return;
       }
+      setFormData(next);
+      toast.success("Essay saved");
     } catch (error) {
-      toast.error("Error updating post");
+      toast.error("Error updating essay");
       console.error(error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }
+
+  function publishNow() {
+    const now = toLocalInput(new Date().toISOString());
+    void save({ isPublished: true, publishDate: now });
+  }
+
+  function unpublish() {
+    void save({ isPublished: false });
+  }
+
+  function saveDraft() {
+    void save({ isPublished: false });
+  }
+
+  function schedule() {
+    if (!formData.publishDate) {
+      toast.error("Pick a publish date and time first.");
+      return;
+    }
+    const when = new Date(formData.publishDate);
+    if (Number.isNaN(when.getTime()) || when.getTime() <= Date.now()) {
+      toast.error("Schedule time must be in the future.");
+      return;
+    }
+    void save({ isPublished: false });
+  }
 
   return (
     <div className='h-full flex flex-col gap-4 p-4'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 border border-stone-200 bg-stone-100 dark:border-gray-800 dark:bg-gray-900 rounded-xl p-5'>
+      <div className='flex flex-wrap items-center justify-between gap-3'>
+        <div>
+          <p className='accent-label mb-1'>Editor</p>
+          <h1 className='font-display text-2xl font-semibold tracking-tight'>
+            {formData.heading || "Untitled essay"}
+          </h1>
+          <p className='text-sm text-muted-foreground mt-1'>
+            Status: <span className='font-medium text-foreground'>{status}</span>
+            {" · "}
+            <Link
+              href='/admin/series'
+              className='text-brand underline-offset-4 hover:underline'
+            >
+              Manage series
+            </Link>
+          </p>
+        </div>
+        <div className='flex flex-wrap gap-2'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={saveDraft}
+            disabled={isLoading}
+          >
+            Save draft
+          </Button>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={schedule}
+            disabled={isLoading}
+          >
+            Schedule
+          </Button>
+          {formData.isPublished ? (
+            <Button
+              type='button'
+              variant='outline'
+              onClick={unpublish}
+              disabled={isLoading}
+            >
+              Unpublish
+            </Button>
+          ) : (
+            <Button type='button' onClick={publishNow} disabled={isLoading}>
+              Publish now
+            </Button>
+          )}
+          <Button type='button' onClick={() => save()} disabled={isLoading}>
+            {isLoading ? "Saving…" : "Save"}
+          </Button>
+        </div>
+      </div>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-border bg-card p-5'>
         <div>
           <Label htmlFor='heading'>Heading</Label>
           <Input
@@ -74,7 +252,6 @@ export default function XEditor({ params }: { params?: Params }) {
             placeholder='Enter heading'
           />
         </div>
-
         <div>
           <Label htmlFor='slug'>Slug</Label>
           <Input
@@ -83,18 +260,106 @@ export default function XEditor({ params }: { params?: Params }) {
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, slug: e.target.value }))
             }
-            placeholder='Enter slug'
+            placeholder='canonical-slug'
           />
         </div>
         <div className='md:col-span-2'>
-          <Label htmlFor='subHeading'>Sub Heading</Label>
+          <Label htmlFor='subHeading'>Title (H1)</Label>
           <Input
             id='subHeading'
             value={formData.subHeading}
             onChange={(e) =>
               setFormData((prev) => ({ ...prev, subHeading: e.target.value }))
             }
-            placeholder='Enter sub heading'
+            placeholder='Public title'
+          />
+        </div>
+        <div className='md:col-span-2'>
+          <Label htmlFor='dek'>Dek (one sentence)</Label>
+          <Input
+            id='dek'
+            value={formData.dek}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, dek: e.target.value }))
+            }
+            placeholder='Card and meta summary'
+          />
+        </div>
+        <div className='md:col-span-2'>
+          <Label htmlFor='tldr'>TL;DR</Label>
+          <Input
+            id='tldr'
+            value={formData.tldr}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, tldr: e.target.value }))
+            }
+            placeholder='Two-line takeaway'
+          />
+        </div>
+        <div>
+          <Label htmlFor='series'>Series</Label>
+          <select
+            id='series'
+            className='input-field mt-1 w-full min-h-11 rounded-md bg-background px-3 text-sm'
+            value={formData.topicId || ""}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                topicId: Number(e.target.value) || 0,
+              }))
+            }
+          >
+            <option value=''>No series</option>
+            {series.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.sbaTopicName}
+                {t.isPublished === false ? " (unpublished)" : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <Label htmlFor='seriesOrder'>Series order</Label>
+          <Input
+            id='seriesOrder'
+            type='number'
+            value={formData.seriesOrder}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                seriesOrder:
+                  e.target.value === "" ? "" : Number(e.target.value),
+              }))
+            }
+            placeholder='1'
+          />
+        </div>
+        <div>
+          <Label htmlFor='publishDate'>Publish / schedule time</Label>
+          <Input
+            id='publishDate'
+            type='datetime-local'
+            value={formData.publishDate}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                publishDate: e.target.value,
+              }))
+            }
+          />
+          <p className='mt-1 text-xs text-muted-foreground'>
+            For schedule: set a future time, leave unpublished, then Schedule.
+          </p>
+        </div>
+        <div>
+          <Label htmlFor='tags'>Tags (comma-separated)</Label>
+          <Input
+            id='tags'
+            value={formData.tags}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, tags: e.target.value }))
+            }
+            placeholder='ai,nlp'
           />
         </div>
         <div className='md:col-span-2'>
@@ -106,83 +371,41 @@ export default function XEditor({ params }: { params?: Params }) {
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, imageUrl: e.target.value }))
               }
-              placeholder='Enter image URL'
+              placeholder='https://…'
             />
-            {formData.imageUrl && (
-              <div className='w-12 h-12 relative rounded border'>
+            {formData.imageUrl ? (
+              <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded border'>
                 <Image
                   src={formData.imageUrl}
                   alt='Thumbnail'
                   fill
-                  className='object-cover rounded'
+                  className='object-cover'
                   onError={() => {}}
                 />
               </div>
-            )}
+            ) : null}
           </div>
         </div>
-        <div className='flex justify-end my-4 col-span-2'>
-          <Button
-            onClick={handleSave}
-            disabled={isLoading}
-            className='bg-green-600 hover:bg-green-700'
-          >
-            {isLoading ? "Saving..." : "Save"}
-          </Button>
+        <div className='flex items-center gap-3 md:col-span-2'>
+          <Switch
+            id='noindex'
+            checked={formData.noindex}
+            onCheckedChange={(checked) =>
+              setFormData((prev) => ({ ...prev, noindex: checked }))
+            }
+          />
+          <Label htmlFor='noindex'>noindex (hide from sitemap / search)</Label>
         </div>
       </div>
 
-      <div className='flex-1'>
-        <Label>Content</Label>
-        <Editor
-          init={{
-            toolbar: toolbars,
-            branding: false,
-            height: "100%",
-            plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "preview",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "code",
-              "help",
-              "wordcount",
-              "autosave",
-            ],
-
-            content_style:
-              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            menu: {
-              edit: { title: "Edit", items: "undo, redo, selectall" },
-            },
-          }}
-          apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+      <div className='flex-1 min-h-[32rem]'>
+        <Label className='mb-2 block'>Content</Label>
+        <FreeRichTextEditor
           value={formData.content}
-          onEditorChange={(newContent) =>
-            setFormData((prev) => ({ ...prev, content: newContent }))
+          onChange={(html) =>
+            setFormData((prev) => ({ ...prev, content: html }))
           }
         />
-      </div>
-
-      <div className='flex justify-end my-4'>
-        <Button
-          onClick={handleSave}
-          disabled={isLoading}
-          className='bg-green-600 hover:bg-green-700'
-        >
-          {isLoading ? "Saving..." : "Save"}
-        </Button>
       </div>
     </div>
   );
