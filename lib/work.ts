@@ -163,7 +163,9 @@ export async function getWorkProjects(): Promise<CaseStudy[]> {
     });
     if (!res.ok) return FALLBACK_CASE_STUDIES;
     const data = await readJson<unknown[]>(res, []);
-    const list = Array.isArray(data) ? data.map(mapProject) : [];
+    const list = Array.isArray(data)
+      ? data.map((raw) => mapProject(raw as Record<string, unknown>))
+      : [];
     return list.length > 0 ? list : FALLBACK_CASE_STUDIES;
   } catch {
     return FALLBACK_CASE_STUDIES;
