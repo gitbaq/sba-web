@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMeta({
 });
 
 const perks = [
-  "New essays weekly",
+  "New essays as they publish",
   "AI, software systems, and engineering leadership",
   "Unsubscribe anytime",
 ];
@@ -31,7 +31,7 @@ export default async function SubscribePage() {
             Get new essays by email
           </h1>
           <p className='max-w-xl text-lg leading-relaxed text-foreground/80'>
-            Occasional email when something new ships. Prefer feeds? Use RSS.
+            New essays as they publish. Prefer feeds? Use RSS.
           </p>
         </header>
       </div>

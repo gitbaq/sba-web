@@ -7,13 +7,15 @@ import parse from "html-react-parser";
 import { web_url } from "@/utils/endpoints/endpoints";
 import {
   articleHref,
+  articleModifiedDate,
   articleSlug,
   estimateReadingMinutes,
   extractTextFromHtml,
   extractToc,
-  injectHeadingIds,
   isIndexable,
   postDate,
+  prepareArticleHtml,
+  shouldShowUpdated,
   splitHtmlAtMidpoint,
 } from "@/lib/articles";
 import {
@@ -59,7 +61,7 @@ export async function generateMetadata({
   const url = subtopic.canonicalUrl || `${web_url}${canonicalPath}`;
 
   return {
-    title: `${subtopic.subHeading} | Writing`,
+    title: subtopic.subHeading,
     description,
     authors: [{ name: "Syed Baqir Ali" }],
     robots: isIndexable(subtopic) ? undefined : { index: false, follow: true },
@@ -74,7 +76,7 @@ export async function generateMetadata({
       locale: "en_US",
       type: "article",
       publishedTime: subtopic.publishDate,
-      modifiedTime: subtopic.updateDate,
+      modifiedTime: articleModifiedDate(subtopic),
       section: subtopic.sbaTopicName || subtopic.heading,
       tags: [subtopic.heading, subtopic.sbaTopicName].filter(Boolean) as string[],
     },
@@ -113,14 +115,15 @@ export default async function WritingArticlePage({
         t.subTopicList?.some((s) => s.id === subtopic.id)
     );
   const published = subtopic.publishDate || postDate(subtopic);
-  const updated = subtopic.updateDate;
-  const showUpdated =
-    updated &&
-    published &&
-    new Date(updated).toDateString() !== new Date(published).toDateString();
+  const modified = articleModifiedDate(subtopic);
+  const showUpdated = shouldShowUpdated(subtopic);
   const minutes = estimateReadingMinutes(subtopic.content || "");
-  const toc = extractToc(subtopic.content || "");
-  const html = injectHeadingIds(subtopic.content || "");
+  const html = prepareArticleHtml(subtopic.content || "", {
+    title: subtopic.subHeading,
+    dek: subtopic.dek?.trim(),
+    essayId: subtopic.id,
+  });
+  const toc = extractToc(html);
   const [beforeMid, afterMid] = splitHtmlAtMidpoint(html);
   const iURL = subtopic.imageUrl || "/ai4.png";
   const topicLabel = subtopic.heading || subtopic.sbaTopicName;
@@ -130,12 +133,12 @@ export default async function WritingArticlePage({
 
   const articleLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: subtopic.subHeading,
     description: dek || extractTextFromHtml(subtopic.content),
     image: subtopic.ogImageUrl || subtopic.imageUrl || `${web_url}/ai4.png`,
     datePublished: subtopic.publishDate,
-    dateModified: subtopic.updateDate,
+    dateModified: modified,
     author: {
       "@type": "Person",
       name: "Syed Baqir Ali",
@@ -224,8 +227,8 @@ export default async function WritingArticlePage({
                   {published
                     ? format(new Date(published), "MMMM d, yyyy")
                     : null}
-                  {showUpdated && updated
-                    ? ` · Updated ${format(new Date(updated), "MMM d, yyyy")}`
+                  {showUpdated
+                    ? ` · Updated ${format(new Date(modified), "MMM d, yyyy")}`
                     : null}
                   {` · ${minutes} min read`}
                 </span>
@@ -251,7 +254,10 @@ export default async function WritingArticlePage({
               priority
               fill
               src={iURL}
-              alt={subtopic.heading || subtopic.subHeading}
+              alt={
+                dek ||
+                `${subtopic.subHeading || subtopic.heading} cover image`
+              }
               className='object-cover'
               sizes='(max-width: 768px) 100vw, 768px'
             />
@@ -267,7 +273,8 @@ export default async function WritingArticlePage({
           <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
             <p className='accent-label mb-2'>Newsletter</p>
             <p className='mb-4 text-sm text-muted-foreground leading-relaxed max-w-md'>
-              Get new essays by email. Weekly. Unsubscribe anytime.
+              Get new essays by email. New essays as they publish. Unsubscribe
+              anytime.
             </p>
             <SubscribeForm variant='inline' submitLabel={CTA.subscribe} />
           </div>

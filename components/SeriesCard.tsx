@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Topic } from "@/types/types";
 import { seriesHref } from "@/utils/services/getTopics";
+import { isIndexable } from "@/lib/articles";
 
 type Props = {
   topic: Topic;
@@ -8,12 +9,18 @@ type Props = {
   className?: string;
 };
 
+function isPublished(flag: unknown): boolean {
+  return flag === true || flag === "true" || flag === "1";
+}
+
 export default function SeriesCard({
   topic,
   description,
   className = "",
 }: Props) {
-  const count = topic.subTopicList?.length ?? 0;
+  const count = (topic.subTopicList || []).filter(
+    (s) => isPublished(s.isPublished) && isIndexable(s)
+  ).length;
 
   return (
     <Link

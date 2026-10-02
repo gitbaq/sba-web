@@ -28,7 +28,7 @@ export default function LatestWriting({
           {title}
         </h2>
         <p className='text-lg text-muted-foreground'>
-          New essays weekly.{" "}
+          New essays as they publish.{" "}
           <Link
             href='/subscribe'
             className='text-brand underline-offset-4 hover:underline'

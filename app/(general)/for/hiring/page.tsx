@@ -6,12 +6,14 @@ import { CREDENTIAL_LINKS } from "@/lib/work";
 import AudienceShell from "@/components/audience/AudienceShell";
 import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Review for a role | Syed Baqir Ali",
+export const metadata: Metadata = pageMeta({
+  title: "Review for a role",
   description:
     "Background, writing samples, and systems approach for role evaluation.",
-};
+  path: "/for/hiring",
+});
 
 const signals = [
   {

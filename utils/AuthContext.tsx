@@ -17,7 +17,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/** Comma-separated emails allowed to edit. Username `admin` is always allowed. */
+/** Username `admin` always allowed. Optional emails via NEXT_PUBLIC_ADMIN_EMAILS.
+ * Later: replace with ROLE_ADMIN from the API user payload. */
 function computeIsAdmin(username: string | null, email: string | null): boolean {
   if (username && username.toLowerCase() === "admin") return true;
   const allowed = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || "")

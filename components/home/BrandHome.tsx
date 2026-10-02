@@ -230,7 +230,7 @@ export default function BrandHome({
                 id='home-subscribe'
                 className='display-title text-2xl md:text-3xl mb-2'
               >
-                Get weekly insights
+                Get new essays as they publish
               </h2>
               <p className='text-muted-foreground mb-6 max-w-md leading-relaxed'>
                 Join the free list when a new essay goes out. No spam.

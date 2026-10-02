@@ -66,7 +66,7 @@ export default async function Home() {
             </p>
             <SubscribeForm variant='hero' submitLabel={CTA.subscribe} />
             <p className='mt-2 text-xs text-muted-foreground'>
-              Weekly. Unsubscribe anytime.
+              New essays as they publish. Unsubscribe anytime.
             </p>
           </div>
         </div>

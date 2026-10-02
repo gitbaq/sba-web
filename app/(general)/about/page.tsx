@@ -1,17 +1,19 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Icons from "@/components/Icons";
 import { Metadata } from "next";
+import Icons from "@/components/Icons";
 import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
 import CredentialsStrip from "@/components/CredentialsStrip";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Syed Baqir Ali | AI & Software Innovation",
+export const metadata: Metadata = pageMeta({
+  title: "About",
   description:
     "Software innovation and AI leadership. Researched writing, shipped products, and practical delivery for teams.",
-};
+  path: "/about",
+});
 
 export default function About() {
   return (

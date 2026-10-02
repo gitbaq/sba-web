@@ -125,8 +125,12 @@ export default function XEditor({ params }: { params?: Params }) {
   }
 
   async function save(patch?: Partial<FormState>) {
-    if (!token || !formData.id) {
-      toast.error("Sign in required to save.");
+    if (!token || !isAdmin) {
+      toast.error("Admin sign-in required to save.");
+      return;
+    }
+    if (!formData.id) {
+      toast.error("Missing essay id.");
       return;
     }
     const liveHtml = editorRef.current?.getHTML();
@@ -192,6 +196,10 @@ export default function XEditor({ params }: { params?: Params }) {
       }
 
       toast.success("Essay saved");
+      // Soft-nav refresh of RSC payloads so Back does not restore a stale shell.
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("sba:essays-updated"));
+      }
     } catch (error) {
       toast.error("Error updating essay");
       console.error(error);
@@ -226,6 +234,22 @@ export default function XEditor({ params }: { params?: Params }) {
     void save({ isPublished: false });
   }
 
+  function previewHref(): string {
+    return articleHref({
+      id: formData.id,
+      slug: formData.slug,
+      subHeading: formData.subHeading,
+      heading: formData.heading,
+    });
+  }
+
+  function openPreview() {
+    const path = previewHref();
+    // Cache-bust query so back/forward and CDN do not show a stale shell.
+    const url = `${path}?preview=${Date.now()}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div className='h-full flex flex-col gap-4 p-4'>
       <div className='flex flex-wrap items-center justify-between gap-3'>
@@ -246,6 +270,14 @@ export default function XEditor({ params }: { params?: Params }) {
           </p>
         </div>
         <div className='flex flex-wrap gap-2'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={openPreview}
+            disabled={!formData.slug && !formData.id}
+          >
+            Preview
+          </Button>
           <Button
             type='button'
             variant='outline'

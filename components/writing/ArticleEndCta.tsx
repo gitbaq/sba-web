@@ -19,7 +19,7 @@ export default function ArticleEndCta({ related, series }: Props) {
           Get new essays by email
         </h2>
         <p className='text-muted-foreground leading-relaxed'>
-          New essays weekly. Unsubscribe anytime.
+          New essays as they publish. Unsubscribe anytime.
         </p>
         <SubscribeForm variant='footer' submitLabel={CTA.subscribe} />
         <p className='text-sm text-muted-foreground'>

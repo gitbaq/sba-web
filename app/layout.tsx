@@ -16,6 +16,7 @@ import { ThemeProvider } from "@wrksz/themes/next";
 import Script from "next/script";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import { AuthProvider } from "@/utils/AuthContext";
+import RefreshOnBack from "@/components/RefreshOnBack";
 
 const gsc = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
 
@@ -111,6 +112,7 @@ export default function RootLayout({
           storage='localStorage'
         >
           <AuthProvider>
+            <RefreshOnBack />
             <TooltipProvider delayDuration={1000}>
               <div className='flex-1'>
                 <SidebarWrapper>
