@@ -10,22 +10,35 @@ import {
   type ArticleParam,
 } from "@/lib/articles";
 
+/** Shared cache tag; bust via /api/revalidate after editor save. */
+export const ESSAYS_CACHE_TAG = "essays";
+
+const essayFetchInit: RequestInit & { next: { revalidate: number; tags: string[] } } = {
+  next: { revalidate: 60, tags: [ESSAYS_CACHE_TAG] },
+};
+
 function sortByNewest(a: SubTopic, b: SubTopic) {
   const aTime = Date.parse(a.publishDate || a.updateDate || a.createDate || "");
   const bTime = Date.parse(b.publishDate || b.updateDate || b.createDate || "");
   return (Number.isFinite(bTime) ? bTime : 0) - (Number.isFinite(aTime) ? aTime : 0);
 }
 
+function isPublic(post: SubTopic): boolean {
+  const published =
+    post.isPublished === true ||
+    post.isPublished === "true" ||
+    post.isPublished === "1";
+  return published && isIndexable(post);
+}
+
 export async function getLatestSubtopics(limit = 5): Promise<SubTopic[]> {
   const all = await getAllSubtopicsSorted();
-  return all.filter(isIndexable).slice(0, limit);
+  return all.filter(isPublic).slice(0, limit);
 }
 
 export async function getAllSubtopicsSorted(): Promise<SubTopic[]> {
   try {
-    const res = await fetch(subtopics_url, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(subtopics_url, essayFetchInit);
     if (!res.ok) return [];
     const data: SubTopic[] = await res.json();
     if (!Array.isArray(data)) return [];
@@ -38,9 +51,7 @@ export async function getAllSubtopicsSorted(): Promise<SubTopic[]> {
 export async function getSubTopicById(subId: string): Promise<SubTopic | null> {
   if (!subId) return null;
   try {
-    const res = await fetch(`${subtopics_url}/s/${subId}`, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(`${subtopics_url}/s/${subId}`, essayFetchInit);
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -51,9 +62,10 @@ export async function getSubTopicById(subId: string): Promise<SubTopic | null> {
 export async function getSubTopicBySlug(slug: string): Promise<SubTopic | null> {
   if (!slug) return null;
   try {
-    const res = await fetch(`${subtopics_url}/slug/${encodeURIComponent(slug)}`, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(
+      `${subtopics_url}/slug/${encodeURIComponent(slug)}`,
+      essayFetchInit
+    );
     if (!res.ok) return null;
     const data = await res.json();
     return data && data.id != null ? data : null;
@@ -79,7 +91,6 @@ export async function resolveArticleParam(
   const bySlug = await getSubTopicBySlug(parsed.slug);
   if (bySlug) return bySlug;
 
-  // Catalog reverse lookup works before API slug endpoint / bootstrap.
   const knownId = Object.entries(ESSAY_SLUG_BY_ID).find(
     ([, slug]) => slug === parsed.slug
   )?.[0];
@@ -116,7 +127,7 @@ export function relatedPosts(
 ): SubTopic[] {
   const currentTags = new Set(postTags(current));
   const scored = all
-    .filter((p) => p.id !== current.id && isIndexable(p))
+    .filter((p) => p.id !== current.id && isPublic(p))
     .map((p) => {
       let score = 0;
       if (current.topicId != null && p.topicId === current.topicId) score += 100;

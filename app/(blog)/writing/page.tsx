@@ -7,6 +7,8 @@ import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Writing",
   description:
