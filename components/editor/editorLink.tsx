@@ -1,4 +1,3 @@
-// components/editor/EditorLink.tsx
 "use client";
 import { useAuth } from "@/utils/AuthContext";
 import Link from "next/link";
@@ -8,20 +7,21 @@ interface EditorLinkProps {
   topicId: number;
 }
 
+/** Admin-only edit entry to /editor/{id}. */
 export default function EditorLink({ topicId }: EditorLinkProps) {
-  const { isAuthenticated, userEmail } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
 
-  if (!isAuthenticated || userEmail !== "email3@email.com") {
+  if (!isAuthenticated || !isAdmin) {
     return null;
   }
 
   return (
     <Link
       href={`/editor/${topicId}`}
-      className='flex items-center gap-1 text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300'
+      className='inline-flex min-h-11 items-center gap-1 text-brand hover:underline underline-offset-4'
     >
-      <Icons.PencilLine size={16} />
-      <span className='text-sm'>Edit</span>
+      <Icons.PencilLine size={16} aria-hidden />
+      <span className='text-sm font-medium'>Edit</span>
     </Link>
   );
 }

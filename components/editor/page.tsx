@@ -90,22 +90,35 @@ function statusLabel(form: FormState): string {
 
 export default function XEditor({ params }: { params?: Params }) {
   const post = params?.post;
-  const { token } = useAuth();
+  const { token, isAdmin, isAuthenticated } = useAuth();
   const [formData, setFormData] = useState<FormState>(() => toForm(post));
   const [series, setSeries] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || !isAdmin) return;
     fetch(topics_secure_url, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => setSeries(Array.isArray(data) ? data : []))
       .catch(() => setSeries([]));
-  }, [token]);
+  }, [token, isAdmin]);
 
   const status = useMemo(() => statusLabel(formData), [formData]);
+
+  if (isAuthenticated && !isAdmin) {
+    return (
+      <div className='p-8 max-w-lg'>
+        <p className='text-muted-foreground'>
+          Editor access is limited to admin accounts.
+        </p>
+        <Link href='/writing' className='text-brand underline-offset-4 hover:underline'>
+          Back to writing
+        </Link>
+      </div>
+    );
+  }
 
   async function save(patch?: Partial<FormState>) {
     if (!token || !formData.id) {
@@ -116,7 +129,6 @@ export default function XEditor({ params }: { params?: Params }) {
     setIsLoading(true);
     try {
       const body = {
-        ...post,
         id: next.id,
         topicId: Number(next.topicId) || 0,
         heading: next.heading,
@@ -133,6 +145,8 @@ export default function XEditor({ params }: { params?: Params }) {
         seriesOrder:
           next.seriesOrder === "" ? null : Number(next.seriesOrder),
         noindex: next.noindex,
+        createdBy: next.createdBy || null,
+        updatedBy: next.updatedBy || null,
       };
 
       const response = await fetch(subtopics_secure_url, {
