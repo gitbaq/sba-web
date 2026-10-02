@@ -103,7 +103,9 @@ export default function WritingIndex({ posts, initialQuery = "" }: Props) {
             const minutes = estimateReadingMinutes(post.content || "");
             const showNew = isNewPost(dateStr);
             const topicLabel = post.heading || post.sbaTopicName;
-            const excerpt = extractTextFromHtml(post.content || "", 160);
+            const excerpt =
+              post.dek?.trim() ||
+              extractTextFromHtml(post.content || "", 160);
             return (
               <li key={post.id}>
                 <Link href={articleHref(post)} className='article-entry group'>
@@ -133,11 +135,8 @@ export default function WritingIndex({ posts, initialQuery = "" }: Props) {
                   </h3>
                   <p className='text-[0.95rem] text-muted-foreground leading-relaxed max-w-2xl'>
                     {excerpt}
-                    {excerpt.length >= 160 ? "…" : ""}
+                    {!post.dek && excerpt.length >= 160 ? "…" : ""}
                   </p>
-                  <span className='inline-flex mt-3 text-sm font-semibold text-brand underline-offset-4 group-hover:underline'>
-                    Read more
-                  </span>
                 </Link>
               </li>
             );

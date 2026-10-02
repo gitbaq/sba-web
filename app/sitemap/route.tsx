@@ -1,7 +1,7 @@
 import { SubTopic } from "@/types/types";
 import { web_url, ids_url } from "@/utils/endpoints/endpoints";
 import { NextResponse } from "next/server";
-import { articleHref } from "@/lib/articles";
+import { articleHref, isIndexable } from "@/lib/articles";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { CASE_STUDIES } from "@/lib/work";
 
@@ -175,10 +175,8 @@ export async function GET() {
       .filter((t) => (t.subTopicList?.length ?? 0) > 0)
       .map((t) => seriesHref(t));
 
-    const sitemap = generateSiteMap(
-      Array.isArray(posts) ? posts : [],
-      seriesUrls
-    );
+    const indexable = (Array.isArray(posts) ? posts : []).filter(isIndexable);
+    const sitemap = generateSiteMap(indexable, seriesUrls);
 
     return new NextResponse(sitemap, {
       status: 200,

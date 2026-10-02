@@ -6,6 +6,7 @@ import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { postsThisWeek } from "@/lib/feed";
 import { seriesStyle } from "@/lib/seriesColors";
+import { isIndexable } from "@/lib/articles";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -33,7 +34,7 @@ export default async function WritingPage({
   searchParams: SearchParams;
 }) {
   const { query } = await searchParams;
-  const posts = await getAllSubtopicsSorted();
+  const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
   const topics = await getAllTopicsSafe();
   const weekly = postsThisWeek(posts, 7);
   const series = topics.filter((t) => (t.subTopicList?.length ?? 0) > 0);

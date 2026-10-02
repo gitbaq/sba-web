@@ -79,8 +79,9 @@ Acceptance: `docs/audit-baseline.md` exists and answers the four questions above
 
 ### 4.2 Slugs, redirects, and essay data
 
-- [ ] P1-06 Add a `slug` column (unique, not null) and run a migration. Do not delete the old slug. Store it in `legacy_slug`.
-- [ ] P1-07 Apply these new slugs and add 301 redirects from every old URL (in `next.config` redirects, generated from the DB if possible):
+- [x] P1-06 Add a `slug` column (unique, not null) and run a migration. Do not delete the old slug. Store it in `legacy_slug`.
+  - *(Monorepo: `SubTopic` + `EssayCatalogBootstrap`; unique index after bootstrap — see `Queries-p1b-essay-schema.sql`.)*
+- [x] P1-07 Apply these new slugs and add 301 redirects from every old URL (in `next.config` redirects, generated from the DB if possible):
   - `why-ai-is-on-everyones-mind`
   - `why-decentralization-matters`
   - `supervised-learning-introduction`
@@ -90,13 +91,17 @@ Acceptance: `docs/audit-baseline.md` exists and answers the four questions above
   - `nlp-primer`
   - `evolution-of-ai-collective-intelligence`
   - `multimodal-ai-text-speech-video`
-- [ ] P1-08 Add post fields: `dek` (one-sentence summary), `tldr` (2 lines), `updated_at`, `canonical_url` (nullable), `og_image_url`, `noindex` (boolean), `series_id`, `series_order`, `tags`.
-- [ ] P1-09 Rewrite essay titles that are weak. Example: "An Introduction" becomes "Supervised Learning: An Introduction". The title and H1 must match the series naming. Remove emoji from titles.
-- [ ] P1-10 Stub essay (Substack link-out): set `noindex = true` and exclude it from the sitemap until full content is imported. `TODO(owner): supply full text.`
-- [ ] P1-11 Replace dead `#` links in the Blockchain 101 list. Render published parts as links and unpublished parts as plain text, or remove them. `TODO(owner): decide whether to publish the series or shorten the promise.`
-- [ ] P1-12 Fix "Related reading". Rank by shared series, then shared tags, then recency. Exclude the current post.
+  - *(Frontend: `LEGACY_ARTICLE_PATHS` in `lib/articles.ts` + `next.config.ts`. Page also 301s any non-canonical param.)*
+- [x] P1-08 Add post fields: `dek` (one-sentence summary), `tldr` (2 lines), `updated_at`, `canonical_url` (nullable), `og_image_url`, `noindex` (boolean), `series_id`, `series_order`, `tags`.
+  - *(Uses existing Auditable `updateDate` as updated_at; `topicId` as series link; no separate `series_id` column.)*
+- [x] P1-09 Rewrite essay titles that are weak. Example: "An Introduction" becomes "Supervised Learning: An Introduction". The title and H1 must match the series naming. Remove emoji from titles.
+- [x] P1-10 Stub essay (Substack link-out): set `noindex = true` and exclude it from the sitemap until full content is imported. `TODO(owner): supply full text.`
+- [x] P1-11 Replace dead `#` links in the Blockchain 101 list. Render published parts as links and unpublished parts as plain text, or remove them. `TODO(owner): decide whether to publish the series or shorten the promise.`
+  - *(Bootstrap strips `href="#"` anchors to plain text on id 0.)*
+- [x] P1-12 Fix "Related reading". Rank by shared series, then shared tags, then recency. Exclude the current post.
+  - *(API: `GET /subtopics/v1/s/{id}/related`. Frontend: `relatedPosts` by topicId/tags.)*
 
-**P1B note (2026-10-02):** P1-06…12 blocked on `sba_backend_monorepo` schema/API work. Frontend continues to use `{title}-{id}` URLs until then.
+**P1B note (2026-10-02):** Schema/API on `sba_backend_monorepo` branch `overhaul/p1b-essay-schema`. Frontend branch `overhaul/p1b-essay-schema`. Deploy API (bootstrap) before relying on DB slugs in production; FE catalog map covers the nine essays in the meantime.
 
 ### 4.3 Copy and links
 

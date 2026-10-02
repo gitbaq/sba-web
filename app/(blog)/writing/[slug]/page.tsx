@@ -12,13 +12,13 @@ import {
   extractTextFromHtml,
   extractToc,
   injectHeadingIds,
-  parseArticleParam,
+  isIndexable,
   postDate,
 } from "@/lib/articles";
 import {
   getAllSubtopicsSorted,
-  getSubTopicById,
   relatedPosts,
+  resolveArticle,
 } from "@/utils/services/getLatestSubtopics";
 import SharePanel from "@/components/social-sharing/sharebar";
 import EditorLink from "@/components/editor/editorLink";
@@ -42,24 +42,20 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const parsed = parseArticleParam(slug);
-  if (!parsed) return {};
-
-  const subtopic = await getSubTopicById(parsed.id);
+  const subtopic = await resolveArticle(slug);
   if (!subtopic) return {};
 
-  const description = extractTextFromHtml(subtopic.content);
-  const imageUrl = subtopic.imageUrl || `${web_url}/ai4.png`;
+  const description = subtopic.dek || extractTextFromHtml(subtopic.content);
+  const imageUrl =
+    subtopic.ogImageUrl || subtopic.imageUrl || `${web_url}/ai4.png`;
   const canonicalPath = articleHref(subtopic);
-  const url = `${web_url}${canonicalPath}`;
+  const url = subtopic.canonicalUrl || `${web_url}${canonicalPath}`;
 
   return {
     title: `${subtopic.subHeading} | Writing`,
     description,
-    keywords: [subtopic.heading, subtopic.sbaTopicName, "AI", "writing"].filter(
-      Boolean
-    ) as string[],
     authors: [{ name: "Syed Baqir Ali" }],
+    robots: isIndexable(subtopic) ? undefined : { index: false, follow: true },
     openGraph: {
       title: subtopic.subHeading,
       description,
@@ -91,10 +87,7 @@ export default async function WritingArticlePage({
   params: Params;
 }) {
   const { slug } = await params;
-  const parsed = parseArticleParam(slug);
-  if (!parsed) notFound();
-
-  const subtopic = await getSubTopicById(parsed.id);
+  const subtopic = await resolveArticle(slug);
   if (!subtopic) notFound();
 
   const canonical = articleSlug(subtopic);
@@ -119,13 +112,14 @@ export default async function WritingArticlePage({
   const iURL = subtopic.imageUrl || "/ai4.png";
   const topicLabel = subtopic.heading || subtopic.sbaTopicName;
   const url = `${web_url}${articleHref(subtopic)}`;
+  const summary = subtopic.tldr || subtopic.dek;
 
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: subtopic.subHeading,
-    description: extractTextFromHtml(subtopic.content),
-    image: subtopic.imageUrl || `${web_url}/ai4.png`,
+    description: subtopic.dek || extractTextFromHtml(subtopic.content),
+    image: subtopic.ogImageUrl || subtopic.imageUrl || `${web_url}/ai4.png`,
     datePublished: subtopic.publishDate,
     dateModified: subtopic.updateDate,
     author: {
@@ -144,7 +138,7 @@ export default async function WritingArticlePage({
       "@id": url,
     },
     timeRequired: `PT${minutes}M`,
-    abstract: extractTextFromHtml(subtopic.content, 280),
+    abstract: subtopic.tldr || extractTextFromHtml(subtopic.content, 280),
   };
 
   return (
@@ -201,6 +195,11 @@ export default async function WritingArticlePage({
             <h1 className='display-title text-3xl sm:text-4xl md:text-[2.75rem] text-foreground leading-[1.12]'>
               {subtopic.subHeading}
             </h1>
+            {summary ? (
+              <p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl'>
+                {summary}
+              </p>
+            ) : null}
             <div className='flex flex-row flex-wrap items-center justify-between gap-4 pt-2'>
               <SharePanel subtopic={subtopic} shareUrl={url} />
             </div>

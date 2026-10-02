@@ -11,7 +11,7 @@ export interface SubTopic {
   subHeading: string;
   slug: string;
   content: string;
-  isPublished: string;
+  isPublished: string | boolean;
   createDate: string;
   createdBy: string;
   updateDate: string;
@@ -20,6 +20,14 @@ export interface SubTopic {
   publishedBy: string;
   imageUrl: string;
   sbaTopicName: string;
+  dek?: string;
+  tldr?: string;
+  canonicalUrl?: string;
+  ogImageUrl?: string;
+  noindex?: boolean | string;
+  seriesOrder?: number;
+  tags?: string;
+  legacySlug?: string;
 }
 
 export interface RandomQuote {
