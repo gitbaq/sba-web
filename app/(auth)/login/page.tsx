@@ -36,6 +36,13 @@ const formSchema = z.object({
     .trim(),
 });
 
+/** Only allow same-origin relative paths (block open redirects). */
+function safeReturnPath(url: string | null): string {
+  if (!url || !url.startsWith("/") || url.startsWith("//")) return "/";
+  if (url.startsWith("/login") || url.startsWith("/logout")) return "/";
+  return url;
+}
+
 function LoginForm() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,7 +50,7 @@ function LoginForm() {
   const [success, setSuccess] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-  const nextUrl = callbackUrl === null ? "/" : callbackUrl;
+  const nextUrl = safeReturnPath(callbackUrl);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

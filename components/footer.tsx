@@ -2,6 +2,13 @@ import React from "react";
 import Link from "next/link";
 import Socials from "./socials";
 import ThemeComponent from "./ThemeComponent";
+import LoginLink from "./LoginLink";
+import {
+  blox_url,
+  cobu_url,
+  github_url,
+  substack_url,
+} from "@/utils/endpoints/endpoints";
 
 const NAV = [
   { href: "/writing", label: "Writing" },
@@ -12,7 +19,13 @@ const NAV = [
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
   { href: "/feed.xml", label: "RSS", external: true },
-  { href: "/login", label: "Login" },
+] as const;
+
+const PROJECTS = [
+  { href: cobu_url, label: "Cobu: AI RAG Agent" },
+  { href: blox_url, label: "Blox: Productivity" },
+  { href: substack_url, label: "The Reasoning Stack (Blog)" },
+  { href: github_url, label: "My Code Repos" },
 ] as const;
 
 const Footer = () => {
@@ -40,7 +53,7 @@ const Footer = () => {
           <p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
             Explore
           </p>
-          <ul className='m-0 flex list-none flex-wrap gap-x-4 gap-y-2 p-0 md:max-w-sm'>
+          <ul className='m-0 flex list-none flex-col gap-2 p-0'>
             {NAV.map((item) => (
               <li key={item.href}>
                 {"external" in item && item.external ? (
@@ -53,15 +66,34 @@ const Footer = () => {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`text-sm transition-colors hover:text-brand ${
-                      item.href === "/login"
-                        ? "text-muted-foreground/80"
-                        : "text-muted-foreground"
-                    }`}
+                    className='text-sm text-muted-foreground transition-colors hover:text-brand'
                   >
                     {item.label}
                   </Link>
                 )}
+              </li>
+            ))}
+            <li>
+              <LoginLink className='text-sm text-muted-foreground/80 transition-colors hover:text-brand' />
+            </li>
+          </ul>
+        </nav>
+
+        <nav aria-label='Projects' className='flex flex-col gap-3'>
+          <p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground'>
+            Projects
+          </p>
+          <ul className='m-0 flex list-none flex-col gap-2 p-0'>
+            {PROJECTS.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-sm text-muted-foreground transition-colors hover:text-brand'
+                >
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>

@@ -218,16 +218,16 @@ Acceptance for Phase 2:
 
 Design goals: double opt-in, minimal data, cost near zero.
 
-- [ ] P3-05 Table `subscribers`: `id`, `email` (unique, lowercase), `status` (`pending`, `confirmed`, `unsubscribed`), `confirm_token_hash`, `unsubscribe_token_hash`, `source_path`, `created_at`, `confirmed_at`, `unsubscribed_at`.
-- [ ] P3-06 Endpoints:
+- [x] P3-05 Table `subscribers`: `id`, `email` (unique, lowercase), `status` (`pending`, `confirmed`, `unsubscribed`), `confirm_token_hash`, `unsubscribe_token_hash`, `source_path`, `created_at`, `confirmed_at`, `unsubscribed_at`. (New table; legacy `ml_subscriber` kept.)
+- [x] P3-06 Endpoints:
   - `POST /api/subscribe`: validate, rate limit per IP, honeypot field, create or refresh `pending`, send confirmation email.
   - `GET /api/subscribe/confirm?token=`: set `confirmed`.
-  - `GET /api/unsubscribe?token=` and `POST` for one-click unsubscribe.
-- [ ] P3-07 Send mail with AWS SES. Include `List-Unsubscribe` and `List-Unsubscribe-Post` headers. Never log raw email addresses.
+  - `GET /api/unsubscribe?token=` and `POST` for one-click unsubscribe (`/api/subscribe/unsubscribe`).
+- [x] P3-07 Send mail with AWS SES (when `NEWSLETTER_EMAIL_ENABLED=true`). Include `List-Unsubscribe` and `List-Unsubscribe-Post` headers. Never log raw email addresses.
 - [ ] P3-08 Admin-only endpoint or CLI task: send a published essay to confirmed subscribers in batches, with a dry-run flag.
-- [ ] P3-09 Frontend: `SubscribeForm` uses a server action or route handler that calls the API. Show clear success ("Check your inbox to confirm"), error, and already-subscribed states. No page reload.
-- [ ] P3-10 Instrument events: `subscribe_submit`, `subscribe_confirmed`, `cta_book_call_click`, `contact_submit`, `essay_read_50`.
-- [ ] P3-11 Unit and integration tests for token handling, rate limiting, and status transitions.
+- [x] P3-09 Frontend: `SubscribeForm` calls `/api/subscribe`. Success: "Check your inbox to confirm". Already-subscribed and error states. No profile redirect. Pages: `/subscribe/confirm`, `/unsubscribe`.
+- [x] P3-10 Instrument events: `subscribe_submit`, `subscribe_confirmed` (plus status). `cta_book_call_click` / `essay_read_50` already partially covered elsewhere.
+- [ ] P3-11 Unit and integration tests for token handling, rate limiting, and status transitions. (Token hash unit tests added; expand coverage.)
 
 ### 6.3 Content pipeline
 
