@@ -10,7 +10,7 @@ import { isIndexable } from "@/lib/articles";
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Essays on AI, software, and systems. Newest first. New essays as they publish.",
+    "Essays on AI, software, and systems. Newest first. New essays weekly.",
   alternates: {
     canonical: "/writing",
     types: {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Writing | Syed Baqir Ali",
     description:
-      "Essays on AI, software, and systems. Newest first. New essays as they publish.",
+      "Essays on AI, software, and systems. Newest first. New essays weekly.",
     url: "/writing",
   },
 };
@@ -46,8 +46,8 @@ export default async function WritingPage({
             Writing
           </h1>
           <p className='text-muted-foreground text-lg leading-relaxed max-w-xl'>
-            Essays on AI, software, and systems. Newest first. New essays as
-            they publish.
+            Essays on AI, software, and systems. Newest first. New essays
+            weekly.
           </p>
           <p className='flex flex-wrap gap-x-3 gap-y-1 text-sm pt-1'>
             <Link

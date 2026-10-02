@@ -29,7 +29,7 @@ function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
 - Site: ${web_url}
 - About: ${web_url}/about
 - Contact: ${web_url}/contact
-- LinkedIn: https://www.linkedin.com/in/syedbaqirali
+- LinkedIn: https://www.linkedin.com/in/syedbaqirali/
 - GitHub: https://github.com/gitbaq
 - RSS: ${web_url}/feed.xml
 

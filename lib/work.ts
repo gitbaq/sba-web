@@ -27,8 +27,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     externalUrl: cobu_url,
     mark: "/portfolio/cobu/mark.png",
     role: "Software engineer / subject-matter expert",
-    // TODO(owner): exact timeline
-    timeline: "Ongoing",
+    timeline: "2025",
     // TODO(owner): one measurable result when available
     result:
       "A living product for brainstorming ideas (still maturing toward full capability).",
@@ -61,8 +60,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     externalUrl: blox_url,
     mark: "/portfolio/blox/mark.png",
     role: "Software engineer / subject-matter expert",
-    // TODO(owner): exact timeline
-    timeline: "Ongoing",
+    timeline: "2024",
     // TODO(owner): one measurable result when available
     result: "A focused hub for goals, habits, and staying on the task at hand.",
     problem:
@@ -108,16 +106,19 @@ export type Credential = {
   href?: string;
 };
 
-/** Credentials for About / hiring strip. TODO(owner): confirm wording before publish. */
+/** Credentials for About / hiring strip.
+ * Order is left/right pairs in a 2-column grid:
+ * SWE+AI | Master of AI · PMP | AWS AI · Co-author | Book reviews · Casual Academic
+ */
 export const CREDENTIALS: Credential[] = [
-  { label: "15+ years in software engineering" },
+  { label: "25+ years in SWE and AI" },
+  { label: "Master of Artificial Intelligence, UNSW Sydney" },
   { label: "PMP, PMI-ACP, PMI-PBA" },
   { label: "AWS Certified AI Practitioner" },
-  { label: "Master of Artificial Intelligence, UNSW Sydney" },
-  { label: "Book reviewer, Manning Publications" },
   {
     label: "Co-author on Amazon",
     href: AMAZON_AUTHOR_URL,
   },
-  { label: "Casual academic teaching postgraduate computer science and IT" },
+  { label: "Book reviewer, Manning Publications" },
+  { label: "Casual Academic, UNSW CS/IT" },
 ];

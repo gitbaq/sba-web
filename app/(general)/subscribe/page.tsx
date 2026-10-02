@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMeta({
 });
 
 const perks = [
-  "New essays as they publish",
+  "New essays weekly",
   "AI, software systems, and engineering leadership",
   "Unsubscribe anytime",
 ];

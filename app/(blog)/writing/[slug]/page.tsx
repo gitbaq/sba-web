@@ -31,7 +31,7 @@ import ArticleReadDepth from "@/components/writing/ArticleReadDepth";
 import JsonLd from "@/components/JsonLd";
 import TldrBlock from "@/components/TldrBlock";
 import AuthorBox from "@/components/AuthorBox";
-import CopyLinkButton from "@/components/CopyLinkButton";
+import EssayShareActions from "@/components/EssayShareActions";
 import SubscribeForm from "@/components/SubscribeForm";
 import { getAllTopicsSafe, getTopicById } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
@@ -229,7 +229,11 @@ export default async function WritingArticlePage({
                 </span>
               </div>
               <div className='ml-auto'>
-                <CopyLinkButton url={url} />
+                <EssayShareActions
+                  url={url}
+                  title={subtopic.subHeading || subtopic.heading}
+                  summary={dek || subtopic.subHeading}
+                />
               </div>
             </div>
           </header>
@@ -261,7 +265,7 @@ export default async function WritingArticlePage({
           <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
             <p className='accent-label mb-2'>Newsletter</p>
             <p className='mb-4 text-sm text-muted-foreground leading-relaxed max-w-md'>
-              Get new essays by email. Unsubscribe anytime.
+              Get new essays by email. Weekly. Unsubscribe anytime.
             </p>
             <SubscribeForm variant='inline' submitLabel={CTA.subscribe} />
           </div>

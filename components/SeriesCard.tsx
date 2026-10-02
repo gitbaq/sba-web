@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Topic } from "@/types/types";
 import { seriesHref } from "@/utils/services/getTopics";
-import { seriesStyle } from "@/lib/seriesColors";
 
 type Props = {
   topic: Topic;
@@ -15,9 +14,6 @@ export default function SeriesCard({
   className = "",
 }: Props) {
   const count = topic.subTopicList?.length ?? 0;
-  const blurb =
-    description ||
-    `${count} ${count === 1 ? "essay" : "essays"} in this series.`;
 
   return (
     <Link
@@ -29,21 +25,22 @@ export default function SeriesCard({
         .filter(Boolean)
         .join(" ")}
     >
-      <span
-        className='series-label w-fit'
-        style={seriesStyle(topic.sbaTopicName)}
-      >
-        Series
-      </span>
-      <span className='font-display text-xl font-semibold text-foreground tracking-tight'>
-        {topic.sbaTopicName}
-      </span>
-      <span className='text-sm text-muted-foreground leading-relaxed'>
-        {blurb}
-      </span>
-      <span className='mt-auto pt-2 text-xs tabular-nums text-muted-foreground'>
-        {count} {count === 1 ? "essay" : "essays"}
-      </span>
+      <div className='flex items-start justify-between gap-3'>
+        <span className='font-display text-xl font-semibold text-foreground tracking-tight'>
+          {topic.sbaTopicName}
+        </span>
+        <span
+          className='inline-flex shrink-0 items-center rounded-md border border-border/80 bg-secondary/60 px-2 py-0.5 text-xs font-semibold tabular-nums text-muted-foreground'
+          aria-label={`${count} ${count === 1 ? "essay" : "essays"}`}
+        >
+          {count}
+        </span>
+      </div>
+      {description ? (
+        <span className='text-sm text-muted-foreground leading-relaxed'>
+          {description}
+        </span>
+      ) : null}
     </Link>
   );
 }

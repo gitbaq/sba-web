@@ -148,11 +148,18 @@ export default function ForClientsPage() {
         <h2 id='engagement' className='display-title text-2xl mb-3'>
           How we work together
         </h2>
-        <p className='text-muted-foreground leading-relaxed max-w-xl'>
-          {/* TODO(owner): pricing signal or engagement model. */}
-          Short discovery call, then a scoped engagement with clear outcomes.
-          Prefer thin slices that prove value before a larger build.
+        <p className='text-muted-foreground leading-relaxed max-w-xl mb-5'>
+          Book a paid consultation on Calendly. We use that call to frame the
+          outcome, then scope a thin slice before a larger build.
         </p>
+        <a
+          href={CALENDLY_URL}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='craft-cta-primary w-fit'
+        >
+          {CTA.calendly}
+        </a>
       </section>
     </AudienceShell>
   );

@@ -3,10 +3,10 @@ export const SITE = {
   url: "https://www.syedbaqirali.com",
   title: "Syed Baqir Ali | Practical Writing on AI and Software",
   description:
-    "Practical notes on software, AI, and leading teams. New essays as they publish.",
+    "Practical notes on software, AI, and leading teams. New essays weekly.",
   locale: "en_US",
   twitter: "@baq2coaching",
-  linkedin: "https://www.linkedin.com/in/syedbaqirali",
+  linkedin: "https://www.linkedin.com/in/syedbaqirali/",
   github: "https://github.com/gitbaq",
   x: "https://x.com/baq2coaching",
   calendly: "https://calendly.com/syedbaqirali/30min",
