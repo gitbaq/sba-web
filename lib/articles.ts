@@ -136,15 +136,15 @@ export function estimateReadingMinutes(html: string): number {
   return Math.max(1, Math.round(words / 200));
 }
 
-export type TocItem = { id: string; text: string; level: 1 | 2 | 3 };
+export type TocItem = { id: string; text: string; level: 1 | 2 | 3 | 4 };
 
 export function extractToc(html: string): TocItem[] {
   const items: TocItem[] = [];
   const used = new Map<string, number>();
-  const re = /<h([1-3])[^>]*>([\s\S]*?)<\/h\1>/gi;
+  const re = /<h([1-4])[^>]*>([\s\S]*?)<\/h\1>/gi;
   let match: RegExpExecArray | null;
   while ((match = re.exec(html)) !== null) {
-    const level = Number(match[1]) as 1 | 2 | 3;
+    const level = Number(match[1]) as 1 | 2 | 3 | 4;
     const text = match[2].replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
     if (!text) continue;
     let id = slugify(text);
@@ -156,11 +156,11 @@ export function extractToc(html: string): TocItem[] {
   return items;
 }
 
-/** Inject id attributes into h1-h3 for TOC anchors (order must match extractToc). */
+/** Inject id attributes into h1-h4 for TOC anchors (order must match extractToc). */
 export function injectHeadingIds(html: string): string {
   const toc = extractToc(html);
   let i = 0;
-  return html.replace(/<h([1-3])([^>]*)>/gi, (full, level, attrs) => {
+  return html.replace(/<h([1-4])([^>]*)>/gi, (full, level, attrs) => {
     const item = toc[i++];
     if (!item) return full;
     if (/\sid=/i.test(attrs)) return full;
@@ -168,8 +168,110 @@ export function injectHeadingIds(html: string): string {
   });
 }
 
+/**
+ * Page has one H1 (the title). Demote body H1→H2, H2→H3, H3→H4.
+ * Drop a leading body heading that repeats the title or dek.
+ */
+export function demoteBodyHeadings(
+  html: string,
+  opts?: { title?: string; dek?: string }
+): string {
+  if (!html) return "";
+  let out = html.replace(/<h([1-3])(\b[^>]*)>/gi, (_, level, attrs) => {
+    const next = Math.min(Number(level) + 1, 4);
+    return `<h${next}${attrs}>`;
+  });
+  out = out.replace(/<\/h([1-3])>/gi, (_, level) => {
+    const next = Math.min(Number(level) + 1, 4);
+    return `</h${next}>`;
+  });
+
+  const normalize = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  const titleN = opts?.title ? normalize(opts.title) : "";
+  const dekN = opts?.dek ? normalize(opts.dek) : "";
+  if (titleN || dekN) {
+    out = out.replace(
+      /^\s*<h([2-4])\b[^>]*>([\s\S]*?)<\/h\1>/i,
+      (full, _level, inner) => {
+        const text = normalize(String(inner).replace(/<[^>]*>/g, " "));
+        if (text && (text === titleN || text === dekN)) return "";
+        return full;
+      }
+    );
+  }
+  return out;
+}
+
+/** Strip dead `#` anchors left from unpublished series list items. */
+export function stripHashLinks(html: string): string {
+  if (!html) return "";
+  return html.replace(/<a\b[^>]*href=["']#["'][^>]*>([\s\S]*?)<\/a>/gi, "$1");
+}
+
+/** Label Blockchain 101 unfinished list as planned topics (no date implication). */
+export function labelPlannedTopics(html: string): string {
+  if (!html) return "";
+  return html
+    .replace(
+      /<(h[2-4])([^>]*)>(\s*(?:Articles|Posts|Essays|Topics)\s+in\s+this\s+series\s*)<\/\1>/gi,
+      "<$1$2>Planned topics</$1>"
+    )
+    .replace(
+      /<(h[2-4])([^>]*)>(\s*Coming\s+soon\s*)<\/\1>/gi,
+      "<$1$2>Planned topics</$1>"
+    );
+}
+
+/** Prepare essay HTML for render: links, demotion, TOC ids. */
+export function prepareArticleHtml(
+  html: string,
+  opts?: { title?: string; dek?: string; essayId?: number }
+): string {
+  let out = stripHashLinks(html || "");
+  if (opts?.essayId === 0) {
+    out = labelPlannedTopics(out);
+  }
+  out = demoteBodyHeadings(out, { title: opts?.title, dek: opts?.dek });
+  return injectHeadingIds(out);
+}
+
 export function postDate(post: SubTopic): string {
   return post.publishDate || post.updateDate || post.createDate || "";
+}
+
+/**
+ * Prefer publish date when updateDate looks like a catalog backfill
+ * (same stamp on many essays on 2026-10-02) rather than a real edit.
+ */
+export function articleModifiedDate(
+  post: Pick<SubTopic, "publishDate" | "updateDate" | "createDate">
+): string {
+  const published = post.publishDate || post.createDate || "";
+  const updated = post.updateDate || "";
+  if (!updated) return published;
+  if (!published) return updated;
+  if (updated.startsWith("2026-10-02") && !published.startsWith("2026-10-02")) {
+    return published;
+  }
+  const pubDay = new Date(published).toDateString();
+  const updDay = new Date(updated).toDateString();
+  if (pubDay === updDay) return published;
+  return updated;
+}
+
+export function shouldShowUpdated(
+  post: Pick<SubTopic, "publishDate" | "updateDate" | "createDate">
+): boolean {
+  const published = post.publishDate || post.createDate || "";
+  const modified = articleModifiedDate(post);
+  if (!published || !modified) return false;
+  return (
+    new Date(modified).toDateString() !== new Date(published).toDateString()
+  );
 }
 
 /** Split HTML near ~40% of H2 sections for mid-article subscribe. */

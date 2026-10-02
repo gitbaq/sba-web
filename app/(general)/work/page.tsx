@@ -2,12 +2,14 @@ import { Metadata } from "next";
 import Link from "next/link";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
 import { CASE_STUDIES } from "@/lib/work";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Work | Syed Baqir Ali",
+export const metadata: Metadata = pageMeta({
+  title: "Work",
   description:
     "Case studies and products: Cobu, Blox, and more. Problem, approach, outcome, and stack.",
-};
+  path: "/work",
+});
 
 export default function WorkPage() {
   return (

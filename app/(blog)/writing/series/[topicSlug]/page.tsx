@@ -9,6 +9,7 @@ import {
   seriesHref,
   seriesSlug,
 } from "@/utils/services/getTopics";
+import { isIndexable } from "@/lib/articles";
 
 type Params = Promise<{ topicSlug: string }>;
 
@@ -24,8 +25,9 @@ export async function generateMetadata({
   const topic = getTopicById(topics, parsed.id);
   if (!topic) return {};
   return {
-    title: `${topic.sbaTopicName} | Series`,
+    title: topic.sbaTopicName,
     description: `Essays in the ${topic.sbaTopicName} series by Syed Baqir Ali.`,
+    alternates: { canonical: seriesHref(topic) },
   };
 }
 
@@ -47,11 +49,22 @@ export default async function SeriesDetailPage({
     permanentRedirect(seriesHref(topic));
   }
 
-  const posts = [...(topic.subTopicList || [])].sort((a, b) => {
-    const aT = Date.parse(a.publishDate || a.updateDate || a.createDate || "");
-    const bT = Date.parse(b.publishDate || b.updateDate || b.createDate || "");
-    return (Number.isFinite(bT) ? bT : 0) - (Number.isFinite(aT) ? aT : 0);
-  });
+  const posts = [...(topic.subTopicList || [])]
+    .filter((s) => {
+      const published =
+        s.isPublished === true ||
+        s.isPublished === "true" ||
+        s.isPublished === "1";
+      return published && isIndexable(s);
+    })
+    .sort((a, b) => {
+      const ao = a.seriesOrder ?? Number.POSITIVE_INFINITY;
+      const bo = b.seriesOrder ?? Number.POSITIVE_INFINITY;
+      if (ao !== bo) return ao - bo;
+      const aT = Date.parse(a.publishDate || a.updateDate || a.createDate || "");
+      const bT = Date.parse(b.publishDate || b.updateDate || b.createDate || "");
+      return (Number.isFinite(bT) ? bT : 0) - (Number.isFinite(aT) ? aT : 0);
+    });
 
   return (
     <main className='mx-auto w-full max-w-5xl px-4 py-12 md:py-16'>

@@ -2,12 +2,14 @@ import { Metadata } from "next";
 import Link from "next/link";
 import SeriesCard from "@/components/SeriesCard";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Series | Writing",
+export const metadata: Metadata = pageMeta({
+  title: "Series",
   description:
     "Browse researched essays by series: Deep Learning, NLP, Rust, Blockchain, and more.",
-};
+  path: "/writing/series",
+});
 
 export default async function SeriesIndexPage() {
   const topics = await getAllTopicsSafe();

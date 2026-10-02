@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { SubTopic, Topic } from "@/types/types";
 import EssayCard from "@/components/EssayCard";
-import { postTags } from "@/lib/articles";
+import { isIndexable, postTags } from "@/lib/articles";
 import { seriesHref } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
 
@@ -76,7 +76,15 @@ export default function WritingIndex({
                   >
                     {t.sbaTopicName}
                     <span className='ml-1.5 opacity-70 tabular-nums'>
-                      {t.subTopicList?.length ?? 0}
+                      {
+                        (t.subTopicList || []).filter(
+                          (s) =>
+                            (s.isPublished === true ||
+                              s.isPublished === "true" ||
+                              s.isPublished === "1") &&
+                            isIndexable(s)
+                        ).length
+                      }
                     </span>
                   </Link>
                 </li>

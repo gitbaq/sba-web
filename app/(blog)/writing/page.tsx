@@ -6,26 +6,16 @@ import SeriesCard from "@/components/SeriesCard";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
+import { pageMeta } from "@/lib/seo";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Writing",
   description:
-    "Essays on AI, software, and systems. Newest first. New essays weekly.",
-  alternates: {
-    canonical: "/writing",
-    types: {
-      "application/rss+xml": "/feed.xml",
-    },
-  },
-  openGraph: {
-    title: "Writing | Syed Baqir Ali",
-    description:
-      "Essays on AI, software, and systems. Newest first. New essays weekly.",
-    url: "/writing",
-  },
-};
+    "Essays on AI, software, and systems. Newest first. New essays as they publish.",
+  path: "/writing",
+});
 
 type SearchParams = Promise<{ query?: string; tag?: string }>;
 
@@ -48,8 +38,8 @@ export default async function WritingPage({
             Writing
           </h1>
           <p className='text-muted-foreground text-lg leading-relaxed max-w-xl'>
-            Essays on AI, software, and systems. Newest first. New essays
-            weekly.
+            Essays on AI, software, and systems. Newest first. New essays as
+            they publish.
           </p>
           <p className='flex flex-wrap gap-x-3 gap-y-1 text-sm pt-1'>
             <Link

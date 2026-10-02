@@ -9,16 +9,18 @@ import {
 import { articleHref, estimateReadingMinutes } from "@/lib/articles";
 import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Read the essays | Syed Baqir Ali",
+export const metadata: Metadata = pageMeta({
+  title: "Read the essays",
   description:
     "Research-depth writing on AI and software. Thorough, practical, newest first.",
-};
+  path: "/for/readers",
+});
 
 const habits = [
   {
-    title: "One careful piece a week",
+    title: "New essays as they publish",
     text: "Cadence over firehose. Essays meant to be finished, not skimmed forever.",
   },
   {
