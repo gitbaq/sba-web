@@ -4,7 +4,7 @@ import { getSubTopicById } from "@/utils/services/getLatestSubtopics";
 
 type Params = Promise<{ topicId: string }>;
 
-/** Legacy `/learning/[id]` → canonical `/writing/{slug}-{id}` */
+/** Legacy `/learning/[id]` → canonical `/writing/{slug}` */
 export default async function LearningArticleRedirect({
   params,
 }: {

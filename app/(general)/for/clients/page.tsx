@@ -3,14 +3,15 @@ import Link from "next/link";
 import AudienceShell from "@/components/audience/AudienceShell";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
 import { CALENDLY_URL, CASE_STUDIES } from "@/lib/work";
-import { LINKEDIN_URL } from "@/lib/audience";
+import { pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 
-export const metadata: Metadata = {
-  title: "Explore the work | Syed Baqir Ali",
+export const metadata: Metadata = pageMeta({
+  title: "Work with me",
   description:
-    "Delivery approach, outcomes, and selected case studies for project work.",
-};
+    "Book a 30 minute call. Delivery across AI, cloud, and software systems, with selected case studies.",
+  path: "/for/clients",
+});
 
 const outcomes = [
   {
@@ -34,7 +35,7 @@ const outcomes = [
 const process = [
   {
     step: "01",
-    title: "Listen & frame",
+    title: "Listen and frame",
     text: "Clarify the outcome, constraints, and success metrics before any architecture pitch.",
   },
   {
@@ -44,40 +45,30 @@ const process = [
   },
   {
     step: "03",
-    title: "Harden & hand over",
+    title: "Harden and hand over",
     text: "Production readiness, docs, and a path your team can own.",
   },
 ];
 
 export default function ForClientsPage() {
-  const featured = CASE_STUDIES[0];
-
   return (
     <AudienceShell
-      eyebrow='Explore the work'
+      eyebrow='Clients'
       title='Outcomes over slide decks'
       description='Practical delivery across AI, cloud, and software systems. Writing that explains the why, not just the what.'
       ctas={[
         {
-          href: "/contact",
-          label: CTA.contact,
-          variant: "primary",
-          icon: "contact",
-        },
-        {
           href: CALENDLY_URL,
           label: CTA.calendly,
           external: true,
-          variant: "secondary",
+          variant: "primary",
           icon: "calendar",
         },
-        { href: "/work", label: CTA.work, variant: "secondary", icon: "work" },
         {
-          href: LINKEDIN_URL,
-          label: CTA.linkedin,
-          external: true,
+          href: "/contact",
+          label: CTA.contact,
           variant: "secondary",
-          icon: "linkedin",
+          icon: "contact",
         },
       ]}
     >
@@ -88,16 +79,16 @@ export default function ForClientsPage() {
             How I help
           </h2>
         </div>
-        <ul className='grid gap-4 list-none p-0 m-0 sm:grid-cols-2'>
+        <ul className='m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2'>
           {outcomes.map((o) => (
             <li
               key={o.title}
               className='rounded-2xl border border-border/80 bg-card p-5 shadow-elev1'
             >
-              <h3 className='font-display font-semibold text-foreground mb-2'>
+              <h3 className='mb-2 font-display font-semibold text-foreground'>
                 {o.title}
               </h3>
-              <p className='text-muted-foreground text-sm leading-relaxed'>
+              <p className='text-sm leading-relaxed text-muted-foreground'>
                 {o.text}
               </p>
             </li>
@@ -105,19 +96,21 @@ export default function ForClientsPage() {
         </ul>
       </section>
 
-      <section aria-labelledby='process' className='life-panel'>
-        <p className='accent-label mb-2'>Process</p>
-        <h2 id='process' className='display-title text-2xl mb-6'>
-          How engagements usually run
-        </h2>
-        <ol className='grid gap-6 list-none p-0 m-0 sm:grid-cols-3'>
+      <section aria-labelledby='process' className='flex flex-col gap-6'>
+        <div>
+          <p className='accent-label mb-2'>Process</p>
+          <h2 id='process' className='display-title text-2xl md:text-3xl'>
+            How engagements run
+          </h2>
+        </div>
+        <ol className='m-0 grid list-none gap-4 p-0 sm:grid-cols-3'>
           {process.map((p) => (
             <li key={p.step} className='flex flex-col gap-2'>
-              <span className='text-xs font-bold uppercase tracking-[0.12em] text-brand'>
+              <span className='font-display text-sm font-semibold text-brand'>
                 {p.step}
               </span>
-              <h3 className='font-display font-semibold'>{p.title}</h3>
-              <p className='text-sm text-muted-foreground leading-relaxed'>
+              <h3 className='font-display text-lg font-semibold'>{p.title}</h3>
+              <p className='text-sm leading-relaxed text-muted-foreground'>
                 {p.text}
               </p>
             </li>
@@ -125,29 +118,30 @@ export default function ForClientsPage() {
         </ol>
       </section>
 
-      {featured && (
-        <section aria-labelledby='featured-work' className='flex flex-col gap-4'>
-          <div>
-            <p className='accent-label mb-2'>Case study</p>
-            <h2 id='featured-work' className='display-title text-2xl md:text-3xl'>
-              Featured work
-            </h2>
-          </div>
-          <div className='rounded-2xl border border-border/80 bg-card p-5 shadow-elev1'>
-            <CaseStudyCard study={featured} />
-          </div>
-        </section>
-      )}
-
-      <p className='text-sm text-muted-foreground'>
-        Prefer to read first?{" "}
+      <section aria-labelledby='proof' className='flex flex-col gap-6'>
+        <div>
+          <p className='accent-label mb-2'>Proof</p>
+          <h2 id='proof' className='display-title text-2xl md:text-3xl'>
+            Featured work
+          </h2>
+          <p className='mt-2 max-w-xl text-muted-foreground'>
+            Cobu and Blox. Case studies with problem, approach, and outcome.
+          </p>
+        </div>
+        <ul className='m-0 grid list-none gap-4 p-0 sm:grid-cols-2'>
+          {CASE_STUDIES.map((study) => (
+            <li key={study.slug}>
+              <CaseStudyCard study={study} />
+            </li>
+          ))}
+        </ul>
         <Link
-          href='/writing'
-          className='text-brand font-medium underline-offset-4 hover:underline'
+          href='/work'
+          className='w-fit font-semibold text-brand underline-offset-4 hover:underline'
         >
-          Browse Writing
+          All case studies
         </Link>
-      </p>
+      </section>
     </AudienceShell>
   );
 }

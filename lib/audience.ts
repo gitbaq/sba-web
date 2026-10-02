@@ -42,6 +42,5 @@ export function getAudience(id: AudienceId) {
   return AUDIENCES.find((a) => a.id === id)!;
 }
 
-/** LinkedIn follow URL used across CTAs */
-export const LINKEDIN_URL =
-  "https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=syedbaqirali";
+/** LinkedIn profile URL used across CTAs. TODO(owner): confirm exact profile URL. */
+export const LINKEDIN_URL = "https://www.linkedin.com/in/syedbaqirali";

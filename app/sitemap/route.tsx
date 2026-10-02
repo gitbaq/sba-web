@@ -1,7 +1,7 @@
 import { SubTopic } from "@/types/types";
 import { web_url, ids_url } from "@/utils/endpoints/endpoints";
 import { NextResponse } from "next/server";
-import { articleHref } from "@/lib/articles";
+import { articleHref, isIndexable } from "@/lib/articles";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { CASE_STUDIES } from "@/lib/work";
 
@@ -84,6 +84,24 @@ function generateSiteMap(posts: SubTopic[], seriesUrls: string[]) {
   </url>
   ${workCaseUrls}
   <url>
+    <loc>${web_url}/contact</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>${web_url}/subscribe</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${web_url}/privacy</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>${web_url}/for/hiring</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
@@ -157,10 +175,8 @@ export async function GET() {
       .filter((t) => (t.subTopicList?.length ?? 0) > 0)
       .map((t) => seriesHref(t));
 
-    const sitemap = generateSiteMap(
-      Array.isArray(posts) ? posts : [],
-      seriesUrls
-    );
+    const indexable = (Array.isArray(posts) ? posts : []).filter(isIndexable);
+    const sitemap = generateSiteMap(indexable, seriesUrls);
 
     return new NextResponse(sitemap, {
       status: 200,

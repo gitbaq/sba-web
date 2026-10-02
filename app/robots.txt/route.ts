@@ -3,7 +3,8 @@ import { web_url } from "@/utils/endpoints/endpoints";
 /** Allow major search + AI crawlers; keep private app surfaces closed. */
 export function GET() {
   const robotsTxt = `# syedbaqirali.com
-# Policy: allow search engines and reputable AI/LLM crawlers for public writing.
+# Policy: allow search engines and AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended).
+# Owner can tighten this block later if needed.
 # Block admin/editor/api surfaces. llms.txt: ${web_url}/llms.txt
 
 User-agent: *
@@ -20,6 +21,7 @@ Allow: /work/
 Allow: /about/
 Allow: /contact/
 Allow: /subscribe/
+Allow: /privacy/
 Allow: /for/
 Allow: /feed.xml
 Allow: /llms.txt

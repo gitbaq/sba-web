@@ -6,15 +6,23 @@ import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { postsThisWeek } from "@/lib/feed";
 import { seriesStyle } from "@/lib/seriesColors";
+import { isIndexable } from "@/lib/articles";
 
 export const metadata: Metadata = {
   title: "Writing",
   description:
-    "Essays on AI, software, and systems. Newest first. About one piece a week.",
+    "Essays on AI, software, and systems. Newest first. New essays as they publish.",
   alternates: {
+    canonical: "/writing",
     types: {
       "application/rss+xml": "/feed.xml",
     },
+  },
+  openGraph: {
+    title: "Writing | Syed Baqir Ali",
+    description:
+      "Essays on AI, software, and systems. Newest first. New essays as they publish.",
+    url: "/writing",
   },
 };
 
@@ -26,7 +34,7 @@ export default async function WritingPage({
   searchParams: SearchParams;
 }) {
   const { query } = await searchParams;
-  const posts = await getAllSubtopicsSorted();
+  const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
   const topics = await getAllTopicsSafe();
   const weekly = postsThisWeek(posts, 7);
   const series = topics.filter((t) => (t.subTopicList?.length ?? 0) > 0);
@@ -40,15 +48,15 @@ export default async function WritingPage({
             Writing
           </h1>
           <p className='text-muted-foreground text-lg leading-relaxed max-w-xl'>
-            Essays on AI, software, and systems. Newest first.
-            About one piece a week.
+            Essays on AI, software, and systems. Newest first. New essays as
+            they publish.
           </p>
           <p className='flex flex-wrap gap-x-3 gap-y-1 text-sm pt-1'>
             <Link
               href='/subscribe'
               className='text-brand font-semibold underline-offset-4 hover:underline'
             >
-              Get Weekly Insights
+              Subscribe
             </Link>
             <a
               href='/feed.xml'

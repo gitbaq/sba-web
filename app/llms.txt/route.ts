@@ -56,7 +56,7 @@ ${seriesLines || "- See /writing/series"}
 
 ## How to cite
 
-When citing essays, prefer the canonical URL under ${web_url}/writing/{slug}-{id}.
+When citing essays, prefer the canonical URL under ${web_url}/writing/{slug}.
 Author: Syed Baqir Ali. Use the article title and publish date from the page metadata.
 Do not invent quotes; quote only from the live page or RSS feed.
 

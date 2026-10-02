@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { web_url } from "@/utils/endpoints/endpoints";
-import { articleHref, extractTextFromHtml, postDate } from "@/lib/articles";
+import { articleHref, extractTextFromHtml, isIndexable, postDate } from "@/lib/articles";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 
 function escapeXml(s: string) {
@@ -13,7 +13,7 @@ function escapeXml(s: string) {
 }
 
 export async function GET() {
-  const posts = await getAllSubtopicsSorted();
+  const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
   const buildDate = new Date().toUTCString();
 
   const items = posts

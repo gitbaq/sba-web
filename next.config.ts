@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { LEGACY_ARTICLE_PATHS } from "./lib/articles";
 
 const nextConfig: NextConfig = {
   crossOrigin: "anonymous",
@@ -18,6 +19,11 @@ const nextConfig: NextConfig = {
         destination: "/writing/:id",
         permanent: true,
       },
+      ...LEGACY_ARTICLE_PATHS.map(({ source, slug }) => ({
+        source,
+        destination: `/writing/${slug}`,
+        permanent: true,
+      })),
     ];
   },
   images: {

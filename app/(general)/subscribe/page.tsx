@@ -3,17 +3,20 @@ import Link from "next/link";
 import SubscribeForm from "@/components/SubscribeForm";
 import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
+import { pageMeta } from "@/lib/seo";
+import { CTA } from "@/lib/ctas";
 
-export const metadata: Metadata = {
-  title: "Subscribe | Syed Baqir Ali",
+export const metadata: Metadata = pageMeta({
+  title: "Subscribe",
   description:
-    "Get researched essays on AI and software by email. Roughly one careful piece a week. Also available via RSS.",
-};
+    "Get new essays by email. AI, software systems, and engineering leadership. Unsubscribe anytime.",
+  path: "/subscribe",
+});
 
 const perks = [
-  "About one researched essay most weeks. Not a daily firehose",
-  "Topics: AI, software systems, and building in public",
-  "Unsubscribe anytime; no spam",
+  "New essays as they publish",
+  "AI, software systems, and engineering leadership",
+  "Unsubscribe anytime",
 ];
 
 export default async function SubscribePage() {
@@ -24,25 +27,24 @@ export default async function SubscribePage() {
       <div className='life-hero'>
         <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
           <p className='accent-label'>Newsletter</p>
-          <h1 className='display-title text-4xl md:text-5xl text-foreground'>
-            Subscribe
+          <h1 className='display-title text-4xl text-foreground md:text-5xl'>
+            Get new essays by email
           </h1>
-          <p className='text-lg leading-relaxed text-foreground/80 max-w-xl'>
-            Occasional email when something new and worthwhile ships. Prefer
-            feeds? Use RSS. Same writing, your reader.
+          <p className='max-w-xl text-lg leading-relaxed text-foreground/80'>
+            Occasional email when something new ships. Prefer feeds? Use RSS.
           </p>
         </header>
       </div>
 
       <main className='mx-auto flex w-full max-w-3xl flex-col gap-14 px-4 py-10 md:py-14'>
         <section className='life-panel flex flex-col gap-6'>
-          <ul className='flex flex-col gap-2.5 list-none p-0 m-0'>
+          <ul className='m-0 flex list-none flex-col gap-2.5 p-0'>
             {perks.map((p) => (
               <li
                 key={p}
-                className='flex gap-2.5 text-sm text-muted-foreground leading-relaxed'
+                className='flex gap-2.5 text-sm leading-relaxed text-muted-foreground'
               >
-                <span className='text-brand font-semibold shrink-0' aria-hidden>
+                <span className='shrink-0 font-semibold text-brand' aria-hidden>
                   ✓
                 </span>
                 {p}
@@ -50,20 +52,20 @@ export default async function SubscribePage() {
             ))}
           </ul>
 
-          <SubscribeForm submitLabel='Get Weekly Insights' />
+          <SubscribeForm submitLabel={CTA.subscribe} />
 
           <p className='text-sm text-muted-foreground'>
             Prefer RSS?{" "}
             <a
               href='/feed.xml'
-              className='text-brand font-medium underline-offset-4 hover:underline'
+              className='font-medium text-brand underline-offset-4 hover:underline'
             >
               Subscribe to the feed
             </a>
             {" · "}
             <Link
               href='/writing'
-              className='underline-offset-4 hover:underline hover:text-brand'
+              className='underline-offset-4 hover:text-brand hover:underline'
             >
               Browse Writing
             </Link>
@@ -71,11 +73,7 @@ export default async function SubscribePage() {
         </section>
 
         {posts.length > 0 && (
-          <LatestWriting
-            posts={posts}
-            title='Recent essays'
-            showViewAll
-          />
+          <LatestWriting posts={posts} title='Recent essays' showViewAll />
         )}
       </main>
     </div>
