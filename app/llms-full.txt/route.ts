@@ -3,15 +3,16 @@ import { web_url } from "@/utils/endpoints/endpoints";
 import { articleHref, extractTextFromHtml, postDate } from "@/lib/articles";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
-import { CASE_STUDIES } from "@/lib/work";
+import { getWorkProjects } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
 export async function GET() {
-  const [posts, topics] = await Promise.all([
+  const [posts, topics, studies] = await Promise.all([
     getAllSubtopicsSorted(),
     getAllTopicsSafe(),
+    getWorkProjects(),
   ]);
 
   const seriesBlock = topics
@@ -30,7 +31,7 @@ export async function GET() {
     return `- [${p.subHeading}](${web_url}${articleHref(p)})${date ? ` (${date.slice(0, 10)})` : ""}\n  ${abstract}`;
   });
 
-  const work = CASE_STUDIES.map(
+  const work = studies.map(
     (c) =>
       `### ${c.title}\n${c.tagline}\n- Page: ${web_url}${c.href}\n${c.externalUrl ? `- Live: ${c.externalUrl}\n` : ""}- Problem: ${c.problem}\n- Outcome: ${c.outcome.join("; ")}`
   ).join("\n\n");

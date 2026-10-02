@@ -11,13 +11,14 @@ import {
   topics_secure_url,
 } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
-import Image from "next/image";
 import Link from "next/link";
 import FreeRichTextEditor, {
   type FreeRichTextEditorHandle,
 } from "@/components/editor/FreeRichTextEditor";
 import { Switch } from "@/components/ui/switch";
 import { articleHref } from "@/lib/articles";
+import { readJson } from "@/lib/http";
+import MediaPicker from "@/components/admin/MediaPicker";
 
 type Params = { subId: string | undefined; post: SubTopic };
 
@@ -104,7 +105,7 @@ export default function XEditor({ params }: { params?: Params }) {
     fetch(topics_secure_url, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((r) => (r.ok ? r.json() : []))
+      .then((r) => (r.ok ? readJson<Topic[]>(r, []) : []))
       .then((data) => setSeries(Array.isArray(data) ? data : []))
       .catch(() => setSeries([]));
   }, [token, isAdmin]);
@@ -260,6 +261,13 @@ export default function XEditor({ params }: { params?: Params }) {
           </h1>
           <p className='text-sm text-muted-foreground mt-1'>
             Status: <span className='font-medium text-foreground'>{status}</span>
+            {" · "}
+            <Link
+              href='/admin/essays'
+              className='text-brand underline-offset-4 hover:underline'
+            >
+              Manage essays
+            </Link>
             {" · "}
             <Link
               href='/admin/series'
@@ -437,28 +445,15 @@ export default function XEditor({ params }: { params?: Params }) {
           />
         </div>
         <div className='md:col-span-2'>
-          <Label htmlFor='imageUrl'>Image URL</Label>
-          <div className='flex gap-2 items-end'>
-            <Input
-              id='imageUrl'
-              value={formData.imageUrl || ""}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, imageUrl: e.target.value }))
-              }
-              placeholder='https://…'
-            />
-            {formData.imageUrl ? (
-              <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded border'>
-                <Image
-                  src={formData.imageUrl}
-                  alt='Thumbnail'
-                  fill
-                  className='object-cover'
-                  onError={() => {}}
-                />
-              </div>
-            ) : null}
-          </div>
+          <MediaPicker
+            label='Cover image'
+            value={formData.imageUrl || ""}
+            onSelect={(url) =>
+              setFormData((prev) => ({ ...prev, imageUrl: url }))
+            }
+            defaultPrefix=''
+            uploadFolder='essays'
+          />
         </div>
         <div className='flex items-center gap-3 md:col-span-2'>
           <Switch

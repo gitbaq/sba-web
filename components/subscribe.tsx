@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { subs_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
 import FormMessages from "./FormMessages";
+import { readJson } from "@/lib/http";
 const formSchema = z.object({
   firstName: z.string().min(1).max(255),
   email: z.string().email({
@@ -62,13 +63,16 @@ export default function Subscribe() {
         },
       });
 
-      const data = await response.json();
+      const data = await readJson<{
+        errors?: unknown;
+        data?: { id?: number };
+      }>(response, {});
       if (!response.ok) {
-        toast("Error: " + data.errors);
-        throw new Error("Error: " + data.errors);
+        toast("Error: " + (data.errors ?? response.status));
+        throw new Error("Error: " + (data.errors ?? response.status));
       } else {
         setSuccess("All changes are saved");
-        router.push(`/profile/${data.data.id}`);
+        router.push(`/profile/${data.data?.id}`);
       }
     } catch (error) {
       setError("" + error.message);

@@ -20,6 +20,7 @@ import Link from "next/link";
 import { signup_url } from "@/utils/endpoints/endpoints";
 import { useState } from "react";
 import FormMessages from "@/components/FormMessages";
+import { readJson } from "@/lib/http";
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 );
@@ -84,9 +85,12 @@ export default function Signup() {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
+      const data = await readJson<{
+        errors?: unknown;
+        firstName?: string;
+      }>(response, {});
       if (!response.ok) {
-        throw new Error("" + data.errors);
+        throw new Error("" + (data.errors ?? `HTTP ${response.status}`));
       } else if (data.errors) {
         setError("Error: " + data.errors);
       } else {

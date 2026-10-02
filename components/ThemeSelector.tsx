@@ -11,9 +11,15 @@ const modes = [
   { id: "system" as const, label: "System", Icon: Icons.MonitorCog },
 ];
 
-function ThemeSelector() {
+type Props = {
+  /** `footer` uses light glyphs for the dark footer band. */
+  tone?: "default" | "footer";
+};
+
+function ThemeSelector({ tone = "default" }: Props) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const active = theme ?? "system";
+  const isFooter = tone === "footer";
 
   return (
     <div
@@ -32,9 +38,13 @@ function ThemeSelector() {
                 aria-pressed={isActive}
                 onClick={() => setTheme(id)}
                 className={`inline-flex h-8 w-8 items-center justify-center rounded-md transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                  isActive
-                    ? "text-brand bg-brand-muted"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent/70"
+                  isFooter
+                    ? isActive
+                      ? "text-white bg-white/15"
+                      : "text-white/75 hover:text-white hover:bg-white/10"
+                    : isActive
+                      ? "text-brand bg-brand-muted"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent/70"
                 }`}
               >
                 <Icon className='h-3.5 w-3.5' aria-hidden />

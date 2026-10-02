@@ -6,10 +6,11 @@ import {
   getAllSubtopicsSorted,
   getLatestSubtopics,
 } from "@/utils/services/getLatestSubtopics";
-import { articleHref, estimateReadingMinutes } from "@/lib/articles";
+import { articleHref, estimateReadingMinutes, isIndexable } from "@/lib/articles";
 import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
 import { pageMeta } from "@/lib/seo";
+import { getHomePageConfig, pickEssaysByIds } from "@/lib/homeConfig";
 
 export const metadata: Metadata = pageMeta({
   title: "Read the essays",
@@ -34,9 +35,23 @@ const habits = [
 ];
 
 export default async function ForReadersPage() {
-  const posts = await getLatestSubtopics(5);
-  const all = await getAllSubtopicsSorted();
-  const startHere = all.slice(0, 3);
+  const [posts, all, homeConfig] = await Promise.all([
+    getLatestSubtopics(5),
+    getAllSubtopicsSorted(),
+    getHomePageConfig(),
+  ]);
+  const indexable = all.filter(
+    (p) =>
+      (p.isPublished === true ||
+        p.isPublished === "true" ||
+        p.isPublished === "1") &&
+      isIndexable(p)
+  );
+  const startHere = pickEssaysByIds(
+    indexable,
+    homeConfig.startHereEssayIds,
+    3
+  );
 
   return (
     <AudienceShell

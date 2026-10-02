@@ -24,6 +24,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Icons from "../Icons";
 import FormMessages from "../FormMessages";
+import { readJson } from "@/lib/http";
 
 const formSchema = z.object({
   id: z.number(),
@@ -78,7 +79,11 @@ export default function Editor({ params }: { params?: Params }) {
         toast(`HTTP error! status: ${response.status}`);
         return;
       }
-      const result = await response.json();
+      const result = await readJson<SubTopic | null>(response, null);
+      if (!result) {
+        toast("Could not load essay (empty response)");
+        return;
+      }
       setSubtopic(result);
       setMode("PATCH");
       form.setValue("id", result.id);
@@ -114,16 +119,13 @@ export default function Editor({ params }: { params?: Params }) {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        res.json().then((data) => {
-          console.log("Data: " + data);
-          if (!res.ok) {
-            throw new Error(data.errors);
-          } else {
-            setSuccess("Changes are saved");
-            toast("Changes are saved");
-          }
-        });
+      .then(async (res) => {
+        const data = await readJson<{ errors?: unknown }>(res, {});
+        if (!res.ok) {
+          throw new Error(String(data.errors ?? "Save failed"));
+        }
+        setSuccess("Changes are saved");
+        toast("Changes are saved");
       })
       .catch((error) => {
         setError(`Error: ${error}`);

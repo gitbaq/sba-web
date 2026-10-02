@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { newsletter_confirm_url } from "@/utils/endpoints/endpoints";
 import { trackEvent } from "@/lib/analytics";
+import { readJson } from "@/lib/http";
 
 function ConfirmInner() {
   const searchParams = useSearchParams();
@@ -24,10 +25,10 @@ function ConfirmInner() {
           `${newsletter_confirm_url}?token=${encodeURIComponent(token)}`,
           { method: "GET", headers: { Accept: "application/json" } }
         );
-        const data = (await res.json().catch(() => ({}))) as {
+        const data = await readJson<{
           status?: string;
           message?: string;
-        };
+        }>(res, {});
         if (cancelled) return;
         const status = data.status || "error";
         setOk(status === "confirmed" || status === "already_confirmed");

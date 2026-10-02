@@ -1,6 +1,7 @@
 import { Topic } from "@/types/types";
 import { topics_url } from "@/utils/endpoints/endpoints";
 import { slugify } from "@/lib/articles";
+import { readJson } from "@/lib/http";
 
 export async function getAllTopicsSafe(): Promise<Topic[]> {
   try {
@@ -8,7 +9,7 @@ export async function getAllTopicsSafe(): Promise<Topic[]> {
       next: { revalidate: 60, tags: ["essays"] },
     });
     if (!res.ok) return [];
-    const data = await res.json();
+    const data = await readJson<Topic[]>(res, []);
     return Array.isArray(data) ? data : [];
   } catch {
     return [];

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { web_url } from "@/utils/endpoints/endpoints";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
-import { CASE_STUDIES } from "@/lib/work";
+import { getWorkProjects } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
-function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
+async function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
   const seriesLines = topics
     .filter((t) => (t.subTopicList?.length ?? 0) > 0)
     .map(
@@ -15,7 +15,8 @@ function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
     )
     .join("\n");
 
-  const workLines = CASE_STUDIES.map(
+  const studies = await getWorkProjects();
+  const workLines = studies.map(
     (c) => `- [${c.title}](${web_url}${c.href}): ${c.tagline}`
   ).join("\n");
 
@@ -73,7 +74,7 @@ For a longer machine-readable overview: ${web_url}/llms-full.txt
 
 export async function GET() {
   const topics = await getAllTopicsSafe();
-  return new NextResponse(body(topics), {
+  return new NextResponse(await body(topics), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

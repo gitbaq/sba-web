@@ -224,7 +224,7 @@ Design goals: double opt-in, minimal data, cost near zero.
   - `GET /api/subscribe/confirm?token=`: set `confirmed`.
   - `GET /api/unsubscribe?token=` and `POST` for one-click unsubscribe (`/api/subscribe/unsubscribe`).
 - [x] P3-07 Send mail with AWS SES (when `NEWSLETTER_EMAIL_ENABLED=true`). Include `List-Unsubscribe` and `List-Unsubscribe-Post` headers. Never log raw email addresses.
-- [ ] P3-08 Admin-only endpoint or CLI task: send a published essay to confirmed subscribers in batches, with a dry-run flag.
+- [x] P3-08 Admin send: `POST /secure/newsletter/v1/send` with `{ essayId, dryRun }` emails published essays to confirmed subscribers in batches. UI at `/admin/newsletter`.
 - [x] P3-09 Frontend: `SubscribeForm` calls `/api/subscribe`. Success: "Check your inbox to confirm". Already-subscribed and error states. No profile redirect. Pages: `/subscribe/confirm`, `/unsubscribe`.
 - [x] P3-10 Instrument events: `subscribe_submit`, `subscribe_confirmed` (plus status). `cta_book_call_click` / `essay_read_50` already partially covered elsewhere.
 - [ ] P3-11 Unit and integration tests for token handling, rate limiting, and status transitions. (Token hash unit tests added; expand coverage.)

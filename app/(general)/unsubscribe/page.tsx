@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { newsletter_unsubscribe_url } from "@/utils/endpoints/endpoints";
+import { readJson } from "@/lib/http";
 
 function UnsubscribeInner() {
   const searchParams = useSearchParams();
@@ -23,9 +24,7 @@ function UnsubscribeInner() {
           `${newsletter_unsubscribe_url}?token=${encodeURIComponent(token)}`,
           { method: "GET", headers: { Accept: "application/json" } }
         );
-        const data = (await res.json().catch(() => ({}))) as {
-          message?: string;
-        };
+        const data = await readJson<{ message?: string }>(res, {});
         if (cancelled) return;
         setDone(res.ok);
         setMessage(data.message || (res.ok ? "You are unsubscribed." : "Could not unsubscribe."));

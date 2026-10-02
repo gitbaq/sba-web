@@ -1,5 +1,6 @@
 import { SubTopic } from "@/types/types";
 import { subtopics_url } from "@/utils/endpoints/endpoints";
+import { readJson } from "@/lib/http";
 import {
   articleHref as hrefFromLib,
   ESSAY_SLUG_BY_ID,
@@ -40,7 +41,7 @@ export async function getAllSubtopicsSorted(): Promise<SubTopic[]> {
   try {
     const res = await fetch(subtopics_url, essayFetchInit);
     if (!res.ok) return [];
-    const data: SubTopic[] = await res.json();
+    const data = await readJson<SubTopic[]>(res, []);
     if (!Array.isArray(data)) return [];
     return [...data].sort(sortByNewest);
   } catch {
@@ -53,7 +54,8 @@ export async function getSubTopicById(subId: string): Promise<SubTopic | null> {
   try {
     const res = await fetch(`${subtopics_url}/s/${subId}`, essayFetchInit);
     if (!res.ok) return null;
-    return res.json();
+    const data = await readJson<SubTopic | null>(res, null);
+    return data && data.id != null ? data : null;
   } catch {
     return null;
   }
@@ -67,7 +69,7 @@ export async function getSubTopicBySlug(slug: string): Promise<SubTopic | null> 
       essayFetchInit
     );
     if (!res.ok) return null;
-    const data = await res.json();
+    const data = await readJson<SubTopic | null>(res, null);
     return data && data.id != null ? data : null;
   } catch {
     return null;

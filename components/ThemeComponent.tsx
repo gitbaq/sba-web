@@ -6,6 +6,10 @@ const ThemeSelectorNoSSR = dynamic(() => import("./ThemeSelector"), {
   ssr: false,
 });
 
-export default function ThemeComponent() {
-  return <ThemeSelectorNoSSR />;
+export default function ThemeComponent({
+  tone = "default",
+}: {
+  tone?: "default" | "footer";
+}) {
+  return <ThemeSelectorNoSSR tone={tone} />;
 }

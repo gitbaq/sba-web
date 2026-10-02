@@ -19,6 +19,7 @@ import { newsletter_subscribe_url } from "@/utils/endpoints/endpoints";
 import { toast } from "sonner";
 import FormMessages from "@/components/FormMessages";
 import { trackEvent } from "@/lib/analytics";
+import { readJson } from "@/lib/http";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -66,7 +67,10 @@ export default function SubscribeForm({
           "Content-Type": "application/json",
         },
       });
-      const data = (await response.json().catch(() => ({}))) as {
+      const data = (await readJson<{
+        status?: string;
+        message?: string;
+      }>(response, {})) as {
         status?: string;
         message?: string;
       };

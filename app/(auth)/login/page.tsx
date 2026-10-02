@@ -22,6 +22,7 @@ import { login_url } from "@/utils/endpoints/endpoints";
 import { useSearchParams } from "next/navigation";
 import FormMessages from "@/components/FormMessages";
 import { useAuth } from "@/utils/AuthContext";
+import { readJson } from "@/lib/http";
 
 const formSchema = z.object({
   usernameOrEmail: z.string().trim(),
@@ -73,8 +74,17 @@ function LoginForm() {
       },
     });
     if (response.ok) {
-      const data = await response.json();
-      login(data?.res.token, data?.res.username, data?.res.email);
+      const data = await readJson<{
+        res?: { token?: string; username?: string; email?: string };
+      } | null>(response, null);
+      if (!data?.res?.token) {
+        const message = "Login succeeded but returned an empty response. Try again.";
+        toast(message);
+        setError(message);
+        setIsLoading(false);
+        return;
+      }
+      login(data.res.token, data.res.username || "", data.res.email || "");
       toast("Logged In!");
       setIsLoading(false);
 
@@ -85,8 +95,8 @@ function LoginForm() {
       setError(message);
       setIsLoading(false);
     } else {
-      const data = await response.json();
-      const error: string = "" + JSON.stringify(data);
+      const data = await readJson(response, null);
+      const error: string = data ? JSON.stringify(data) : `HTTP ${response.status}`;
       setError(error);
       setIsLoading(false);
       throw new Error(error);

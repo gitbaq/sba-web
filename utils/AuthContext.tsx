@@ -3,6 +3,19 @@ import { User } from "@/types/types";
 import { isTokenExpired } from "@/utils/authUtils";
 import { createContext, useContext, useEffect, useState } from "react";
 import { baseURL } from "./endpoints/endpoints";
+import { readJson } from "@/lib/http";
+
+/** Read a cookie value without truncating on `=` (JWT payloads can contain padding). */
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const prefix = `${name}=`;
+  for (const part of document.cookie.split("; ")) {
+    if (part.startsWith(prefix)) {
+      return part.slice(prefix.length);
+    }
+  }
+  return null;
+}
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -42,8 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { Authorization: `Bearer ${authToken}` },
       });
       if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+        const userData = await readJson(response, null);
+        if (userData) setUser(userData);
       }
     } catch (error) {
       console.error("Failed to fetch user:", error);
@@ -51,19 +64,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const cookieToken = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
-    const cookieUsername = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("username="))
-      ?.split("=")[1];
-    const cookieEmail = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("email="))
-      ?.split("=")[1];
+    const cookieToken = readCookie("token");
+    const cookieUsername = readCookie("username");
+    const cookieEmail = readCookie("email");
 
     if (cookieToken && !isTokenExpired(cookieToken)) {
       setToken(cookieToken);
@@ -78,9 +81,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = (newToken: string, name: string, email: string) => {
-    document.cookie = `token=${newToken}; path=/`;
-    document.cookie = `username=${encodeURIComponent(name)}; path=/`;
-    document.cookie = `email=${encodeURIComponent(email)}; path=/`;
+    document.cookie = `token=${newToken}; path=/; SameSite=Lax`;
+    document.cookie = `username=${encodeURIComponent(name)}; path=/; SameSite=Lax`;
+    document.cookie = `email=${encodeURIComponent(email)}; path=/; SameSite=Lax`;
     setToken(newToken);
     setIsAuthenticated(true);
     setUsername(name);

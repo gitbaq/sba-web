@@ -4,11 +4,18 @@ import Link from "next/link";
 import LatestWriting from "@/components/home/LatestWriting";
 import StartHere from "@/components/home/StartHere";
 import SubscribeForm from "@/components/SubscribeForm";
-import { getLatestSubtopics, getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
+import {
+  getLatestSubtopics,
+  getAllSubtopicsSorted,
+} from "@/utils/services/getLatestSubtopics";
 import { pageMeta, SITE } from "@/lib/seo";
-import { CASE_STUDIES } from "@/lib/work";
 import { CTA } from "@/lib/ctas";
 import { isIndexable } from "@/lib/articles";
+import {
+  buildLatestWithBoost,
+  getHomePageConfig,
+} from "@/lib/homeConfig";
+import { getAboutConfig, getWorkProjects } from "@/lib/work";
 
 export const revalidate = 60;
 
@@ -20,9 +27,12 @@ export const metadata: Metadata = pageMeta({
 });
 
 export default async function Home() {
-  const [latest, all] = await Promise.all([
+  const [latest, all, homeConfig, about, work] = await Promise.all([
     getLatestSubtopics(5),
     getAllSubtopicsSorted(),
+    getHomePageConfig(),
+    getAboutConfig(),
+    getWorkProjects(),
   ]);
   const indexable = all.filter(
     (p) =>
@@ -31,7 +41,13 @@ export default async function Home() {
         p.isPublished === "1") &&
       isIndexable(p)
   );
-  const featuredWork = CASE_STUDIES[0];
+  const latestForHome = buildLatestWithBoost(
+    latest,
+    indexable,
+    homeConfig.featuredEssayId,
+    3
+  );
+  const featuredWork = work[0];
 
   return (
     <div className='flex w-full flex-col'>
@@ -46,7 +62,7 @@ export default async function Home() {
           <span className='life-blob life-blob-3' />
           <span className='life-blob life-blob-4' />
         </div>
-        <div className='relative z-[2] mx-auto flex max-w-3xl flex-col px-4 pt-6 pb-5 md:pt-8 md:pb-6'>
+        <div className='relative z-[2] mx-auto flex max-w-4xl flex-col px-4 pt-6 pb-5 md:pt-8 md:pb-6'>
           <header className='flex flex-col gap-4'>
             <p className='accent-label'>{SITE.name}</p>
             <h1
@@ -72,12 +88,12 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className='home-body mx-auto flex w-full max-w-3xl flex-col px-4 pt-5 pb-8 md:pt-6 md:pb-10'>
+      <div className='home-body mx-auto flex w-full max-w-4xl flex-col px-4 pt-5 pb-8 md:pt-6 md:pb-10'>
         {/* 2. Latest essays */}
         <div className='home-section'>
-          {latest.length > 0 ? (
+          {latestForHome.length > 0 ? (
             <LatestWriting
-              posts={latest.slice(0, 3)}
+              posts={latestForHome}
               title='Latest essays'
               showViewAll
               featured
@@ -105,7 +121,10 @@ export default async function Home() {
         </div>
 
         {/* 3. Start here */}
-        <StartHere posts={indexable} />
+        <StartHere
+          posts={indexable}
+          startHereIds={homeConfig.startHereEssayIds}
+        />
 
         {/* 4. Work with me */}
         <section aria-labelledby='work-strip' className='home-section'>
@@ -131,20 +150,20 @@ export default async function Home() {
           <p className='accent-label mb-2'>About</p>
           <div className='flex flex-col gap-5 sm:flex-row sm:items-start'>
             <Image
-              src='/sba-photo-2-small.png'
-              alt={`${SITE.name}`}
+              src={about.photoUrl}
+              alt={about.displayName}
               width={96}
               height={96}
               className='h-24 w-24 shrink-0 rounded-full object-cover ring-1 ring-border'
               sizes='96px'
+              unoptimized={about.photoUrl.startsWith("http")}
             />
             <div className='flex flex-col gap-3'>
               <h2 id='about-snip' className='display-title text-2xl'>
-                {SITE.name}
+                {about.displayName}
               </h2>
               <p className='max-w-xl text-muted-foreground leading-relaxed'>
-                I write and build at the intersection of AI research and
-                enterprise engineering. Plain language, concrete tradeoffs.
+                {about.homeBlurb}
               </p>
               <Link
                 href='/about'

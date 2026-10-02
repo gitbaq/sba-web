@@ -19,6 +19,7 @@ import { subs_url } from "@/utils/endpoints/endpoints";
 import Link from "next/link";
 import Icons from "@/components/Icons";
 import FormMessages from "@/components/FormMessages";
+import { readJson } from "@/lib/http";
 
 const formSchema = z.object({
   id: z.number(),
@@ -55,11 +56,17 @@ export default function Profile({ params }: { params: Params }) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const result = await response.json();
+      const result = await readJson<{
+        id?: number;
+        email?: string;
+        firstName?: string | null;
+        lastName?: string | null;
+      } | null>(response, null);
+      if (!result) return;
 
       // form.setFocus("email");
-      form.setValue("id", result.id);
-      form.setValue("email", result.email);
+      form.setValue("id", result.id!);
+      form.setValue("email", result.email || "");
       if (result.firstName != null) {
         form.setValue("firstName", result?.firstName);
       }
@@ -88,9 +95,9 @@ export default function Profile({ params }: { params: Params }) {
         },
       });
 
-      const data = await response.json();
+      const data = await readJson<{ errors?: unknown }>(response, {});
       if (!response.ok) {
-        throw new Error("Error: " + data.errors);
+        throw new Error("Error: " + (data.errors ?? response.status));
       } else {
         setSuccess(`Welcome! ${data.firstName}`);
       }

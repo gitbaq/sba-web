@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CaseStudySummary from "@/components/CaseStudySummary";
-import { getCaseStudy } from "@/lib/work";
+import { getWorkProject } from "@/lib/work";
 
 type Params = Promise<{ slug: string }>;
+
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -13,7 +15,7 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await getWorkProject(slug);
   if (!study) return {};
   return {
     title: study.title,
@@ -24,7 +26,7 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await getWorkProject(slug);
   if (!study) notFound();
 
   return (
