@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SITE } from "@/lib/seo";
+import { getAboutConfig } from "@/lib/work";
 
 type Props = {
   className?: string;
 };
 
-export default function AuthorBox({ className = "" }: Props) {
+export default async function AuthorBox({ className = "" }: Props) {
+  const about = await getAboutConfig();
+
   return (
     <aside
       className={[
@@ -18,20 +20,20 @@ export default function AuthorBox({ className = "" }: Props) {
       aria-labelledby='author-box'
     >
       <Image
-        src='/sba-photo-2-small.png'
-        alt={SITE.name}
+        src={about.photoUrl}
+        alt={about.displayName}
         width={72}
         height={72}
         className='h-[72px] w-[72px] shrink-0 rounded-full object-cover ring-1 ring-border'
         sizes='72px'
+        unoptimized={about.photoUrl.startsWith("http")}
       />
       <div className='flex flex-col gap-2'>
         <h2 id='author-box' className='font-display text-lg font-semibold'>
-          {SITE.name}
+          {about.displayName}
         </h2>
         <p className='text-sm text-muted-foreground leading-relaxed max-w-xl'>
-          I write and build at the intersection of AI research and enterprise
-          engineering. Plain language, concrete tradeoffs.
+          {about.homeBlurb}
         </p>
         <Link
           href='/about'

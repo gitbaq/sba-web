@@ -26,8 +26,8 @@ export default function AdminSeriesPage() {
         <p className='accent-label mb-2'>Content ops</p>
         <h1 className='display-title text-3xl md:text-4xl'>Series</h1>
         <p className='mt-2 text-muted-foreground max-w-xl'>
-          Add, rename, and publish series. Assign essays to a series in the
-          editor.
+          Add, rename, activate or deactivate series. Reassign essays before
+          deleting a series.
         </p>
       </header>
       <SeriesAdminClient />

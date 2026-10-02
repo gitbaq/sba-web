@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
-import { CASE_STUDIES } from "@/lib/work";
+import { getWorkProjects } from "@/lib/work";
 import { pageMeta } from "@/lib/seo";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMeta({
   title: "Work",
@@ -11,7 +13,9 @@ export const metadata: Metadata = pageMeta({
   path: "/work",
 });
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const studies = await getWorkProjects();
+
   return (
     <div className='w-full'>
       <div className='life-hero'>
@@ -36,7 +40,7 @@ export default function WorkPage() {
 
       <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
         <ul className='grid list-none grid-cols-1 gap-8 p-0 m-0 sm:grid-cols-2 sm:gap-6'>
-          {CASE_STUDIES.map((study) => (
+          {studies.map((study) => (
             <li
               key={study.slug}
               className='min-w-0 rounded-2xl border border-border/80 bg-card p-5 shadow-elev1'

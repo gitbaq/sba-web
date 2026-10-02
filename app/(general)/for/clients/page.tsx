@@ -2,9 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 import AudienceShell from "@/components/audience/AudienceShell";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
-import { CALENDLY_URL, CASE_STUDIES } from "@/lib/work";
+import { CALENDLY_URL, getWorkProjects } from "@/lib/work";
 import { pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMeta({
   title: "Work with me",
@@ -50,7 +52,9 @@ const process = [
   },
 ];
 
-export default function ForClientsPage() {
+export default async function ForClientsPage() {
+  const studies = await getWorkProjects();
+
   return (
     <AudienceShell
       eyebrow='Clients'
@@ -129,7 +133,7 @@ export default function ForClientsPage() {
           </p>
         </div>
         <ul className='m-0 grid list-none gap-4 p-0 sm:grid-cols-2'>
-          {CASE_STUDIES.map((study) => (
+          {studies.map((study) => (
             <li key={study.slug}>
               <CaseStudyCard study={study} />
             </li>

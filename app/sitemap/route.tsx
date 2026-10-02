@@ -3,12 +3,14 @@ import { web_url, ids_url } from "@/utils/endpoints/endpoints";
 import { NextResponse } from "next/server";
 import { articleHref, isIndexable } from "@/lib/articles";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
-import { CASE_STUDIES } from "@/lib/work";
+import { getWorkProjects } from "@/lib/work";
+import { readJson } from "@/lib/http";
 
-function generateSiteMap(posts: SubTopic[], seriesUrls: string[]) {
+async function generateSiteMap(posts: SubTopic[], seriesUrls: string[]) {
   const currentDate = new Date().toISOString();
+  const studies = await getWorkProjects();
 
-  const workCaseUrls = CASE_STUDIES.map(
+  const workCaseUrls = studies.map(
     (c) => `
   <url>
     <loc>${web_url}${c.href}</loc>
@@ -170,13 +172,13 @@ export async function GET() {
     ]);
     if (!postsRes.ok) throw new Error(`HTTP error! status: ${postsRes.status}`);
 
-    const posts = await postsRes.json();
+    const posts = await readJson(postsRes, []);
     const seriesUrls = topics
       .filter((t) => (t.subTopicList?.length ?? 0) > 0)
       .map((t) => seriesHref(t));
 
     const indexable = (Array.isArray(posts) ? posts : []).filter(isIndexable);
-    const sitemap = generateSiteMap(indexable, seriesUrls);
+    const sitemap = await generateSiteMap(indexable, seriesUrls);
 
     return new NextResponse(sitemap, {
       status: 200,

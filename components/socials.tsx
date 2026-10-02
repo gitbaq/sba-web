@@ -31,7 +31,7 @@ const Socials = () => {
             rel='noopener noreferrer'
             aria-label={label}
             title={label}
-            className='inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-brand-muted/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+            className='inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
           >
             <Icon className='h-[1.125rem] w-[1.125rem]' aria-hidden />
           </a>

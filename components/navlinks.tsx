@@ -11,6 +11,7 @@ import React from "react";
 import Icons from "./Icons";
 import { usePathname } from "next/navigation";
 import ThemeToggleComponent from "./ThemeToggleComponent";
+import { ManageNavMobileItems } from "./ManageNav";
 
 const links = [
   { href: "/writing", label: "Writing" },
@@ -38,10 +39,10 @@ export default function NavLinks() {
           <Link
             key={l.href}
             href={l.href}
-            className={`relative flex flex-row gap-2 items-center text-[13px] tracking-wide transition-colors duration-150 ${
+            className={`nav-link relative flex flex-row gap-2 items-center text-[13px] tracking-wide transition-colors duration-150 ${
               l.emphasize
-                ? "font-semibold text-brand hover:opacity-80"
-                : "text-muted-foreground hover:text-foreground"
+                ? "font-semibold text-brand"
+                : "text-muted-foreground"
             } ${linkActive(pathname, l.href) && !l.emphasize ? "active_top !text-foreground" : ""}`}
           >
             {l.label}
@@ -69,6 +70,7 @@ export default function NavLinks() {
                 </Link>
               </DropdownMenuItem>
             ))}
+            <ManageNavMobileItems />
             <DropdownMenuItem
               onSelect={(e) => e.preventDefault()}
               className='focus:bg-transparent'

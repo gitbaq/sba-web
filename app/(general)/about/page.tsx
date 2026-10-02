@@ -7,6 +7,9 @@ import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
 import CredentialsStrip from "@/components/CredentialsStrip";
 import { pageMeta } from "@/lib/seo";
+import { getAboutConfig } from "@/lib/work";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = pageMeta({
   title: "About",
@@ -15,7 +18,9 @@ export const metadata: Metadata = pageMeta({
   path: "/about",
 });
 
-export default function About() {
+export default async function About() {
+  const about = await getAboutConfig();
+
   return (
     <div className='w-full'>
       <div className='life-hero'>
@@ -23,25 +28,22 @@ export default function About() {
           <div className='relative h-36 w-36 shrink-0 overflow-hidden rounded-full bg-brand/15 ring-2 ring-border/80 shadow-elev1 md:h-44 md:w-44'>
             <Image
               className='object-cover'
-              src='/sba-photo-2-small.png'
-              alt='Syed Baqir Ali'
+              src={about.photoUrl}
+              alt={about.displayName}
               fill
               priority
               sizes='176px'
+              unoptimized={about.photoUrl.startsWith("http")}
             />
           </div>
           <header className='flex flex-col gap-3'>
             <p className='accent-label'>About</p>
             <h1 className='display-title text-4xl md:text-5xl text-foreground'>
-              Syed Baqir Ali
+              {about.displayName}
             </h1>
-            <p className='text-lg text-foreground/80'>
-              Software innovation and AI leader
-            </p>
+            <p className='text-lg text-foreground/80'>{about.title}</p>
             <p className='mx-auto max-w-xl text-muted-foreground leading-relaxed'>
-              Through writing and shipped work, I help individuals and teams
-              harness technology, streamline processes, and build projects that
-              make an impact. Research-depth, still easy to follow.
+              {about.bio}
             </p>
             <div className='flex flex-wrap gap-3 justify-center pt-2'>
               <Link href='/writing' className='craft-cta-secondary'>
@@ -75,7 +77,7 @@ export default function About() {
           >
             Credentials
           </h2>
-          <CredentialsStrip />
+          <CredentialsStrip credentials={about.credentials} />
         </section>
 
         <section
@@ -91,9 +93,7 @@ export default function About() {
             For hiring managers
           </h2>
           <p className='text-muted-foreground leading-relaxed mb-5 max-w-xl'>
-            Background, writing samples, and how I think about systems. Profile
-            and experience live on LinkedIn; case studies and essays are on this
-            site.
+            {about.hiringBlurb}
           </p>
           <div className='flex flex-wrap gap-3'>
             <a
@@ -122,8 +122,6 @@ export default function About() {
           </h2>
           <p className='text-muted-foreground leading-relaxed mb-4'>
             Case studies live under Work: problem, approach, outcome, and stack.
-            SWE / SME on Cobu (brainstorming ideas) and Blox (keeping focus on
-            the task).
           </p>
           <Link
             href='/work'

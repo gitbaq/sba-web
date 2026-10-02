@@ -35,6 +35,8 @@ import {
   Dot,
   PanelLeftOpen,
   Link2,
+  ChevronDown,
+  Settings2,
 } from "lucide-react";
 
 import {
@@ -104,6 +106,8 @@ export const Icons = {
   Dot,
   PanelLeftOpen,
   Link: Link2,
+  ChevronDown,
+  Settings2,
   FaUserTie,
   FaReadme,
   FaMessage,

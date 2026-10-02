@@ -27,6 +27,15 @@ export const subs_url = baseURL + "/subs/v1";
 export const newsletter_subscribe_url = baseURL + "/api/subscribe";
 export const newsletter_confirm_url = baseURL + "/api/subscribe/confirm";
 export const newsletter_unsubscribe_url = baseURL + "/api/subscribe/unsubscribe";
+export const newsletter_send_url = baseURL + "/secure/newsletter/v1/send";
+export const home_config_url = baseURL + "/home/v1";
+export const home_config_secure_url = baseURL + "/secure/home/v1";
+export const work_projects_url = baseURL + "/work/v1";
+export const work_projects_secure_url = baseURL + "/secure/work/v1";
+export const about_config_url = baseURL + "/about/v1";
+export const about_config_secure_url = baseURL + "/secure/about/v1";
+export const media_upload_url = baseURL + "/secure/media/v1/upload";
+export const media_list_url = baseURL + "/secure/media/v1";
 export const contact_url = baseURL + "/contact/v1";
 export const contact_secure_url = baseURL + "/secure/contact/v1";
 

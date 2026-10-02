@@ -1,10 +1,16 @@
-import { CREDENTIALS } from "@/lib/work";
+import { Credential } from "@/lib/work";
 
 type Props = {
   className?: string;
+  credentials: Credential[];
 };
 
-export default function CredentialsStrip({ className = "" }: Props) {
+export default function CredentialsStrip({
+  className = "",
+  credentials,
+}: Props) {
+  if (!credentials?.length) return null;
+
   return (
     <ul
       className={[
@@ -15,7 +21,7 @@ export default function CredentialsStrip({ className = "" }: Props) {
         .join(" ")}
       aria-label='Credentials'
     >
-      {CREDENTIALS.map((item) => (
+      {credentials.map((item) => (
         <li
           key={item.label}
           className='flex items-start gap-3 rounded-lg border border-border/80 bg-card px-4 py-3 text-sm leading-relaxed text-foreground'
