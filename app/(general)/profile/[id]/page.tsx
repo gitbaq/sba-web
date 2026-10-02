@@ -95,11 +95,14 @@ export default function Profile({ params }: { params: Params }) {
         },
       });
 
-      const data = await readJson<{ errors?: unknown }>(response, {});
+      const data = await readJson<{ errors?: unknown; firstName?: string }>(
+        response,
+        {}
+      );
       if (!response.ok) {
         throw new Error("Error: " + (data.errors ?? response.status));
       } else {
-        setSuccess(`Welcome! ${data.firstName}`);
+        setSuccess(`Welcome! ${data.firstName ?? ""}`);
       }
     } catch (error) {
       setError("" + error.message);
