@@ -97,6 +97,13 @@ export default function SubscribeForm({
         return;
       }
 
+      if (status === "pending_email_failed") {
+        trackEvent("subscribe_submit", { status: "email_failed" });
+        setError(message);
+        toast(message);
+        return;
+      }
+
       trackEvent("subscribe_submit", { status: "success" });
       setSuccess(message || "Check your inbox to confirm.");
       toast("Check your inbox to confirm.");
