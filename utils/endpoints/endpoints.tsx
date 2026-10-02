@@ -24,6 +24,9 @@ export const quotes_url = baseURL + "/quotes/v1";
 export const quotes_secure_url = baseURL + "/secure/quotes/v1";
 
 export const subs_url = baseURL + "/subs/v1";
+export const newsletter_subscribe_url = baseURL + "/api/subscribe";
+export const newsletter_confirm_url = baseURL + "/api/subscribe/confirm";
+export const newsletter_unsubscribe_url = baseURL + "/api/subscribe/unsubscribe";
 export const contact_url = baseURL + "/contact/v1";
 export const contact_secure_url = baseURL + "/secure/contact/v1";
 

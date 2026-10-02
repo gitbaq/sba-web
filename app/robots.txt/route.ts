@@ -21,6 +21,7 @@ Allow: /work/
 Allow: /about/
 Allow: /contact/
 Allow: /subscribe/
+Allow: /unsubscribe/
 Allow: /privacy/
 Allow: /for/
 Allow: /feed.xml
