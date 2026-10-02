@@ -254,10 +254,17 @@
     scroll-behavior: smooth;
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-size: 1.125rem;
+    line-height: 1.65;
     font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
     letter-spacing: -0.011em;
+    overflow-x: clip;
   }
 
   h1,
@@ -632,10 +639,19 @@ a.active_top::after {
   );
 }
 
+/* Essay / compact heroes: fade into content sooner so body starts higher */
+.life-hero-compact {
+  padding-bottom: 0;
+}
+
+.life-hero-compact::after {
+  height: clamp(1.25rem, 4vw, 2rem);
+}
+
 /* Home hero - richer cousin of life-hero; stays in the light page family */
 .life-hero-home {
   color: inherit;
-  padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  padding-bottom: clamp(0.35rem, 1.5vw, 0.75rem);
   background:
     radial-gradient(
       55% 60% at 10% 8%,
@@ -682,7 +698,7 @@ a.active_top::after {
 }
 
 .life-hero-home::after {
-  height: clamp(2.5rem, 8vw, 4rem);
+  height: clamp(1rem, 3vw, 1.75rem);
   background: linear-gradient(
     180deg,
     transparent 0%,
@@ -900,6 +916,36 @@ a.active_top::after {
   margin-top: 0.25rem;
 }
 
+/* Hero subscribe: panel border provides separation (no HR) */
+.hero-subscribe {
+  padding-top: 0;
+  border-top: none;
+}
+
+.subscribe-panel {
+  width: 100%;
+}
+
+.subscribe-panel-hero {
+  padding: 1rem 1.05rem 1.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border) / 0.95);
+  background: hsl(var(--card) / 0.78);
+  box-shadow: 0 1px 0 hsl(var(--foreground) / 0.04);
+}
+
+.dark .subscribe-panel-hero {
+  background: hsl(var(--card) / 0.55);
+}
+
+.subscribe-panel-inline,
+.subscribe-panel-footer {
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
 .home-section-band {
   padding: 1.75rem 1.5rem;
   border-radius: 1.25rem;
@@ -1064,7 +1110,7 @@ a.active_top::after {
 }
 
 .craft-cta-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold bg-brand text-brand-foreground transition-all duration-200;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold bg-brand text-brand-foreground transition-all duration-200;
   box-shadow: var(--elev-1);
 }
 
@@ -1074,7 +1120,7 @@ a.active_top::after {
 }
 
 .craft-cta-secondary {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border border-border bg-background/70 text-foreground backdrop-blur-xs transition-all duration-200;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border border-border bg-background/70 text-foreground backdrop-blur-xs transition-all duration-200;
 }
 
 .craft-cta-secondary:hover {
@@ -1083,7 +1129,7 @@ a.active_top::after {
 }
 
 .craft-cta-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border border-border bg-background/70 text-foreground backdrop-blur-xs transition-all duration-200;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold border border-border bg-background/70 text-foreground backdrop-blur-xs transition-all duration-200;
 }
 
 .craft-cta-ghost:hover {

@@ -14,13 +14,13 @@ import {
   injectHeadingIds,
   isIndexable,
   postDate,
+  splitHtmlAtMidpoint,
 } from "@/lib/articles";
 import {
   getAllSubtopicsSorted,
   relatedPosts,
   resolveArticle,
 } from "@/utils/services/getLatestSubtopics";
-import SharePanel from "@/components/social-sharing/sharebar";
 import EditorLink from "@/components/editor/editorLink";
 import ArticleToc from "@/components/writing/ArticleToc";
 import ArticleEndCta from "@/components/writing/ArticleEndCta";
@@ -29,9 +29,14 @@ import StickySubscribeBar from "@/components/writing/StickySubscribeBar";
 import SeriesNav from "@/components/writing/SeriesNav";
 import ArticleReadDepth from "@/components/writing/ArticleReadDepth";
 import JsonLd from "@/components/JsonLd";
+import TldrBlock from "@/components/TldrBlock";
+import AuthorBox from "@/components/AuthorBox";
+import CopyLinkButton from "@/components/CopyLinkButton";
+import SubscribeForm from "@/components/SubscribeForm";
 import { getAllTopicsSafe, getTopicById } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
-import { breadcrumbJsonLd } from "@/lib/seo";
+import { breadcrumbJsonLd, SITE } from "@/lib/seo";
+import { CTA } from "@/lib/ctas";
 import "./article.css";
 
 type Params = Promise<{ slug: string }>;
@@ -105,20 +110,27 @@ export default async function WritingArticlePage({
         t.sbaTopicName === subtopic.sbaTopicName ||
         t.subTopicList?.some((s) => s.id === subtopic.id)
     );
-  const dateStr = postDate(subtopic);
+  const published = subtopic.publishDate || postDate(subtopic);
+  const updated = subtopic.updateDate;
+  const showUpdated =
+    updated &&
+    published &&
+    new Date(updated).toDateString() !== new Date(published).toDateString();
   const minutes = estimateReadingMinutes(subtopic.content || "");
   const toc = extractToc(subtopic.content || "");
   const html = injectHeadingIds(subtopic.content || "");
+  const [beforeMid, afterMid] = splitHtmlAtMidpoint(html);
   const iURL = subtopic.imageUrl || "/ai4.png";
   const topicLabel = subtopic.heading || subtopic.sbaTopicName;
   const url = `${web_url}${articleHref(subtopic)}`;
-  const summary = subtopic.tldr || subtopic.dek;
+  const dek = subtopic.dek?.trim();
+  const tldr = subtopic.tldr?.trim();
 
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: subtopic.subHeading,
-    description: subtopic.dek || extractTextFromHtml(subtopic.content),
+    description: dek || extractTextFromHtml(subtopic.content),
     image: subtopic.ogImageUrl || subtopic.imageUrl || `${web_url}/ai4.png`,
     datePublished: subtopic.publishDate,
     dateModified: subtopic.updateDate,
@@ -138,7 +150,7 @@ export default async function WritingArticlePage({
       "@id": url,
     },
     timeRequired: `PT${minutes}M`,
-    abstract: subtopic.tldr || extractTextFromHtml(subtopic.content, 280),
+    abstract: tldr || extractTextFromHtml(subtopic.content, 280),
   };
 
   return (
@@ -155,11 +167,11 @@ export default async function WritingArticlePage({
       <ReadingProgress />
       <StickySubscribeBar />
 
-      <div className='life-hero'>
-        <div className='relative z-[2] mx-auto w-full max-w-3xl px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
+      <div className='life-hero life-hero-compact'>
+        <div className='relative z-[2] mx-auto w-full max-w-3xl px-4 pt-4 pb-6 md:pt-5 md:pb-7'>
           <nav
             aria-label='Breadcrumb'
-            className='mb-6 text-sm text-muted-foreground'
+            className='mb-4 text-sm text-muted-foreground'
           >
             <Link
               href='/writing'
@@ -175,19 +187,13 @@ export default async function WritingArticlePage({
             </span>
           </nav>
 
-          <header className='flex flex-col gap-4'>
+          <header className='flex flex-col gap-3'>
             <div className='flex flex-wrap items-center gap-x-3 gap-y-1'>
               {topicLabel && (
                 <span className='series-label' style={seriesStyle(topicLabel)}>
                   {topicLabel}
                 </span>
               )}
-              <span className='text-xs text-muted-foreground tabular-nums'>
-                {minutes} min read
-                {dateStr
-                  ? ` · ${format(new Date(dateStr), "MMMM d, yyyy")}`
-                  : ""}
-              </span>
               <span className='ml-auto'>
                 <EditorLink topicId={subtopic.id} />
               </span>
@@ -195,21 +201,46 @@ export default async function WritingArticlePage({
             <h1 className='display-title text-3xl sm:text-4xl md:text-[2.75rem] text-foreground leading-[1.12]'>
               {subtopic.subHeading}
             </h1>
-            {summary ? (
+            {dek ? (
               <p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl'>
-                {summary}
+                {dek}
               </p>
             ) : null}
-            <div className='flex flex-row flex-wrap items-center justify-between gap-4 pt-2'>
-              <SharePanel subtopic={subtopic} shareUrl={url} />
+
+            <div className='flex flex-wrap items-center gap-3'>
+              <Image
+                src='/sba-photo-2-small.png'
+                alt={SITE.name}
+                width={40}
+                height={40}
+                className='h-10 w-10 rounded-full object-cover ring-1 ring-border'
+                sizes='40px'
+              />
+              <div className='flex flex-col text-sm'>
+                <span className='font-medium text-foreground'>{SITE.name}</span>
+                <span className='text-xs text-muted-foreground tabular-nums'>
+                  {published
+                    ? format(new Date(published), "MMMM d, yyyy")
+                    : null}
+                  {showUpdated && updated
+                    ? ` · Updated ${format(new Date(updated), "MMM d, yyyy")}`
+                    : null}
+                  {` · ${minutes} min read`}
+                </span>
+              </div>
+              <div className='ml-auto'>
+                <CopyLinkButton url={url} />
+              </div>
             </div>
           </header>
         </div>
       </div>
 
-      <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-12 pb-28'>
+      <main className='mx-auto w-full max-w-3xl px-4 pt-4 pb-28 md:pt-5'>
+        {tldr ? <TldrBlock tldr={tldr} className='mb-5' /> : null}
+
         {subtopic.imageUrl && (
-          <div className='relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-10 bg-secondary ring-1 ring-border/80'>
+          <div className='relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-5 bg-secondary ring-1 ring-border/80'>
             <Image
               priority
               fill
@@ -224,7 +255,25 @@ export default async function WritingArticlePage({
         <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
         <ArticleToc items={toc} />
 
-        <article className='article-prose'>{parse(html)}</article>
+        <article className='article-prose'>{parse(beforeMid || html)}</article>
+
+        {afterMid ? (
+          <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
+            <p className='accent-label mb-2'>Newsletter</p>
+            <p className='mb-4 text-sm text-muted-foreground leading-relaxed max-w-md'>
+              Get new essays by email. Unsubscribe anytime.
+            </p>
+            <SubscribeForm variant='inline' submitLabel={CTA.subscribe} />
+          </div>
+        ) : null}
+
+        {afterMid ? (
+          <article className='article-prose'>{parse(afterMid)}</article>
+        ) : null}
+
+        <div className='mt-14'>
+          <AuthorBox />
+        </div>
 
         <ArticleEndCta related={related} series={seriesTopic} />
       </main>

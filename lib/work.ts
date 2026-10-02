@@ -8,6 +8,9 @@ export type CaseStudy = {
   externalUrl?: string;
   /** Brand mark path - shown as an icon tile, not a screenshot */
   mark: string;
+  role: string;
+  timeline: string;
+  result: string;
   problem: string;
   approach: string[];
   outcome: string[];
@@ -23,6 +26,12 @@ export const CASE_STUDIES: CaseStudy[] = [
     href: "/work/cobu",
     externalUrl: cobu_url,
     mark: "/portfolio/cobu/mark.png",
+    role: "Software engineer / subject-matter expert",
+    // TODO(owner): exact timeline
+    timeline: "Ongoing",
+    // TODO(owner): one measurable result when available
+    result:
+      "A living product for brainstorming ideas (still maturing toward full capability).",
     problem:
       "Most AI chat tools are either generic assistants or opaque enterprise stacks. People need a focused place to brainstorm, discuss, and pressure-test ideas, with a real choice of models and fresh web context when it matters.",
     approach: [
@@ -47,10 +56,15 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: "blox",
     title: "Blox",
-    tagline: "Productivity hub for goals, habits, and winning the week.",
+    tagline: "Productivity hub that helps you keep focus on the task.",
     href: "/work/blox",
     externalUrl: blox_url,
     mark: "/portfolio/blox/mark.png",
+    role: "Software engineer / subject-matter expert",
+    // TODO(owner): exact timeline
+    timeline: "Ongoing",
+    // TODO(owner): one measurable result when available
+    result: "A focused hub for goals, habits, and staying on the task at hand.",
     problem:
       "Most productivity tools reward complexity: long setups, rigid systems, and guilt when life gets busy. People need a calm place to set achievable goals, build habits, and see what actually won the week.",
     approach: [
@@ -79,8 +93,31 @@ export function getCaseStudy(slug: string): CaseStudy | undefined {
 
 export const CALENDLY_URL = "https://calendly.com/syedbaqirali/30min";
 
+export const AMAZON_AUTHOR_URL =
+  "https://www.amazon.com.au/stores/Syed-Baqir-Ali/author/B0G81DNV2T";
+
 export const CREDENTIAL_LINKS = [
   { label: "GitHub", href: github_url },
   { label: "Cobu", href: cobu_url },
   { label: "Blox", href: blox_url },
+  { label: "Amazon author", href: AMAZON_AUTHOR_URL },
 ] as const;
+
+export type Credential = {
+  label: string;
+  href?: string;
+};
+
+/** Credentials for About / hiring strip. TODO(owner): confirm wording before publish. */
+export const CREDENTIALS: Credential[] = [
+  { label: "15+ years in software engineering" },
+  { label: "PMP, PMI-ACP, PMI-PBA" },
+  { label: "AWS Certified AI Practitioner" },
+  { label: "Master of Artificial Intelligence, UNSW Sydney" },
+  { label: "Book reviewer, Manning Publications" },
+  {
+    label: "Co-author on Amazon",
+    href: AMAZON_AUTHOR_URL,
+  },
+  { label: "Casual academic teaching postgraduate computer science and IT" },
+];

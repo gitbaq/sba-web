@@ -142,6 +142,18 @@ export default function ForClientsPage() {
           All case studies
         </Link>
       </section>
+
+      <section aria-labelledby='engagement' className='life-panel'>
+        <p className='accent-label mb-2'>Engagement</p>
+        <h2 id='engagement' className='display-title text-2xl mb-3'>
+          How we work together
+        </h2>
+        <p className='text-muted-foreground leading-relaxed max-w-xl'>
+          {/* TODO(owner): pricing signal or engagement model. */}
+          Short discovery call, then a scoped engagement with clear outcomes.
+          Prefer thin slices that prove value before a larger build.
+        </p>
+      </section>
     </AudienceShell>
   );
 }

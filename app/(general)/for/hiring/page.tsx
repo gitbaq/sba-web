@@ -38,9 +38,16 @@ export default async function ForHiringPage() {
       description='I write and ship at the intersection of AI, cloud, and product engineering. Use the materials below to assess depth, communication, and fit. Reach out if there is a match.'
       ctas={[
         {
+          href: LINKEDIN_URL,
+          label: CTA.linkedin,
+          external: true,
+          variant: "primary",
+          icon: "linkedin",
+        },
+        {
           href: "/contact",
           label: CTA.contact,
-          variant: "primary",
+          variant: "secondary",
           icon: "contact",
         },
         {
@@ -50,13 +57,6 @@ export default async function ForHiringPage() {
           icon: "writing",
         },
         { href: "/work", label: CTA.work, variant: "secondary", icon: "work" },
-        {
-          href: LINKEDIN_URL,
-          label: CTA.linkedin,
-          external: true,
-          variant: "secondary",
-          icon: "linkedin",
-        },
       ]}
     >
       <section aria-labelledby='signals' className='flex flex-col gap-6'>

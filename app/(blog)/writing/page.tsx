@@ -1,11 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import WritingIndex from "@/components/writing/WritingIndex";
-import LatestWriting from "@/components/home/LatestWriting";
+import StartHere from "@/components/home/StartHere";
+import SeriesCard from "@/components/SeriesCard";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
-import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
-import { postsThisWeek } from "@/lib/feed";
-import { seriesStyle } from "@/lib/seriesColors";
+import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
 
 export const metadata: Metadata = {
@@ -26,17 +25,16 @@ export const metadata: Metadata = {
   },
 };
 
-type SearchParams = Promise<{ query?: string }>;
+type SearchParams = Promise<{ query?: string; tag?: string }>;
 
 export default async function WritingPage({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const { query } = await searchParams;
+  const { query, tag } = await searchParams;
   const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
   const topics = await getAllTopicsSafe();
-  const weekly = postsThisWeek(posts, 7);
   const series = topics.filter((t) => (t.subTopicList?.length ?? 0) > 0);
 
   return (
@@ -74,29 +72,17 @@ export default async function WritingPage({
         </header>
       </div>
 
-      <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
-        {weekly.length > 0 && (
-          <div className='mb-14'>
-            <LatestWriting
-              posts={weekly}
-              title='New this week'
-              showViewAll={false}
-              featured
-            />
-          </div>
-        )}
+      <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14 flex flex-col gap-14'>
+        <StartHere posts={posts} />
 
         {series.length > 0 && (
-          <section
-            aria-labelledby='series-strip'
-            className='mb-14 life-panel'
-          >
-            <div className='flex flex-wrap items-end justify-between gap-3 mb-4'>
+          <section aria-labelledby='series-cards'>
+            <div className='mb-6 flex flex-wrap items-end justify-between gap-3'>
               <div>
                 <p className='accent-label mb-1'>Browse</p>
                 <h2
-                  id='series-strip'
-                  className='font-display text-2xl font-semibold'
+                  id='series-cards'
+                  className='display-title text-2xl md:text-3xl'
                 >
                   Series
                 </h2>
@@ -108,26 +94,33 @@ export default async function WritingPage({
                 All series
               </Link>
             </div>
-            <ul className='flex flex-wrap gap-2.5 list-none p-0 m-0'>
+            <ul className='grid gap-4 sm:grid-cols-2 list-none p-0 m-0'>
               {series.map((t) => (
                 <li key={t.id}>
-                  <Link
-                    href={seriesHref(t)}
-                    className='series-chip'
-                    style={seriesStyle(t.sbaTopicName)}
-                  >
-                    {t.sbaTopicName}
-                    <span className='ml-1.5 opacity-70 tabular-nums'>
-                      {t.subTopicList.length}
-                    </span>
-                  </Link>
+                  <SeriesCard topic={t} />
                 </li>
               ))}
             </ul>
           </section>
         )}
 
-        <WritingIndex posts={posts} initialQuery={query || ""} />
+        <section aria-labelledby='all-essays'>
+          <div className='mb-6'>
+            <p className='accent-label mb-1'>Library</p>
+            <h2
+              id='all-essays'
+              className='display-title text-2xl md:text-3xl'
+            >
+              All essays
+            </h2>
+          </div>
+          <WritingIndex
+            posts={posts}
+            series={series}
+            initialQuery={query || ""}
+            initialTag={tag || ""}
+          />
+        </section>
       </main>
     </div>
   );
