@@ -172,6 +172,19 @@ export function postDate(post: SubTopic): string {
   return post.publishDate || post.updateDate || post.createDate || "";
 }
 
+/** Split HTML near ~40% of H2 sections for mid-article subscribe. */
+export function splitHtmlAtMidpoint(html: string): [string, string] {
+  if (!html) return ["", ""];
+  const re = /<h2\b[^>]*>/gi;
+  const matches = [...html.matchAll(re)];
+  if (matches.length < 2) return [html, ""];
+  const cutIndex = Math.max(1, Math.floor(matches.length * 0.4));
+  const match = matches[cutIndex];
+  const at = match.index ?? -1;
+  if (at <= 0) return [html, ""];
+  return [html.slice(0, at), html.slice(at)];
+}
+
 /** Stub essay ids excluded from sitemap/index until full text lands. */
 export const NOINDEX_ESSAY_IDS = new Set<number>([19]);
 

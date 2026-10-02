@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { SubTopic, Topic } from "@/types/types";
 import { articleHref } from "@/lib/articles";
-import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
 import { seriesHref } from "@/utils/services/getTopics";
-import Icons from "@/components/Icons";
+import SubscribeForm from "@/components/SubscribeForm";
 
 type Props = {
   related: SubTopic[];
@@ -16,29 +15,22 @@ export default function ArticleEndCta({ related, series }: Props) {
     <aside className='mt-16 pt-10 border-t border-border flex flex-col gap-10'>
       <div className='flex flex-col gap-3 max-w-xl'>
         <p className='accent-label'>Newsletter</p>
-        <h2 className='display-title text-2xl md:text-3xl'>Stay in the loop</h2>
+        <h2 className='display-title text-2xl md:text-3xl'>
+          Get new essays by email
+        </h2>
         <p className='text-muted-foreground leading-relaxed'>
-          Get the next essay by email. About once a week. Or follow via RSS.
+          New essays as they publish. Unsubscribe anytime.
         </p>
-        <div className='flex flex-wrap gap-3 pt-1'>
-          <Link href='/subscribe' className='craft-cta-primary'>
-            <Icons.Mail className='craft-cta-icon' aria-hidden />
-            {CTA.subscribe}
-          </Link>
-          <a href='/feed.xml' className='craft-cta-secondary'>
-            <Icons.Rss className='craft-cta-icon' aria-hidden />
+        <SubscribeForm variant='footer' submitLabel={CTA.subscribe} />
+        <p className='text-sm text-muted-foreground'>
+          Prefer feeds?{" "}
+          <a
+            href='/feed.xml'
+            className='font-semibold text-brand underline-offset-4 hover:underline'
+          >
             {CTA.rss}
           </a>
-          <a
-            href={LINKEDIN_URL}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='craft-cta-secondary'
-          >
-            <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
-            {CTA.linkedin}
-          </a>
-        </div>
+        </p>
         {series && (
           <p className='text-sm text-muted-foreground pt-1'>
             More in{" "}

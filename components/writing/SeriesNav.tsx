@@ -1,7 +1,18 @@
 import Link from "next/link";
-import { Topic } from "@/types/types";
+import { Topic, SubTopic } from "@/types/types";
 import { articleHref } from "@/lib/articles";
 import { seriesHref } from "@/utils/services/getTopics";
+
+function sortSeries(list: SubTopic[]): SubTopic[] {
+  return [...list].sort((a, b) => {
+    const ao = a.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+    const bo = b.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+    if (ao !== bo) return ao - bo;
+    const ad = Date.parse(a.publishDate || a.createDate || "") || 0;
+    const bd = Date.parse(b.publishDate || b.createDate || "") || 0;
+    return ad - bd;
+  });
+}
 
 export default function SeriesNav({
   topic,
@@ -13,14 +24,17 @@ export default function SeriesNav({
   if (!topic?.subTopicList?.length) return null;
   if (topic.subTopicList.length < 2) return null;
 
-  const siblings = topic.subTopicList.filter((s) => s.id !== currentId);
+  const ordered = sortSeries(topic.subTopicList);
+  const idx = ordered.findIndex((s) => s.id === currentId);
+  const prev = idx > 0 ? ordered[idx - 1] : null;
+  const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;
 
   return (
     <nav
       aria-labelledby='series-nav'
-      className='rounded-lg border border-border bg-secondary/30 p-4 mb-8'
+      className='rounded-lg border border-border bg-secondary/30 p-4 mb-5'
     >
-      <div className='flex flex-wrap items-baseline justify-between gap-2 mb-2'>
+      <div className='flex flex-wrap items-baseline justify-between gap-2 mb-3'>
         <h2 id='series-nav' className='text-sm font-semibold'>
           Series: {topic.sbaTopicName}
         </h2>
@@ -28,26 +42,41 @@ export default function SeriesNav({
           href={seriesHref(topic)}
           className='text-xs text-brand underline-offset-4 hover:underline'
         >
-          View series
+          Full list
         </Link>
       </div>
-      <p className='text-xs text-muted-foreground mb-3'>
-        {topic.subTopicList.length} essays in this series
-      </p>
-      {siblings.length > 0 && (
-        <ul className='flex flex-col gap-1.5 list-none p-0 m-0 text-sm'>
-          {siblings.slice(0, 4).map((s) => (
-            <li key={s.id}>
-              <Link
-                href={articleHref(s)}
-                className='text-muted-foreground hover:text-brand underline-offset-2 hover:underline'
-              >
-                {s.subHeading || s.heading}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className='grid gap-3 sm:grid-cols-2 text-sm'>
+        <div>
+          <p className='text-xs uppercase tracking-wide text-muted-foreground mb-1'>
+            Previous
+          </p>
+          {prev ? (
+            <Link
+              href={articleHref(prev)}
+              className='text-foreground hover:text-brand underline-offset-2 hover:underline'
+            >
+              {prev.subHeading || prev.heading}
+            </Link>
+          ) : (
+            <span className='text-muted-foreground'>Start of series</span>
+          )}
+        </div>
+        <div>
+          <p className='text-xs uppercase tracking-wide text-muted-foreground mb-1'>
+            Next
+          </p>
+          {next ? (
+            <Link
+              href={articleHref(next)}
+              className='text-foreground hover:text-brand underline-offset-2 hover:underline'
+            >
+              {next.subHeading || next.heading}
+            </Link>
+          ) : (
+            <span className='text-muted-foreground'>End of series</span>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }

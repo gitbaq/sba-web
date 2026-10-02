@@ -126,23 +126,6 @@ export default function AudienceShell({
 
       <main className='mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-10 md:py-14'>
         {children}
-
-        <p className='text-sm text-muted-foreground border-t border-border/80 pt-8'>
-          Wrong path?{" "}
-          <Link
-            href='/'
-            className='text-brand font-medium underline-offset-4 hover:underline'
-          >
-            Choose again on the home page
-          </Link>
-          {" · "}
-          <Link
-            href='/about'
-            className='underline-offset-4 hover:underline hover:text-brand'
-          >
-            About
-          </Link>
-        </p>
       </main>
     </div>
   );

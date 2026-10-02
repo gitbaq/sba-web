@@ -34,6 +34,7 @@ import {
   Bookmark,
   Dot,
   PanelLeftOpen,
+  Link2,
 } from "lucide-react";
 
 import {
@@ -102,6 +103,7 @@ export const Icons = {
   Bookmark,
   Dot,
   PanelLeftOpen,
+  Link: Link2,
   FaUserTie,
   FaReadme,
   FaMessage,

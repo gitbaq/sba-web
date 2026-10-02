@@ -33,10 +33,18 @@ function firstNameFromEmail(email: string): string {
   return word.charAt(0).toUpperCase() + word.slice(1).slice(0, 40);
 }
 
+const VARIANT_WRAP: Record<"hero" | "inline" | "footer", string> = {
+  hero: "subscribe-panel subscribe-panel-hero w-full max-w-lg",
+  inline: "subscribe-panel subscribe-panel-inline w-full max-w-md",
+  footer: "subscribe-panel subscribe-panel-footer w-full max-w-md",
+};
+
 export default function SubscribeForm({
   submitLabel = "Subscribe",
+  variant = "hero",
 }: {
   submitLabel?: string;
+  variant?: "hero" | "inline" | "footer";
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -80,22 +88,22 @@ export default function SubscribeForm({
   }
 
   return (
-    <div className='w-full max-w-md'>
+    <div className={VARIANT_WRAP[variant]}>
       <FormMessages error={error} success={success} />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubscribe)}
-          className='flex flex-col gap-3 sm:flex-row sm:items-start'
+          className='flex flex-col gap-3 sm:flex-row sm:items-center'
         >
           <FormField
             control={form.control}
             name='email'
             render={({ field }) => (
-              <FormItem className='flex-1 w-full'>
+              <FormItem className='flex-1 w-full space-y-0'>
                 <FormLabel className='sr-only'>Email</FormLabel>
                 <FormControl>
                   <Input
-                    className='input-field'
+                    className='input-field h-11 min-h-11 py-0 text-sm md:text-sm'
                     type='email'
                     placeholder='you@company.com'
                     autoComplete='email'
@@ -108,7 +116,7 @@ export default function SubscribeForm({
           />
           <Button
             type='submit'
-            className='craft-cta-primary border-0 shrink-0 w-full sm:w-auto'
+            className='craft-cta-primary border-0 shrink-0 w-full sm:w-auto h-11 min-h-11 py-0'
             disabled={isLoading}
           >
             {isLoading ? "Joining…" : submitLabel}

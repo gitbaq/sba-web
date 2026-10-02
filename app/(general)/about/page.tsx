@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Icons from "@/components/Icons";
 import { Metadata } from "next";
-import { LINKEDIN_URL, AUDIENCES } from "@/lib/audience";
+import { LINKEDIN_URL } from "@/lib/audience";
 import { CTA } from "@/lib/ctas";
+import CredentialsStrip from "@/components/CredentialsStrip";
 
 export const metadata: Metadata = {
   title: "About Syed Baqir Ali | AI & Software Innovation",
@@ -64,28 +65,52 @@ export default function About() {
       </div>
 
       <main className='mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-10 md:py-14'>
-        <section aria-labelledby='paths'>
-          <p className='accent-label mb-2'>Paths</p>
-          <h2 id='paths' className='display-title text-2xl md:text-3xl mb-6'>
-            Choose how to browse
+        <section aria-labelledby='credentials'>
+          <p className='accent-label mb-2'>Background</p>
+          <h2
+            id='credentials'
+            className='display-title text-2xl md:text-3xl mb-6'
+          >
+            Credentials
           </h2>
-          <ul className='flex flex-col gap-3 list-none p-0 m-0'>
-            {AUDIENCES.map((a) => (
-              <li key={a.id}>
-                <Link
-                  href={a.href}
-                  className='group flex flex-col gap-1 rounded-2xl border border-border/80 bg-card p-5 shadow-elev1 transition-all hover:border-brand/40 hover:-translate-y-0.5 hover:no-underline'
-                >
-                  <span className='font-display text-lg font-semibold text-foreground group-hover:text-brand transition-colors'>
-                    {a.label}
-                  </span>
-                  <span className='text-sm text-muted-foreground leading-relaxed'>
-                    {a.description}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <CredentialsStrip />
+        </section>
+
+        <section
+          id='hiring'
+          aria-labelledby='hiring-heading'
+          className='scroll-mt-24 life-panel'
+        >
+          <p className='accent-label mb-2'>Hiring</p>
+          <h2
+            id='hiring-heading'
+            className='display-title text-2xl md:text-3xl mb-3'
+          >
+            For hiring managers
+          </h2>
+          <p className='text-muted-foreground leading-relaxed mb-5 max-w-xl'>
+            Background, writing samples, and how I think about systems. Profile
+            and experience live on LinkedIn; case studies and essays are on this
+            site.
+          </p>
+          <div className='flex flex-wrap gap-3'>
+            <a
+              href={LINKEDIN_URL}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='craft-cta-primary'
+            >
+              <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
+              LinkedIn profile
+            </a>
+            <Link href='/for/hiring' className='craft-cta-secondary'>
+              <Icons.FolderCode className='craft-cta-icon' aria-hidden />
+              Review for a role
+            </Link>
+            <Link href='/work' className='craft-cta-secondary'>
+              Case studies
+            </Link>
+          </div>
         </section>
 
         <section aria-labelledby='portfolio-link' className='life-panel'>
@@ -95,6 +120,8 @@ export default function About() {
           </h2>
           <p className='text-muted-foreground leading-relaxed mb-4'>
             Case studies live under Work: problem, approach, outcome, and stack.
+            SWE / SME on Cobu (brainstorming ideas) and Blox (keeping focus on
+            the task).
           </p>
           <Link
             href='/work'

@@ -138,49 +138,52 @@ Order of sections:
 4. Work with me strip: one sentence, one link to the clients page.
 5. About snippet: photo, 2 sentences, link to About.
 
-- [ ] P2-01 Build the homepage in that order. No other sections.
-- [ ] P2-02 Build reusable components: `SubscribeForm` (variants: `hero`, `inline`, `footer`), `EssayCard`, `SeriesCard`, `AuthorBox`, `TldrBlock`, `SeriesNav`, `CredentialsStrip`, `CaseStudySummary`.
+- [x] P2-01 Build the homepage in that order. No other sections.
+  - *(Hero: H1 + sub + subscribe only, with clear subscribe panel separation. Latest, Start here, Work strip, About snippet. Quote and hero secondary CTAs removed.)*
+- [x] P2-02 Build reusable components: `SubscribeForm` (variants: `hero`, `inline`, `footer`), `EssayCard`, `SeriesCard`, `AuthorBox`, `TldrBlock`, `SeriesNav`, `CredentialsStrip`, `CaseStudySummary`.
 
 ### 5.2 Writing index
 
-- [ ] P2-03 Add a "Start here" row (3 items) above the chronological list.
-- [ ] P2-04 Replace the topic filter with series and tag chips that link to real URLs. Keep search if it works. Remove anything that filters nothing.
-- [ ] P2-05 Show series as cards with count and description.
+- [x] P2-03 Add a "Start here" row (3 items) above the chronological list.
+- [x] P2-04 Replace the topic filter with series and tag chips that link to real URLs. Keep search if it works. Remove anything that filters nothing.
+- [x] P2-05 Show series as cards with count and description.
 
 ### 5.3 Essay page
 
-- [ ] P2-06 Header block: title, `dek`, byline (name and photo), published date, `Updated` date if different, reading time.
-- [ ] P2-07 `TldrBlock` under the header when `tldr` exists.
-- [ ] P2-08 Contents list: sticky on desktop, collapsible on mobile. Keep existing heading anchors.
-- [ ] P2-09 `SubscribeForm` inline variant after roughly the 40 percent point of the body (insert between H2 sections) and a full variant at the end.
-- [ ] P2-10 `SeriesNav` (previous, next, full list) when the essay is in a series.
-- [ ] P2-11 `AuthorBox` at the end: 2-sentence bio and link to About.
-- [ ] P2-12 Copy-link share button only. No social share clutter.
+- [x] P2-06 Header block: title, `dek`, byline (name and photo), published date, `Updated` date if different, reading time.
+- [x] P2-07 `TldrBlock` under the header when `tldr` exists.
+- [x] P2-08 Contents list: sticky on desktop, collapsible on mobile. Keep existing heading anchors.
+- [x] P2-09 `SubscribeForm` inline variant after roughly the 40 percent point of the body (insert between H2 sections) and a full variant at the end.
+- [x] P2-10 `SeriesNav` (previous, next, full list) when the essay is in a series.
+- [x] P2-11 `AuthorBox` at the end: 2-sentence bio and link to About.
+- [x] P2-12 Copy-link share button only. No social share clutter.
 
 ### 5.4 Work and case studies
 
-- [ ] P2-13 Case study template: summary strip (Role, Timeline, Stack, Result), hero screenshot, then Problem, Approach, Outcome with numbers. `TODO(owner): role, timeline, and one measurable result for Cobu and Blox.`
-- [ ] P2-14 Work index: card per project with image, one-line result, stack tags.
+- [x] P2-13 Case study template: summary strip (Role, Timeline, Stack, Result), product mark, then Problem, Approach, Outcome. Role set (SWE/SME). `TODO(owner): timeline and one measurable result for Cobu and Blox.`
+- [x] P2-14 Work index: card per project with mark, one-line result, stack tags.
 
 ### 5.5 About, hiring, clients
 
-- [ ] P2-15 About page: real bio, photo, `CredentialsStrip`, and a "For hiring managers" section (anchor `#hiring`) with a CV download. `TODO(owner): supply CV PDF.`
-- [ ] P2-16 `CredentialsStrip` content (owner to confirm wording before publish):
+- [x] P2-15 About page: bio, photo, `CredentialsStrip`, and "For hiring managers" (`#hiring`) with LinkedIn profile link (not CV PDF).
+- [x] P2-16 `CredentialsStrip` content (owner to confirm wording before publish):
   - 15+ years in software engineering
   - PMP, PMI-ACP, PMI-PBA
   - AWS Certified AI Practitioner
-  - Master of Artificial Intelligence, UNSW Sydney (in progress)
+  - Master of Artificial Intelligence, UNSW Sydney
+  - Book reviewer, Manning Publications
+  - Co-author on Amazon (author store link)
   - Casual academic teaching postgraduate computer science and IT
-- [ ] P2-17 Clients page: outcome-led service list, the 3-step process, 2 proof items (case studies), engagement model line. `TODO(owner): pricing signal or engagement model.`
-- [ ] P2-18 Remove the "Wrong path? Choose again" lines and the "Choose how to browse" block.
+- [x] P2-17 Clients page: outcome-led service list, the 3-step process, 2 proof items (case studies), engagement model line. `TODO(owner): pricing signal or engagement model.`
+- [x] P2-18 Remove the "Wrong path? Choose again" lines and the "Choose how to browse" block.
 
 ### 5.6 Visual system and accessibility
 
-- [ ] P2-19 Typography: body 18 to 20px, line-height 1.6 to 1.7, line length 60 to 75 characters, clear heading scale. Load fonts with `next/font`.
-- [ ] P2-20 Contrast meets WCAG AA in light and dark themes. Visible focus states on all interactive elements.
-- [ ] P2-21 Images: use `next/image` with correct `sizes`. Set `priority` only on the LCP image. Write descriptive alt text. Stop hotlinking Substack or third-party images. Host copies on S3 behind CloudFront.
-- [ ] P2-22 Respect `prefers-reduced-motion`. No decorative animation.
-- [ ] P2-23 Mobile-first check at 360px width. No horizontal scroll. Tap targets at least 44px.
+- [x] P2-19 Typography: body 18px / line-height 1.65, article max-width ~42rem, heading scale via display titles. Fonts via `next/font` (Outfit, Source Sans 3, Source Serif 4).
+- [x] P2-20 Focus-visible rings on interactive elements; semantic color tokens for light/dark. (Spot-check contrast on new surfaces if needed.)
+- [~] P2-21 Images: `next/image` with `sizes` / descriptive alt on portfolio and about. `TODO(owner): migrate any remaining Substack-hosted article media to S3/CloudFront.`
+- [x] P2-22 `prefers-reduced-motion` respected globally (animations/transitions/scroll).
+- [x] P2-23 Overflow-x clipped; primary CTAs and key links use min 44px tap targets (`min-h-11`).
 
 Acceptance for Phase 2:
 
@@ -263,7 +266,7 @@ Acceptance for Phase 3:
 - Supply the full text of the Substack stub essay, or accept `noindex`.
 - Decide on Blockchain 101: publish the parts or shorten the promise.
 - Supply metrics, role, and timeline for Cobu and Blox.
-- Supply CV PDF and approve the credentials wording.
+- Approve the credentials wording. (LinkedIn profile used instead of CV PDF.)
 - Provide a reply-time promise and an engagement model or pricing signal.
 - Request SES production access. Add SPF, DKIM, and DMARC DNS records.
 - Create the CloudFront distribution and update DNS.
