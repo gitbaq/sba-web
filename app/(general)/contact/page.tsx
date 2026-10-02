@@ -167,8 +167,7 @@ export default function Contact() {
                       />
                     </FormControl>
                     <FormDescription>
-                      {/* TODO(owner): reply-time promise */}
-                      Suggestions and comments are welcome.
+                      I aim to reply within 24 hours.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

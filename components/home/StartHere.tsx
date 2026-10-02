@@ -2,8 +2,8 @@ import Link from "next/link";
 import { SubTopic } from "@/types/types";
 import EssayCard from "@/components/EssayCard";
 
-/** Default “Start here” picks until owner curates. TODO(owner): choose. */
-const START_HERE_IDS = [1, 0, 16] as const;
+/** Owner picks: Evolution of AI, NLP Primer, Rust. Move to admin (P3-24) later. */
+const START_HERE_IDS = [18, 16, 14] as const;
 
 type Props = {
   posts: SubTopic[];
@@ -40,8 +40,8 @@ export default function StartHere({ posts }: Props) {
           Three places to begin
         </h2>
         <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
-          TODO(owner): choose. Defaults cover supervised learning,
-          decentralization, and an NLP primer.
+          Collective intelligence, an NLP primer, and Rust for safe systems
+          work.
         </p>
       </div>
       <ul className='m-0 flex list-none flex-col p-0'>
@@ -51,7 +51,6 @@ export default function StartHere({ posts }: Props) {
           </li>
         ))}
       </ul>
-      {/* Looking for more link only */}
       <p className='mt-4 text-sm text-muted-foreground'>
         Looking for more?{" "}
         <Link

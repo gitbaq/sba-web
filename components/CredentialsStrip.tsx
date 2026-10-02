@@ -18,8 +18,12 @@ export default function CredentialsStrip({ className = "" }: Props) {
       {CREDENTIALS.map((item) => (
         <li
           key={item.label}
-          className='rounded-lg border border-border/80 bg-card px-4 py-3 text-sm leading-relaxed text-foreground'
+          className='flex items-start gap-3 rounded-lg border border-border/80 bg-card px-4 py-3 text-sm leading-relaxed text-foreground'
         >
+          <span
+            className='mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand'
+            aria-hidden
+          />
           {item.href ? (
             <a
               href={item.href}
@@ -30,7 +34,7 @@ export default function CredentialsStrip({ className = "" }: Props) {
               {item.label}
             </a>
           ) : (
-            item.label
+            <span>{item.label}</span>
           )}
         </li>
       ))}

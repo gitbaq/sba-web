@@ -96,7 +96,7 @@ Acceptance: `docs/audit-baseline.md` exists and answers the four questions above
   - *(Uses existing Auditable `updateDate` as updated_at; `topicId` as series link; no separate `series_id` column.)*
 - [x] P1-09 Rewrite essay titles that are weak. Example: "An Introduction" becomes "Supervised Learning: An Introduction". The title and H1 must match the series naming. Remove emoji from titles.
 - [x] P1-10 Stub essay (Substack link-out): set `noindex = true` and exclude it from the sitemap until full content is imported. `TODO(owner): supply full text.`
-- [x] P1-11 Replace dead `#` links in the Blockchain 101 list. Render published parts as links and unpublished parts as plain text, or remove them. `TODO(owner): decide whether to publish the series or shorten the promise.`
+- [x] P1-11 Replace dead `#` links in the Blockchain 101 list. Render published parts as links and unpublished parts as plain text, or remove them. Dead `#` links stripped from Why Decentralization Matters. No expansion planned unless owner adds more parts.
   - *(Bootstrap strips `href="#"` anchors to plain text on id 0.)*
 - [x] P1-12 Fix "Related reading". Rank by shared series, then shared tags, then recency. Exclude the current post.
   - *(API: `GET /subtopics/v1/s/{id}/related`. Frontend: `relatedPosts` by topicId/tags.)*
@@ -134,7 +134,7 @@ Order of sections:
 
 1. Hero: H1 `Practical writing on AI, software, and leading teams.` Sub: `Researched essays for engineers and technical leaders.` Inline subscribe form (email field plus `Subscribe`). Microcopy: `Unsubscribe anytime.`
 2. Latest essays: 3 cards with `dek`, date, reading time.
-3. Start here: 3 hand-picked essays or series. `TODO(owner): choose.`
+3. Start here: Evolution of AI and Collective Intelligence, NLP Primer, Rust (IDs 18, 16, 14). Editable later via P3-24.
 4. Work with me strip: one sentence, one link to the clients page.
 5. About snippet: photo, 2 sentences, link to About.
 
@@ -156,25 +156,23 @@ Order of sections:
 - [x] P2-09 `SubscribeForm` inline variant after roughly the 40 percent point of the body (insert between H2 sections) and a full variant at the end.
 - [x] P2-10 `SeriesNav` (previous, next, full list) when the essay is in a series.
 - [x] P2-11 `AuthorBox` at the end: 2-sentence bio and link to About.
-- [x] P2-12 Copy-link share button only. No social share clutter.
+- [x] P2-12 Copy-link and LinkedIn share on essays. Full social clutter still avoided. `TODO(owner): wire essay likes when ready (API `/v1/likes` exists; no FE yet).`
 
 ### 5.4 Work and case studies
 
-- [x] P2-13 Case study template: summary strip (Role, Timeline, Stack, Result), product mark, then Problem, Approach, Outcome. Role set (SWE/SME). `TODO(owner): timeline and one measurable result for Cobu and Blox.`
+- [x] P2-13 Case study template: summary strip (Role, Timeline, Stack, Result), product mark, then Problem, Approach, Outcome. Role SWE/SME. Timelines: Blox 2024, Cobu 2025. `TODO(owner): one measurable result for Cobu and Blox when available.`
 - [x] P2-14 Work index: card per project with mark, one-line result, stack tags.
 
 ### 5.5 About, hiring, clients
 
 - [x] P2-15 About page: bio, photo, `CredentialsStrip`, and "For hiring managers" (`#hiring`) with LinkedIn profile link (not CV PDF).
-- [x] P2-16 `CredentialsStrip` content (owner to confirm wording before publish):
-  - 15+ years in software engineering
-  - PMP, PMI-ACP, PMI-PBA
-  - AWS Certified AI Practitioner
-  - Master of Artificial Intelligence, UNSW Sydney
-  - Book reviewer, Manning Publications
-  - Co-author on Amazon (author store link)
-  - Casual academic teaching postgraduate computer science and IT
-- [x] P2-17 Clients page: outcome-led service list, the 3-step process, 2 proof items (case studies), engagement model line. `TODO(owner): pricing signal or engagement model.`
+- [x] P2-16 `CredentialsStrip` content (2-col pairs: left | right):
+  - 25+ years in SWE and AI | Master of Artificial Intelligence, UNSW Sydney
+  - PMP, PMI-ACP, PMI-PBA | AWS Certified AI Practitioner
+  - Co-author on Amazon | Book reviewer, Manning Publications
+  - Casual Academic, UNSW CS/IT
+  - Shared brand-dot marker (no per-item icon set).
+- [x] P2-17 Clients page: outcome-led service list, the 3-step process, 2 proof items (case studies), engagement via paid Calendly consultation.
 - [x] P2-18 Remove the "Wrong path? Choose again" lines and the "Choose how to browse" block.
 
 ### 5.6 Visual system and accessibility
@@ -260,18 +258,80 @@ Acceptance for Phase 3:
 - Crawl of the site (for example `npx linkinator https://staging-host --recurse`) finds zero broken internal links.
 - All Phase 2 Lighthouse and Core Web Vitals targets still pass.
 
-## 7. Owner actions (Cursor cannot do these)
+### 6.6 Admin panel (ops and layout)
 
-- Confirm the LinkedIn profile URL.
-- Supply the full text of the Substack stub essay, or accept `noindex`.
-- Decide on Blockchain 101: publish the parts or shorten the promise.
-- Supply metrics, role, and timeline for Cobu and Blox.
-- Approve the credentials wording. (LinkedIn profile used instead of CV PDF.)
-- Provide a reply-time promise and an engagement model or pricing signal.
-- Request SES production access. Add SPF, DKIM, and DMARC DNS records.
-- Create the CloudFront distribution and update DNS.
-- Verify the site in Google Search Console and submit the sitemap.
-- Choose a real publishing cadence, then update copy if it changes.
+Extend the existing `/admin` surface (auth-gated, already disallowed in `robots.txt`). Prefer server actions or Spring Boot admin APIs behind the same session. No public UI for these controls.
+
+Goals: replace hard-coded owner picks (for example Start here IDs) with editable config; manage subscribers and users without SSH; keep GitHub and deploy ops visible without leaving the site.
+
+- [ ] P3-24 Site layout / homepage config:
+  - Choose and order the 3 "Start here" essays or series (store slugs or IDs in DB or a `site_settings` table).
+  - Optional: featured work order, homepage about blurb override.
+  - Preview before publish. Invalidate Next.js cache on save (`revalidate` tag).
+- [ ] P3-25 Content ops (streamline `/editor` + admin essay/series tools):
+  - Essay workflow: draft, publish, unpublish, schedule publish (`publish_at`), preview.
+  - Essay metadata: `noindex`, slug, `dek`, `tldr`, tags, series membership and `series_order`.
+  - Series CRUD: add, update, rename (and slug), reorder essays within a series.
+  - Stub / Substack link-out flag.
+  - On save/publish: call Next.js revalidate (P3-13).
+- [ ] P3-26 Users:
+  - List accounts, roles (reader / editor / admin), disable or reset access.
+  - Audit last login. No plaintext passwords in logs or UI.
+- [ ] P3-27 Subscribers (depends on P3-05 to P3-09):
+  - List by status (`pending`, `confirmed`, `unsubscribed`). Search by email hash or last-4 local-part only if needed for support.
+  - Resend confirmation, force unsubscribe, export count by day (not raw emails by default).
+  - Trigger "send latest essay to confirmed" with dry-run (ties to P3-08).
+- [ ] P3-28 GitHub and deploy ops (read-mostly; no force-push from UI):
+  - Links to frontend and monorepo repos, open PRs, and latest Actions runs (CI / Deploy).
+  - Show last successful deploy SHA and health URL status.
+  - Optional: "open compare" deep link to GitHub. Do not store PATs in the browser; use server-side GitHub App or fine-scoped token in secrets.
+- [ ] P3-29 Admin IA: sidebar sections `Layout`, `Essays`, `Users`, `Subscribers`, `GitHub`, `Quotes` (existing). Mobile usable. Confirm destructive actions.
+
+Acceptance for admin panel:
+
+- Unauthenticated requests to `/admin/**` redirect to login.
+- Changing Start here updates the homepage after revalidation without a redeploy.
+- Subscriber list never logs full emails in application logs.
+- GitHub panel fails closed if the token is missing (shows setup instructions, not a stack trace).
+
+## 7. Owner actions (you must supply or decide these)
+
+Items Cursor cannot invent. Until you answer, the site keeps a `TODO(owner): …` placeholder or safe interim copy.
+
+### Still required
+
+| Need | Why | What to send |
+| --- | --- | --- |
+| Cobu / Blox measurable result | Outcome credibility | One real number or concrete outcome each when you have them |
+| Essay likes | Reader engagement | Confirm you want like counts on essays; FE not wired yet (backend `/v1/likes` exists) |
+| SES production + DNS | In-house newsletter (P3 infra) | Request SES production access; add SPF, DKIM, DMARC |
+| CloudFront + DNS | CDN / perf (P3 infra) | Create distribution; point DNS |
+| Search Console | Discoverability (P3 infra) | Verify property; submit sitemap |
+| Substack image migration | P2-21 | Host article images on your S3/CloudFront instead of Substack URLs |
+
+### Done or no longer blocking
+
+- Role on Cobu / Blox: SWE / SME. Timelines: Blox 2024, Cobu 2025.
+- Hiring CTA: LinkedIn profile. Confirmed URL with trailing slash.
+- Credentials (2-col order): 25+ years SWE/AI | Master of AI; PMP suite | AWS AI; Co-author | Book reviews; Casual Academic.
+- Start here: Evolution of AI, NLP Primer, Rust.
+- Cadence: weekly. Contact: reply within 24 hours. Substack stub: keep + link, `noindex`.
+- Clients engagement: paid consultation booked on Calendly.
+- Essay engagement: LinkedIn share + copy link on essay pages.
+- Blockchain 101: this is the **Blockchain** series intro essay **Why Decentralization Matters** (`/writing/why-decentralization-matters`). It used to list ~20 follow-on pieces as dead `#` links. Those `#` links were stripped in P1. No further owner decision unless you want to publish more parts or change the series copy.
+- P2 layout: merged and deployed (per owner).
+
+### What "P3 infra" means
+
+Phase 3 section **6.5 Infrastructure and performance** (and related DNS/email setup). Not app features. Specifically:
+
+- **SES + SPF/DKIM/DMARC** so the in-house newsletter can send real confirmation and essay emails.
+- **CloudFront in front of EC2** for caching static assets and HTML (speed, TLS edge).
+- **Security headers** in Next.js config (HSTS, CSP, etc.).
+- **Docker HEALTHCHECK** for Next and Spring Boot.
+- **Search Console** (and optional cookieless analytics like Umami).
+
+Admin panel, redirects, and subscribe APIs are also Phase 3, but "P3 infra" usually means the AWS/DNS/CDN/email ops items above that only you can complete in the AWS console and DNS.
 
 ## 8. Final verification checklist
 
