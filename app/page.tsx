@@ -10,6 +10,8 @@ import { CASE_STUDIES } from "@/lib/work";
 import { CTA } from "@/lib/ctas";
 import { isIndexable } from "@/lib/articles";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = pageMeta({
   title: SITE.title,
   description: SITE.description,
@@ -22,7 +24,13 @@ export default async function Home() {
     getLatestSubtopics(5),
     getAllSubtopicsSorted(),
   ]);
-  const indexable = all.filter(isIndexable);
+  const indexable = all.filter(
+    (p) =>
+      (p.isPublished === true ||
+        p.isPublished === "true" ||
+        p.isPublished === "1") &&
+      isIndexable(p)
+  );
   const featuredWork = CASE_STUDIES[0];
 
   return (
@@ -66,16 +74,35 @@ export default async function Home() {
 
       <div className='home-body mx-auto flex w-full max-w-3xl flex-col px-4 pt-5 pb-8 md:pt-6 md:pb-10'>
         {/* 2. Latest essays */}
-        {latest.length > 0 && (
-          <div className='home-section'>
+        <div className='home-section'>
+          {latest.length > 0 ? (
             <LatestWriting
               posts={latest.slice(0, 3)}
               title='Latest essays'
               showViewAll
               featured
             />
-          </div>
-        )}
+          ) : (
+            <section aria-labelledby='latest-empty'>
+              <p className='accent-label mb-2'>Writing</p>
+              <h2
+                id='latest-empty'
+                className='display-title text-3xl md:text-4xl'
+              >
+                Latest essays
+              </h2>
+              <p className='mt-3 text-muted-foreground'>
+                Essays will appear here shortly.{" "}
+                <Link
+                  href='/writing'
+                  className='font-semibold text-brand underline-offset-4 hover:underline'
+                >
+                  Browse writing
+                </Link>
+              </p>
+            </section>
+          )}
+        </div>
 
         {/* 3. Start here */}
         <StartHere posts={indexable} />

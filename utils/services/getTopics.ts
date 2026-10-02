@@ -4,7 +4,9 @@ import { slugify } from "@/lib/articles";
 
 export async function getAllTopicsSafe(): Promise<Topic[]> {
   try {
-    const res = await fetch(topics_url, { next: { revalidate: 3600 } });
+    const res = await fetch(topics_url, {
+      next: { revalidate: 60, tags: ["essays"] },
+    });
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data) ? data : [];

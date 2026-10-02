@@ -1,7 +1,7 @@
 "use client";
 
 import { SubTopic, Topic } from "@/types/types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +13,11 @@ import {
 import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
-import FreeRichTextEditor from "@/components/editor/FreeRichTextEditor";
+import FreeRichTextEditor, {
+  type FreeRichTextEditorHandle,
+} from "@/components/editor/FreeRichTextEditor";
 import { Switch } from "@/components/ui/switch";
+import { articleHref } from "@/lib/articles";
 
 type Params = { subId: string | undefined; post: SubTopic };
 
@@ -94,6 +97,7 @@ export default function XEditor({ params }: { params?: Params }) {
   const [formData, setFormData] = useState<FormState>(() => toForm(post));
   const [series, setSeries] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const editorRef = useRef<FreeRichTextEditorHandle>(null);
 
   useEffect(() => {
     if (!token || !isAdmin) return;
@@ -125,7 +129,12 @@ export default function XEditor({ params }: { params?: Params }) {
       toast.error("Sign in required to save.");
       return;
     }
-    const next = { ...formData, ...patch };
+    const liveHtml = editorRef.current?.getHTML();
+    const next = {
+      ...formData,
+      ...patch,
+      content: liveHtml || formData.content,
+    };
     setIsLoading(true);
     try {
       const body = {
@@ -146,7 +155,7 @@ export default function XEditor({ params }: { params?: Params }) {
           next.seriesOrder === "" ? null : Number(next.seriesOrder),
         noindex: next.noindex,
         createdBy: next.createdBy || null,
-        updatedBy: next.updatedBy || null,
+        updateBy: next.updatedBy || null,
       };
 
       const response = await fetch(subtopics_secure_url, {
@@ -163,6 +172,25 @@ export default function XEditor({ params }: { params?: Params }) {
         return;
       }
       setFormData(next);
+
+      const path = articleHref({
+        id: next.id,
+        slug: next.slug,
+        subHeading: next.subHeading,
+        heading: next.heading,
+      });
+      try {
+        await fetch("/api/revalidate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            paths: [path, "/writing", "/"],
+          }),
+        });
+      } catch {
+        /* cache bust is best-effort */
+      }
+
       toast.success("Essay saved");
     } catch (error) {
       toast.error("Error updating essay");
@@ -415,6 +443,7 @@ export default function XEditor({ params }: { params?: Params }) {
       <div className='flex-1 min-h-[32rem]'>
         <Label className='mb-2 block'>Content</Label>
         <FreeRichTextEditor
+          ref={editorRef}
           value={formData.content}
           onChange={(html) =>
             setFormData((prev) => ({ ...prev, content: html }))

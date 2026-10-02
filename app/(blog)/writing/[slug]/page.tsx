@@ -39,6 +39,8 @@ import { breadcrumbJsonLd, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import "./article.css";
 
+export const revalidate = 60;
+
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({
