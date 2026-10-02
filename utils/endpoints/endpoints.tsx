@@ -3,9 +3,10 @@ export const baseURLAuth = "http://localhost:9292";
 
 export const web_url = "https://www.syedbaqirali.com";
 export const appBasePath = web_url;
-// export const appBasePath = "http://localhost:3100";
-// export const baseURL = "http://localhost:7300";
-export const baseURL = "https://api.syedbaqirali.com";
+// Local override: NEXT_PUBLIC_API_BASE_URL=http://localhost:7300 in .env.local
+export const baseURL = (
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.syedbaqirali.com"
+).replace(/\/$/, "");
 export const blox_url = "https://blox.syedbaqirali.com";
 export const substack_url = "https://syedbaqirali.substack.com/";
 export const github_url = "https://github.com/gitbaq";

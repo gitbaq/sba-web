@@ -60,3 +60,29 @@
 .article-prose pre {
   @apply bg-secondary rounded-lg p-4 overflow-x-auto mb-5;
 }
+
+/* TipTap editor surface (same article styles + caret / empty state) */
+.tiptap-shell .ProseMirror {
+  outline: none;
+}
+
+.tiptap-shell .ProseMirror p.is-editor-empty:first-child::before {
+  color: hsl(var(--muted-foreground));
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap-shell .ProseMirror strong {
+  font-weight: 700;
+}
+
+.tiptap-shell .ProseMirror em {
+  font-style: italic;
+}
+
+.tiptap-shell .ProseMirror h2:first-child,
+.tiptap-shell .ProseMirror h3:first-child {
+  padding-top: 0.5rem;
+}
