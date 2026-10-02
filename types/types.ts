@@ -2,6 +2,7 @@ export interface Topic {
   id: number;
   sbaTopicName: string;
   subTopicList: SubTopic[];
+  isPublished?: boolean | string;
 }
 
 export interface SubTopic {

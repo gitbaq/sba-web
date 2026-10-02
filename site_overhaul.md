@@ -269,11 +269,12 @@ Goals: replace hard-coded owner picks (for example Start here IDs) with editable
   - Optional: featured work order, homepage about blurb override.
   - Preview before publish. Invalidate Next.js cache on save (`revalidate` tag).
 - [ ] P3-25 Content ops (streamline `/editor` + admin essay/series tools):
-  - Essay workflow: draft, publish, unpublish, schedule publish (`publish_at`), preview.
+  - Essay workflow: draft, publish, unpublish, schedule publish (`publishDate` in future + unpublished; Spring `@Scheduled` job). Preview via existing essay route when published.
   - Essay metadata: `noindex`, slug, `dek`, `tldr`, tags, series membership and `series_order`.
-  - Series CRUD: add, update, rename (and slug), reorder essays within a series.
-  - Stub / Substack link-out flag.
-  - On save/publish: call Next.js revalidate (P3-13).
+  - Series CRUD: add, update, rename (and slug via name), publish flag. UI at `/admin/series`.
+  - Editor body: free TipTap (self-hosted). TinyMCE Cloud API key removed.
+  - Stub / Substack link-out flag (`noindex`).
+  - On save/publish: call Next.js revalidate (P3-13) later.
 - [ ] P3-26 Users:
   - List accounts, roles (reader / editor / admin), disable or reset access.
   - Audit last login. No plaintext passwords in logs or UI.
