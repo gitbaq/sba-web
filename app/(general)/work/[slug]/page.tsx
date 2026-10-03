@@ -132,6 +132,9 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
               <li key={item}>{item}</li>
             ))}
           </ul>
+          <p className='mt-4 text-sm text-muted-foreground'>
+            TODO(owner): add measurable metrics for {study.title} when available.
+          </p>
         </section>
       </div>
 
@@ -155,7 +158,7 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
         </Link>
         <div className='flex flex-wrap gap-3'>
           <Link
-            href='/for/clients'
+            href='/work-with-me'
             className='inline-flex min-h-11 items-center text-sm text-brand underline-offset-4 hover:underline'
           >
             Work with me

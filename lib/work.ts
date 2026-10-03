@@ -68,13 +68,7 @@ export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
       "Clear product story: discuss ideas, keep context, share direction.",
       "Demonstrates end-to-end AI product delivery beyond demos and slides.",
     ],
-    stack: [
-      "AI product design",
-      "Angular 20",
-      "Spring AI",
-      "OpenAI & Anthropic",
-      "Web search",
-    ],
+    stack: ["Angular 20", "Spring AI", "OpenAI", "Anthropic"],
   },
   {
     slug: "blox",
@@ -99,12 +93,8 @@ export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
       "Clear product narrative: start small, track what matters, win the week.",
       "Living portfolio piece that demonstrates end-to-end product thinking.",
     ],
-    stack: [
-      "Product design",
-      "Full-stack web",
-      "Habit & goals UX",
-      "Iterative shipping",
-    ],
+    // TODO(owner): list Blox technologies only (no soft skills).
+    stack: ["Web application"],
   },
 ];
 

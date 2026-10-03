@@ -53,7 +53,7 @@ export default async function WorkPage() {
         <p className='mt-12 life-panel text-sm text-muted-foreground leading-relaxed'>
           Looking for delivery help?{" "}
           <Link
-            href='/for/clients'
+            href='/work-with-me'
             className='text-brand font-semibold underline-offset-4 hover:underline'
           >
             How I work with clients

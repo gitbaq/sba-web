@@ -29,7 +29,7 @@ export default async function About() {
             <Image
               className='object-cover'
               src={about.photoUrl}
-              alt={about.displayName}
+              alt={`${about.displayName} portrait`}
               fill
               priority
               sizes='176px'
@@ -80,6 +80,22 @@ export default async function About() {
           <CredentialsStrip credentials={about.credentials} />
         </section>
 
+        <section aria-labelledby='teaching' className='life-panel'>
+          <p className='accent-label mb-2'>Teaching</p>
+          <h2 id='teaching' className='display-title text-2xl md:text-3xl mb-3'>
+            Teaching and mentoring
+          </h2>
+          <p className='max-w-xl leading-relaxed text-muted-foreground'>
+            Casual Academic in Computer Science and IT at UNSW Sydney. I teach
+            and mentor with the same plain, practical style as the essays on this
+            site.
+          </p>
+          <p className='mt-3 max-w-xl text-sm text-muted-foreground'>
+            TODO(owner): approve or expand teaching copy before treating it as
+            final.
+          </p>
+        </section>
+
         <section
           id='hiring'
           aria-labelledby='hiring-heading'
@@ -95,6 +111,10 @@ export default async function About() {
           <p className='text-muted-foreground leading-relaxed mb-5 max-w-xl'>
             {about.hiringBlurb}
           </p>
+          <div className='mb-5 max-w-xl rounded-lg border border-dashed border-border bg-secondary/20 p-4 text-sm text-muted-foreground'>
+            TODO(owner): add a downloadable CV PDF and a short career timeline
+            here.
+          </div>
           <div className='flex flex-wrap gap-3'>
             <a
               href={LINKEDIN_URL}
@@ -105,9 +125,9 @@ export default async function About() {
               <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
               LinkedIn profile
             </a>
-            <Link href='/for/hiring' className='craft-cta-secondary'>
-              <Icons.FolderCode className='craft-cta-icon' aria-hidden />
-              Review for a role
+            <Link href='/contact' className='craft-cta-secondary'>
+              <Icons.Mails className='craft-cta-icon' aria-hidden />
+              {CTA.contact}
             </Link>
             <Link href='/work' className='craft-cta-secondary'>
               Case studies

@@ -1,4 +1,4 @@
-import { blox_url, cobu_url, github_url } from "@/utils/endpoints/endpoints";
+import { github_url } from "@/utils/endpoints/endpoints";
 import { SITE } from "@/lib/seo";
 
 /** Primary header nav (desktop + mobile). */
@@ -6,7 +6,7 @@ export const PRIMARY_NAV = [
   { href: "/writing", label: "Writing" },
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/work-with-me", label: "Work with me" },
   { href: "/subscribe", label: "Subscribe", emphasize: true },
 ] as const;
 
@@ -15,6 +15,7 @@ export const FOOTER_NAV = [
   { href: "/writing", label: "Writing" },
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
+  { href: "/work-with-me", label: "Work with me" },
   { href: "/subscribe", label: "Subscribe" },
   { href: "/writing/series", label: "Series" },
   { href: "/contact", label: "Contact" },
@@ -26,8 +27,8 @@ export const FOOTER_NAV = [
  * Footer Projects. Names match Work case studies (no competing Substack signup).
  */
 export const FOOTER_PROJECTS = [
-  { href: cobu_url, label: "Cobu: AI brainstorm buddy" },
-  { href: blox_url, label: "Blox: Productivity" },
+  { href: "/work/cobu", label: "Cobu: AI brainstorm buddy" },
+  { href: "/work/blox", label: "Blox: Productivity hub" },
   { href: github_url, label: "Code on GitHub" },
 ] as const;
 

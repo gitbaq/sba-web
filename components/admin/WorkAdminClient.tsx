@@ -93,7 +93,7 @@ export default function WorkAdminClient() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          paths: ["/", "/work", "/for/clients", "/about"],
+          paths: ["/", "/work", "/work-with-me", "/about"],
           tag: "work-projects",
         }),
       });

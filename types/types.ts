@@ -29,6 +29,8 @@ export interface SubTopic {
   seriesOrder?: number;
   tags?: string;
   legacySlug?: string;
+  /** Set only after an admin newsletter blast. Publish/save never sets this. */
+  newsletterSentAt?: string | null;
 }
 
 export interface RandomQuote {
