@@ -132,9 +132,6 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <p className='mt-4 text-sm text-muted-foreground'>
-            TODO(owner): add measurable metrics for {study.title} when available.
-          </p>
         </section>
       </div>
 

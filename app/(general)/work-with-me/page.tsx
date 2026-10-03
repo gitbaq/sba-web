@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import { CALENDLY_URL, getWorkProjects } from "@/lib/work";
 import { pageMeta, professionalServiceJsonLd } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
-import { SERVICE_OFFERINGS } from "@/lib/services";
+import { SERVICE_ACCENT_CLASS, SERVICE_OFFERINGS } from "@/lib/services";
 import { LINKEDIN_URL } from "@/lib/audience";
 
 export const revalidate = 60;
@@ -73,9 +73,12 @@ export default async function WorkWithMePage() {
             {SERVICE_OFFERINGS.map((o) => (
               <li
                 key={o.slug}
-                className='rounded-2xl border border-border/80 bg-card p-5 shadow-elev1'
+                className={`rounded-2xl border border-border/80 border-l-4 p-5 shadow-elev1 ${SERVICE_ACCENT_CLASS[o.accent]}`}
               >
-                <h3 className='mb-3 font-display font-semibold text-foreground'>
+                <p className='mb-2 font-display text-xs font-semibold tracking-widest text-muted-foreground'>
+                  {o.indexLabel}
+                </p>
+                <h3 className='mb-3 font-display text-lg font-semibold text-foreground'>
                   {o.title}
                 </h3>
                 <dl className='m-0 flex flex-col gap-2 text-sm leading-relaxed'>
@@ -130,7 +133,8 @@ export default async function WorkWithMePage() {
               Featured work
             </h2>
             <p className='mt-2 max-w-xl text-muted-foreground'>
-              Cobu and Blox. Case studies with problem, approach, and outcome.
+              Cobu and Blox are live product showcases: problem, approach, and
+              outcome for each.
             </p>
           </div>
           <ul className='m-0 grid list-none gap-4 p-0 sm:grid-cols-2'>
@@ -148,19 +152,16 @@ export default async function WorkWithMePage() {
           </Link>
         </section>
 
-        <section aria-labelledby='testimonials' className='flex flex-col gap-4'>
+        <section aria-labelledby='editorial' className='flex flex-col gap-4'>
           <div>
-            <p className='accent-label mb-2'>Recommendations</p>
-            <h2
-              id='testimonials'
-              className='display-title text-2xl md:text-3xl'
-            >
-              What people say
+            <p className='accent-label mb-2'>Editorial</p>
+            <h2 id='editorial' className='display-title text-2xl md:text-3xl'>
+              Publishing and review
             </h2>
           </div>
-          <p className='max-w-xl text-muted-foreground leading-relaxed'>
-            TODO(owner): Add testimonials or LinkedIn recommendations here.
-            Until then, see{" "}
+          <p className='max-w-xl leading-relaxed text-muted-foreground'>
+            Book reviewer for Manning Publications. Co-author with titles on
+            Amazon. For client references and recommendations, see{" "}
             <a
               href={LINKEDIN_URL}
               target='_blank'
@@ -168,20 +169,19 @@ export default async function WorkWithMePage() {
               className='font-semibold text-brand underline-offset-4 hover:underline'
             >
               LinkedIn
-            </a>{" "}
-            and the case studies above.
+            </a>
+            .
           </p>
         </section>
 
         <section aria-labelledby='engagement' className='life-panel'>
           <p className='accent-label mb-2'>Engagement</p>
-          <h2 id='engagement' className='display-title text-2xl mb-3'>
+          <h2 id='engagement' className='display-title mb-3 text-2xl'>
             How we work together
           </h2>
           <p className='mb-5 max-w-xl leading-relaxed text-muted-foreground'>
             Book a paid consultation on Calendly. We use that call to frame the
             outcome, then scope a thin slice before a larger build.
-            TODO(owner): confirm pricing signal or engagement model wording.
           </p>
           <a
             href={CALENDLY_URL}

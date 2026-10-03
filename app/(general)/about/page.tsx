@@ -90,10 +90,6 @@ export default async function About() {
             and mentor with the same plain, practical style as the essays on this
             site.
           </p>
-          <p className='mt-3 max-w-xl text-sm text-muted-foreground'>
-            TODO(owner): approve or expand teaching copy before treating it as
-            final.
-          </p>
         </section>
 
         <section
@@ -111,10 +107,6 @@ export default async function About() {
           <p className='text-muted-foreground leading-relaxed mb-5 max-w-xl'>
             {about.hiringBlurb}
           </p>
-          <div className='mb-5 max-w-xl rounded-lg border border-dashed border-border bg-secondary/20 p-4 text-sm text-muted-foreground'>
-            TODO(owner): add a downloadable CV PDF and a short career timeline
-            here.
-          </div>
           <div className='flex flex-wrap gap-3'>
             <a
               href={LINKEDIN_URL}

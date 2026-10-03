@@ -17,7 +17,7 @@ Do this in order:
 ## 2. Operating rules
 
 - Fix problems at the template, data, or pipeline level. Never patch a single essay or page by hand. Every task applies to all content: essays, series, case studies, static pages, and future content.
-- Never invent facts: metrics, testimonials, client names, dates, or credentials. Use a visible `TODO(owner): <what is needed>` placeholder.
+- Never invent facts: metrics, testimonials, client names, dates, or credentials. Track gaps in `docs/TASKS.md` only. Never show `TODO(owner)` on visitor-facing pages.
 - Decisions that change scope, cost, or public claims go to the owner. List them in your phase report. Do not assume.
 - No paid third party services. Free tiers and AWS services already in use are allowed.
 - No em-dashes or en-dashes in any visitor-facing string, comment, or doc. Use periods, commas, colons, or hyphens.
@@ -202,7 +202,12 @@ Value: quality that supports every earlier phase.
 
 ## 8. Backlog (not scheduled)
 
+- Simplify reader and client paths: clearer offers, credentials, related work per service, and how to get in touch.
+- Per-service pages at `/work-with-me/[service]` when there is real content for each.
+- CloudFront CDN in front of EC2 (P7-02).
+- Free uptime and error monitoring setup (P8-02, `docs/ops-monitoring.md`).
 - Branded HTML email shell for SES (confirm, welcome, essay issue): table layout, inline styles, button CTA, header/footer, keep plain-text part. Stay on SES; no paid ESP.
+- Downloadable CV PDF and short career timeline on `/about#hiring`.
 - Free PDF primer from a series as a signup incentive.
 - Public archive of sent newsletter issues.
 - Teaching and workshops page.

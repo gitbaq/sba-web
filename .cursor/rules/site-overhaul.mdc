@@ -23,7 +23,7 @@ alwaysApply: true
 - Server-render JSON-LD. Never add fake ratings, reviews, or metrics.
 
 ## Content and copy
-- Never invent facts. Use `TODO(owner): <what is needed>` for missing information.
+- Never invent facts. Track missing information in `docs/TASKS.md` only. Never put `TODO(owner)` or similar placeholders in visitor-facing pages, strings, or rendered HTML.
 - No em-dashes or en-dashes in any code comment, string, or copy. Use periods, commas, colons, or hyphens.
 - Short sentences. No marketing filler. One primary call to action per page.
 
