@@ -5,6 +5,7 @@ import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
 import { pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
+import { CADENCE_LINE, SUBSCRIBE } from "@/lib/copy";
 
 export const metadata: Metadata = pageMeta({
   title: "Subscribe",
@@ -14,7 +15,7 @@ export const metadata: Metadata = pageMeta({
 });
 
 const perks = [
-  "New essays as they publish",
+  CADENCE_LINE.replace(/\.$/, ""),
   "AI, software systems, and engineering leadership",
   "Unsubscribe anytime",
 ];
@@ -26,12 +27,12 @@ export default async function SubscribePage() {
     <div className='w-full'>
       <div className='life-hero'>
         <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
-          <p className='accent-label'>Newsletter</p>
+          <p className='accent-label'>{SUBSCRIBE.eyebrow}</p>
           <h1 className='display-title text-4xl text-foreground md:text-5xl'>
-            Get new essays by email
+            {SUBSCRIBE.heading}
           </h1>
           <p className='max-w-xl text-lg leading-relaxed text-foreground/80'>
-            New essays as they publish. Prefer feeds? Use RSS.
+            {CADENCE_LINE} Prefer feeds? Use RSS.
           </p>
         </header>
       </div>

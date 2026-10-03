@@ -23,7 +23,11 @@ export function absoluteUrl(path: string): string {
 }
 
 function clampDescription(text: string, max = 155): string {
-  const clean = text.replace(/\s+/g, " ").trim();
+  const clean = text
+    .replace(/\u2014/g, ". ")
+    .replace(/\u2013/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max - 1);
   const lastSpace = cut.lastIndexOf(" ");

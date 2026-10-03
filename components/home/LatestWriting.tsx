@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SubTopic } from "@/types/types";
 import EssayCard from "@/components/EssayCard";
+import { CADENCE_LINE } from "@/lib/copy";
 
 type Props = {
   posts: SubTopic[];
@@ -28,7 +29,7 @@ export default function LatestWriting({
           {title}
         </h2>
         <p className='text-lg text-muted-foreground'>
-          New essays as they publish.{" "}
+          {CADENCE_LINE}{" "}
           <Link
             href='/subscribe'
             className='text-brand underline-offset-4 hover:underline'

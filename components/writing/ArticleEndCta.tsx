@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SubTopic, Topic } from "@/types/types";
 import { articleHref } from "@/lib/articles";
 import { CTA } from "@/lib/ctas";
+import { SUBSCRIBE } from "@/lib/copy";
 import { seriesHref } from "@/utils/services/getTopics";
 import SubscribeForm from "@/components/SubscribeForm";
 
@@ -14,14 +15,14 @@ export default function ArticleEndCta({ related, series }: Props) {
   return (
     <aside className='mt-16 pt-10 border-t border-border flex flex-col gap-10'>
       <div className='flex flex-col gap-3 max-w-xl'>
-        <p className='accent-label'>Newsletter</p>
+        <p className='accent-label'>{SUBSCRIBE.eyebrow}</p>
         <h2 className='display-title text-2xl md:text-3xl'>
-          Get new essays by email
+          {SUBSCRIBE.heading}
         </h2>
         <p className='text-muted-foreground leading-relaxed'>
-          New essays as they publish. Unsubscribe anytime.
+          {SUBSCRIBE.blurb}
         </p>
-        <SubscribeForm variant='footer' submitLabel={CTA.subscribe} />
+        <SubscribeForm variant='end' submitLabel={CTA.subscribe} />
         <p className='text-sm text-muted-foreground'>
           Prefer feeds?{" "}
           <a

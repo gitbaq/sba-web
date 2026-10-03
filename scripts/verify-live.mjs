@@ -8,7 +8,7 @@
  */
 
 const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
-const FULL = process.argv.includes("--full");
+/** --full keeps legacy alias; copy lint (banned + dashes) is always on from P2. */
 const BASE = (args[0] || "https://www.syedbaqirali.com").replace(/\/$/, "");
 
 const BANNED = [
@@ -173,22 +173,20 @@ async function checkUrl(path) {
     }
   }
 
-  if (FULL) {
-    for (const phrase of BANNED) {
-      if (visible.toLowerCase().includes(phrase)) {
-        errors.push(`banned phrase: ${phrase}`);
-      }
+  for (const phrase of BANNED) {
+    if (visible.toLowerCase().includes(phrase)) {
+      errors.push(`banned phrase: ${phrase}`);
     }
-    if (/[\u2013\u2014]/.test(visible)) {
-      errors.push("em-dash or en-dash in visible text");
-    }
+  }
+  if (/[\u2013\u2014]/.test(visible)) {
+    errors.push("em-dash or en-dash in visible text");
   }
 
   return { path, errors, title, ogTitle, ogUrl, description };
 }
 
 async function main() {
-  console.log(`verify-live: ${BASE}${FULL ? " (full)" : " (phase-1)"}`);
+  console.log(`verify-live: ${BASE}`);
   const routes = await loadRouteList();
   const prioritized = [
     ...SAMPLE_PATHS,

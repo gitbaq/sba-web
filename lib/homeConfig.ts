@@ -63,20 +63,28 @@ export function pickEssaysByIds(
   return picked;
 }
 
-/** Build Latest list: optional boosted essay first, then chronological fillers. */
+/**
+ * Build Latest list: optional boosted essay first, then chronological fillers.
+ * Never include ids in `excludeIds` (P2-09: no overlap with Start here).
+ */
 export function buildLatestWithBoost(
   chronological: SubTopic[],
   allPublished: SubTopic[],
   featuredEssayId: number | null,
-  limit = 3
+  limit = 3,
+  excludeIds: number[] = []
 ): SubTopic[] {
-  if (!featuredEssayId) {
-    return chronological.slice(0, limit);
+  const exclude = new Set(excludeIds);
+  const pool = chronological.filter((p) => !exclude.has(p.id));
+  if (
+    featuredEssayId &&
+    !exclude.has(featuredEssayId)
+  ) {
+    const boosted = allPublished.find((p) => p.id === featuredEssayId);
+    if (boosted) {
+      const rest = pool.filter((p) => p.id !== featuredEssayId);
+      return [boosted, ...rest].slice(0, limit);
+    }
   }
-  const boosted = allPublished.find((p) => p.id === featuredEssayId);
-  if (!boosted) {
-    return chronological.slice(0, limit);
-  }
-  const rest = chronological.filter((p) => p.id !== featuredEssayId);
-  return [boosted, ...rest].slice(0, limit);
+  return pool.slice(0, limit);
 }

@@ -29,8 +29,6 @@ import {
   blox_url,
   cobu_url,
   github_url,
-  substack_image_url,
-  substack_url,
 } from "@/utils/endpoints/endpoints";
 import Image from "next/image";
 import { SubTopic } from "@/types/types";
@@ -181,33 +179,6 @@ export function LearningSidebar() {
                   </TooltipContent>
                 </Tooltip>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SidebarMenuButton asChild>
-                      <div className='flex flex-row hover:text-cyan-800 hover:dark:text-cyan-300'>
-                        <Image
-                          src={substack_image_url}
-                          width={20}
-                          height={20}
-                          className='border rounded-full border-stone-300 dark:border-stone-600'
-                          alt='Reasoning Stack Magazine'
-                        />
-                        <Link href={substack_url} target='_blog'>
-                          The Reasoning Stack (Blog)
-                        </Link>
-                      </div>
-                    </SidebarMenuButton>
-                  </TooltipTrigger>
-                  <TooltipContent side='right'>
-                    <div className='tooltips'>
-                      Click here to visit The Reasoning Stack. My Blog and
-                      Newsletter
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </SidebarMenuItem>
-
               <SidebarMenuItem>
                 <Tooltip>
                   <TooltipTrigger asChild>

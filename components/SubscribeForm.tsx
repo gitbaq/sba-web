@@ -20,17 +20,21 @@ import { toast } from "sonner";
 import FormMessages from "@/components/FormMessages";
 import { trackEvent } from "@/lib/analytics";
 import { readJson } from "@/lib/http";
+import { SUBSCRIBE } from "@/lib/copy";
 
 const formSchema = z.object({
   email: z.string().email({
     error: "Enter a valid email.",
   }),
-  website: z.string().optional(),
+  company_url: z.string().optional(),
 });
 
-const VARIANT_WRAP: Record<"hero" | "inline" | "footer", string> = {
+export type SubscribeVariant = "hero" | "inline" | "end" | "footer";
+
+const VARIANT_WRAP: Record<SubscribeVariant, string> = {
   hero: "subscribe-panel subscribe-panel-hero w-full max-w-lg",
   inline: "subscribe-panel subscribe-panel-inline w-full max-w-md",
+  end: "subscribe-panel subscribe-panel-end w-full max-w-md",
   footer: "subscribe-panel subscribe-panel-footer w-full max-w-md",
 };
 
@@ -39,7 +43,7 @@ export default function SubscribeForm({
   variant = "hero",
 }: {
   submitLabel?: string;
-  variant?: "hero" | "inline" | "footer";
+  variant?: SubscribeVariant;
 }) {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +51,7 @@ export default function SubscribeForm({
   const [success, setSuccess] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", website: "" },
+    defaultValues: { email: "", company_url: "" },
   });
 
   async function onSubscribe(values: z.infer<typeof formSchema>) {
@@ -59,7 +63,8 @@ export default function SubscribeForm({
         method: "POST",
         body: JSON.stringify({
           email: values.email,
-          website: values.website || "",
+          // Backend honeypot field name remains `website`.
+          website: values.company_url || "",
           sourcePath: pathname || "/",
         }),
         headers: {
@@ -78,7 +83,7 @@ export default function SubscribeForm({
       const message =
         data.message ||
         (response.ok
-          ? "Check your inbox to confirm."
+          ? SUBSCRIBE.success
           : "Something went wrong. Try again.");
 
       if (response.status === 429) {
@@ -97,7 +102,7 @@ export default function SubscribeForm({
         trackEvent("subscribe_submit", { status: "already_subscribed" });
         setSuccess(message);
         toast(message);
-        form.reset({ email: "", website: "" });
+        form.reset({ email: "", company_url: "" });
         return;
       }
 
@@ -109,9 +114,9 @@ export default function SubscribeForm({
       }
 
       trackEvent("subscribe_submit", { status: "success" });
-      setSuccess(message || "Check your inbox to confirm.");
-      toast("Check your inbox to confirm.");
-      form.reset({ email: "", website: "" });
+      setSuccess(message || SUBSCRIBE.success);
+      toast(SUBSCRIBE.success);
+      form.reset({ email: "", company_url: "" });
     } catch (err) {
       trackEvent("subscribe_submit", { status: "error" });
       setError("" + (err as Error).message);
@@ -128,18 +133,21 @@ export default function SubscribeForm({
           onSubmit={form.handleSubmit(onSubscribe)}
           className='flex flex-col gap-3 sm:flex-row sm:items-center'
         >
-          {/* Honeypot: hidden from users, bots often fill it */}
+          {/* Honeypot: off-screen, no visible label text, ignored by AT */}
           <FormField
             control={form.control}
-            name='website'
+            name='company_url'
             render={({ field }) => (
-              <FormItem className='absolute -left-[9999px] h-0 w-0 overflow-hidden' aria-hidden>
-                <FormLabel>Website</FormLabel>
+              <FormItem
+                className='absolute -left-[9999px] h-px w-px overflow-hidden opacity-0'
+                aria-hidden='true'
+              >
                 <FormControl>
                   <Input
                     type='text'
                     tabIndex={-1}
                     autoComplete='off'
+                    aria-hidden='true'
                     {...field}
                   />
                 </FormControl>
