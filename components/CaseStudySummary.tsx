@@ -13,7 +13,7 @@ export default function CaseStudySummary({ study }: { study: CaseStudy }) {
     <dl className='grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-lg border border-border bg-secondary/30 p-4 md:p-5'>
       {CELLS.map(({ key, label }) => {
         const value =
-          key === "stack" ? study.stack.slice(0, 4).join(", ") : study[key];
+          key === "stack" ? study.stack.join(", ") : study[key];
         return (
           <div key={key} className='flex flex-col gap-1'>
             <dt className='text-xs font-semibold uppercase tracking-wide text-muted-foreground'>

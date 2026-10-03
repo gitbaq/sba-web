@@ -46,16 +46,16 @@ GitHub issues: owner said no.
 | P4-06 | 4 | writing-guide.md | done | overhaul/p4-discoverability | |
 | P4-07 | 4 | Internal linking rules | done | overhaul/p4-discoverability | Breadcrumbs + matching JSON-LD on essay/series/topic/work |
 | P4-08 | 4 | Dynamic OG images | done | overhaul/p4-discoverability | next/og for essays + case studies |
-| P4-09 | 4 | Search Console (owner) | blocked | — | Owner: submit `/sitemap.xml` after deploy |
+| P4-09 | 4 | Search Console (owner) | done | — | Owner confirmed site already in Search Console |
 | P5-01 | 5 | Clients primary CTA | done | overhaul/p5-through-p8 | `/work-with-me` hero: Calendly + Contact |
 | P5-02 | 5 | Outcome-led services | done | overhaul/p5-through-p8 | who / problem / deliver / timeline |
-| P5-03 | 5 | Case-study template | done | overhaul/p5-through-p8 | Stack tech-only; TODO(owner) metrics on page |
+| P5-03 | 5 | Case-study template | done | overhaul/p5-through-p8 | Qualitative showcase outcomes; Blox stack updated |
 | P5-04 | 5 | Show every project consistently | done | overhaul/p5-through-p8 | Home lists Cobu + Blox with result lines |
-| P5-05 | 5 | Proof / testimonials | blocked | overhaul/p5-through-p8 | Placeholder + LinkedIn; TODO(owner) quotes |
+| P5-05 | 5 | Proof / testimonials | done | overhaul/p5-through-p8 | Manning reviewer + Amazon co-author; no fake client quotes |
 | P5-06 | 5 | Contact spam protection | done | overhaul/p5-through-p8 | Honeypot, rate limit, optional Turnstile, obfuscated email |
-| P5-07 | 5 | Optional service pages | blocked | — | Owner confirm before `/work-with-me/[service]` |
-| P6-01 | 6 | About bio and credentials | done | overhaul/p5-through-p8 | Teaching section; TODO(owner) copy approve |
-| P6-02 | 6 | CV + hiring section | blocked | overhaul/p5-through-p8 | `#hiring` ready; TODO(owner) CV PDF |
+| P5-07 | 5 | Optional service pages | backlog | — | Later when each service has real content |
+| P6-01 | 6 | About bio and credentials | done | overhaul/p5-through-p8 | Teaching section; no visitor TODOs |
+| P6-02 | 6 | CV + hiring section | backlog | — | CV PDF later; `#hiring` uses LinkedIn + contact |
 | P6-03 | 6 | Simplify nav; retire /for/* | done | overhaul/p5-through-p8 | Nav + 301s to work-with-me / about#hiring / writing |
 | P7-01 | 7 | Image sizes and alts | done | overhaul/p5-through-p8 | Sidebar alts/sizes; about alt |
 | P7-02 | 7 | CloudFront | blocked | — | TODO(owner) |
@@ -68,6 +68,8 @@ GitHub issues: owner said no.
 | P8-03 | 8 | Admin subscriber metrics | done | overhaul/p5-through-p8 | `/secure/newsletter/v1/stats` + admin UI |
 | P8-04 | 8 | Post-deploy checklist automation | done | overhaul/p5-through-p8 | `npm run post-deploy` |
 | BL-01 | backlog | Branded HTML email shell (SES) | todo | — | Confirm/welcome/essay: shared shell, button CTA, plain-text kept; no paid ESP |
+| BL-02 | backlog | Simplify offers for readers/clients | todo | — | Clear offer, credentials, related work, contact path |
+| BL-03 | backlog | Per-service pages | todo | — | After BL-02 has enough content |
 
 ## Phase verification log
 

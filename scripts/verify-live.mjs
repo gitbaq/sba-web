@@ -18,6 +18,8 @@ const BANNED = [
   "updated from admin when needed",
   "choose how to browse",
   "still maturing toward full capability",
+  "todo(owner)",
+  "todo:",
 ];
 
 const SAMPLE_PATHS = [

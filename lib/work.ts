@@ -93,8 +93,7 @@ export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
       "Clear product narrative: start small, track what matters, win the week.",
       "Living portfolio piece that demonstrates end-to-end product thinking.",
     ],
-    // TODO(owner): list Blox technologies only (no soft skills).
-    stack: ["Web application"],
+    stack: ["React", "Next.js", "Spring Boot", "MySQL", "Docker", "AWS EC2"],
   },
 ];
 
@@ -128,6 +127,21 @@ function sanitizeVisitorCopy(text: string): string {
   );
 }
 
+const SOFT_STACK = /product design|habit|ux|full-stack web|iterative|web application|ai product/i;
+
+function resolveStack(
+  _slug: string,
+  raw: unknown,
+  fallback?: string[]
+): string[] {
+  const fromApi = Array.isArray(raw) ? raw.map(String).filter(Boolean) : [];
+  if (fromApi.length && !fromApi.some((s) => SOFT_STACK.test(s))) {
+    return fromApi;
+  }
+  if (fallback?.length) return fallback;
+  return fromApi;
+}
+
 function mapProject(raw: Record<string, unknown>): CaseStudy {
   const slug = String(raw.slug || "");
   const fallback = FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
@@ -153,9 +167,7 @@ function mapProject(raw: Record<string, unknown>): CaseStudy {
     outcome: Array.isArray(raw.outcome)
       ? raw.outcome.map(String)
       : fallback?.outcome || [],
-    stack: Array.isArray(raw.stack)
-      ? raw.stack.map(String)
-      : fallback?.stack || [],
+    stack: resolveStack(slug, raw.stack, fallback?.stack),
     sortOrder: raw.sortOrder != null ? Number(raw.sortOrder) : undefined,
     isVisible:
       raw.isVisible === undefined ? true : Boolean(raw.isVisible),
