@@ -3,8 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CaseStudySummary from "@/components/CaseStudySummary";
+import AuthorBox from "@/components/AuthorBox";
+import SubscribeForm from "@/components/SubscribeForm";
 import { getWorkProject } from "@/lib/work";
 import { pageMeta } from "@/lib/seo";
+import { CTA } from "@/lib/ctas";
+import { SUBSCRIBE } from "@/lib/copy";
+import "@/app/(blog)/writing/[slug]/article.css";
 
 type Params = Promise<{ slug: string }>;
 
@@ -87,60 +92,59 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
         <CaseStudySummary study={study} />
       </div>
 
-      <div className='flex flex-col gap-12'>
+      <div className='article-prose flex max-w-none flex-col gap-12'>
         <section aria-labelledby='problem'>
-          <h2 id='problem' className='font-display text-2xl mb-3'>
-            Problem
-          </h2>
-          <p className='text-muted-foreground leading-relaxed'>
-            {study.problem}
-          </p>
+          <h2 id='problem'>Problem</h2>
+          <p>{study.problem}</p>
         </section>
 
         <section aria-labelledby='approach'>
-          <h2 id='approach' className='font-display text-2xl mb-3'>
-            Approach
-          </h2>
-          <ul className='list-disc pl-5 space-y-2 text-muted-foreground'>
+          <h2 id='approach'>Approach</h2>
+          <ul>
             {study.approach.map((item) => (
-              <li key={item} className='leading-relaxed'>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </section>
 
         <section aria-labelledby='outcome'>
-          <h2 id='outcome' className='font-display text-2xl mb-3'>
-            Outcome
-          </h2>
-          <ul className='list-disc pl-5 space-y-2 text-muted-foreground'>
+          <h2 id='outcome'>Outcome</h2>
+          <ul>
             {study.outcome.map((item) => (
-              <li key={item} className='leading-relaxed'>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </section>
       </div>
 
-      <footer className='mt-16 pt-8 border-t border-border flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between'>
+      <aside className='mt-16 flex max-w-xl flex-col gap-4 border-t border-border pt-10'>
+        <p className='accent-label'>{SUBSCRIBE.eyebrow}</p>
+        <h2 className='display-title text-2xl md:text-3xl'>{SUBSCRIBE.heading}</h2>
+        <p className='leading-relaxed text-muted-foreground'>{SUBSCRIBE.blurb}</p>
+        <SubscribeForm variant='end' submitLabel={CTA.subscribe} />
+      </aside>
+
+      <div className='mt-12'>
+        <AuthorBox />
+      </div>
+
+      <footer className='mt-12 flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between'>
         <Link
           href='/work'
-          className='text-sm text-muted-foreground hover:text-brand underline-offset-4 hover:underline min-h-11 inline-flex items-center'
+          className='inline-flex min-h-11 items-center text-sm text-muted-foreground underline-offset-4 hover:text-brand hover:underline'
         >
           All work
         </Link>
         <div className='flex flex-wrap gap-3'>
           <Link
             href='/for/clients'
-            className='text-sm text-brand underline-offset-4 hover:underline min-h-11 inline-flex items-center'
+            className='inline-flex min-h-11 items-center text-sm text-brand underline-offset-4 hover:underline'
           >
             Work with me
           </Link>
           <Link
             href='/contact'
-            className='text-sm text-muted-foreground underline-offset-4 hover:underline min-h-11 inline-flex items-center'
+            className='inline-flex min-h-11 items-center text-sm text-muted-foreground underline-offset-4 hover:underline'
           >
             Contact
           </Link>

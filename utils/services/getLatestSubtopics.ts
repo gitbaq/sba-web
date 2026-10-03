@@ -122,6 +122,10 @@ export function articleHref(post: SubTopic): string {
 }
 
 /** Rank by shared series (topicId), then shared tags, then recency. */
+/**
+ * Related essays: same series first, then shared tags, then recency.
+ * Prefer fewer items over weak matches (P3-08).
+ */
 export function relatedPosts(
   current: SubTopic,
   all: SubTopic[],
@@ -129,7 +133,7 @@ export function relatedPosts(
 ): SubTopic[] {
   const currentTags = new Set(postTags(current));
   const scored = all
-    .filter((p) => p.id !== current.id && isPublic(p))
+    .filter((p) => p.id !== current.id && isPublic(p) && isIndexable(p))
     .map((p) => {
       let score = 0;
       if (current.topicId != null && p.topicId === current.topicId) score += 100;
@@ -146,9 +150,9 @@ export function relatedPosts(
       score += overlap * 10;
       const t = Date.parse(postDate(p));
       const recency = Number.isFinite(t) ? t / 1e13 : 0;
-      return { p, score: score + recency };
+      return { p, score: score + recency, topical: score };
     })
-    .filter((x) => x.score >= 0)
+    .filter((x) => x.topical >= 10)
     .sort((a, b) => b.score - a.score);
   return scored.slice(0, limit).map((x) => x.p);
 }

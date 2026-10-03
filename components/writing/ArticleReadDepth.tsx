@@ -28,6 +28,12 @@ export default function ArticleReadDepth({
             article_slug: slug,
             article_title: title,
           });
+          if (mark === 50) {
+            trackEvent("essay_read_50", {
+              article_slug: slug,
+              article_title: title,
+            });
+          }
         }
       }
     }
