@@ -36,17 +36,17 @@ GitHub issues: owner said no.
 | P3-09 | 3 | Series navigation | done | overhaul/p3-readers | Live-only prev/next; landing + subscribe |
 | P3-10 | 3 | Listing cards and filters | done | overhaul/p3-readers | Cards + filters; paginate above 20 |
 | P3-11 | 3 | Homepage rules | done | overhaul/p3-readers | Subscribe primary; Latest vs Start here deduped |
-| P3-12 | 3 | Site search | todo | — | WritingIndex search is client filter; FULLTEXT/Pagefind next |
-| P3-13 | 3 | Topic hubs | todo | — | |
-| P4-01 | 4 | Dynamic sitemap | todo | — | `/sitemap` exists; want `sitemap.ts` / indexable only |
-| P4-02 | 4 | robots.ts | todo | — | |
-| P4-03 | 4 | llms.txt | todo | — | Exists; tighten |
-| P4-04 | 4 | JSON-LD per page type | todo | — | |
-| P4-05 | 4 | RSS full text + lastBuildDate | todo | — | |
-| P4-06 | 4 | writing-guide.md | todo | — | |
-| P4-07 | 4 | Internal linking rules | todo | — | |
-| P4-08 | 4 | Dynamic OG images | todo | — | |
-| P4-09 | 4 | Search Console (owner) | blocked | — | Owner |
+| P3-12 | 3 | Site search | done | overhaul/p3-readers | MySQL FULLTEXT + LIKE fallback; `/writing?query=` server search |
+| P3-13 | 3 | Topic hubs | done | overhaul/p3-readers | `/writing/topics` + `[tag]` when count >= 3 |
+| P4-01 | 4 | Dynamic sitemap | done | overhaul/p4-discoverability | `app/sitemap.ts` + `/sitemap` alias; lastModified from content |
+| P4-02 | 4 | robots.ts | done | overhaul/p4-discoverability | Metadata route; AI crawlers allowed |
+| P4-03 | 4 | llms.txt | done | overhaul/p4-discoverability | Essays + deks; sitemap.xml pointer |
+| P4-04 | 4 | JSON-LD per page type | done | overhaul/p4-discoverability | Person, WebSite, BlogPosting, Breadcrumb, ProfessionalService, project |
+| P4-05 | 4 | RSS full text + lastBuildDate | done | overhaul/p4-discoverability | content:encoded + hourly revalidate |
+| P4-06 | 4 | writing-guide.md | done | overhaul/p4-discoverability | |
+| P4-07 | 4 | Internal linking rules | done | overhaul/p4-discoverability | Breadcrumbs + matching JSON-LD on essay/series/topic/work |
+| P4-08 | 4 | Dynamic OG images | done | overhaul/p4-discoverability | next/og for essays + case studies |
+| P4-09 | 4 | Search Console (owner) | blocked | — | Owner: submit `/sitemap.xml` after deploy |
 | P5-01 | 5 | Clients primary CTA | todo | — | |
 | P5-02 | 5 | Outcome-led services | todo | — | |
 | P5-03 | 5 | Case-study template | todo | — | TODO(owner): metrics |
@@ -84,3 +84,16 @@ GitHub issues: owner said no.
 - Deployed with `overhaul/p3-readers` + backend (2026-10-04).
 - verify-live: **26/26 OK** (dash entities normalized).
 - Opinion series: keep for now.
+
+### Phase 3
+
+- Deployed mid-phase (welcome email, anatomy, analytics). verify-live **26/26 OK**.
+- P3-12/13 coded locally: FULLTEXT search bootstrap + `/writing/topics` hubs (need FE+BE deploy).
+- Topic hubs only list tags/series labels with 3+ essays; currently may be empty until more tagged content.
+- Series + topic hub lists now use shared `PaginatedEssayList` (20/page).
+
+### Phase 4
+
+- Branch: `overhaul/p4-discoverability` (local; not deployed yet).
+- `app/sitemap.ts` + legacy `/sitemap`; `app/robots.ts`; llms essays+deks; RSS; JSON-LD; next/og; writing-guide.
+- Owner: P4-09 submit `https://www.syedbaqirali.com/sitemap.xml` in Search Console after deploy.

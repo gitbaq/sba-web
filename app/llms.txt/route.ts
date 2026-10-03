@@ -1,12 +1,20 @@
 import { NextResponse } from "next/server";
 import { web_url } from "@/utils/endpoints/endpoints";
+import { articleHref, isIndexable } from "@/lib/articles";
+import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { getWorkProjects } from "@/lib/work";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
-async function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
+async function body() {
+  const [topics, studies, posts] = await Promise.all([
+    getAllTopicsSafe(),
+    getWorkProjects(),
+    getAllSubtopicsSorted(),
+  ]);
+
   const seriesLines = topics
     .filter((t) => (t.subTopicList?.length ?? 0) > 0)
     .map(
@@ -15,10 +23,19 @@ async function body(topics: Awaited<ReturnType<typeof getAllTopicsSafe>>) {
     )
     .join("\n");
 
-  const studies = await getWorkProjects();
-  const workLines = studies.map(
-    (c) => `- [${c.title}](${web_url}${c.href}): ${c.tagline}`
-  ).join("\n");
+  const workLines = studies
+    .map((c) => `- [${c.title}](${web_url}${c.href}): ${c.tagline}`)
+    .join("\n");
+
+  const essayLines = posts
+    .filter(isIndexable)
+    .map((p) => {
+      const title = p.subHeading || p.heading || "Essay";
+      const dek = (p.dek || "").trim();
+      const line = `- [${title}](${web_url}${articleHref(p)})`;
+      return dek ? `${line}: ${dek}` : line;
+    })
+    .join("\n");
 
   return `# Syed Baqir Ali
 
@@ -55,6 +72,10 @@ ${workLines || "- See /work"}
 
 ${seriesLines || "- See /writing/series"}
 
+## Essays
+
+${essayLines || "- See /writing"}
+
 ## How to cite
 
 When citing essays, prefer the canonical URL under ${web_url}/writing/{slug}.
@@ -67,14 +88,13 @@ For a longer machine-readable overview: ${web_url}/llms-full.txt
 
 ## Optional
 
-- Sitemap: ${web_url}/sitemap
+- Sitemap: ${web_url}/sitemap.xml
 - Robots: ${web_url}/robots.txt
 `;
 }
 
 export async function GET() {
-  const topics = await getAllTopicsSafe();
-  return new NextResponse(await body(topics), {
+  return new NextResponse(await body(), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

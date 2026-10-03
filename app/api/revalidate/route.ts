@@ -25,6 +25,8 @@ export const CORE_PATHS = [
   "/for/hiring",
   "/feed.xml",
   "/sitemap",
+  "/sitemap.xml",
+  "/robots.txt",
   "/llms.txt",
   "/llms-full.txt",
 ] as const;

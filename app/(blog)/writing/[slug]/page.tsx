@@ -129,14 +129,16 @@ export default async function WritingArticlePage({
     dateModified: modified,
     author: {
       "@type": "Person",
-      name: "Syed Baqir Ali",
+      name: SITE.name,
       url: web_url,
+      sameAs: [SITE.linkedin, SITE.github, SITE.x],
     },
     publisher: {
       "@type": "Person",
-      name: "Syed Baqir Ali",
+      name: SITE.name,
       url: web_url,
       image: `${web_url}/sba-photo-2-small.png`,
+      sameAs: [SITE.linkedin, SITE.github, SITE.x],
     },
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -144,6 +146,11 @@ export default async function WritingArticlePage({
     },
     timeRequired: `PT${minutes}M`,
     abstract: tldr || extractTextFromHtml(subtopic.content, 280),
+    articleSection: topicLabel || undefined,
+    keywords: (subtopic.tags || "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean),
   };
 
   return (

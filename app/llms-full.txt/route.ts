@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { web_url } from "@/utils/endpoints/endpoints";
-import { articleHref, extractTextFromHtml, postDate } from "@/lib/articles";
+import {
+  articleHref,
+  extractTextFromHtml,
+  isIndexable,
+  postDate,
+} from "@/lib/articles";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe, seriesHref } from "@/utils/services/getTopics";
 import { getWorkProjects } from "@/lib/work";
@@ -15,26 +20,38 @@ export async function GET() {
     getWorkProjects(),
   ]);
 
+  const indexable = posts.filter(isIndexable);
+
   const seriesBlock = topics
     .filter((t) => (t.subTopicList?.length ?? 0) > 0)
     .map((t) => {
       const essays = (t.subTopicList || [])
-        .map((s) => ` - [${s.subHeading || s.heading}](${web_url}${articleHref(s)})`)
+        .filter(isIndexable)
+        .map((s) => {
+          const dek = (s.dek || "").trim();
+          const base = ` - [${s.subHeading || s.heading}](${web_url}${articleHref(s)})`;
+          return dek ? `${base}: ${dek}` : base;
+        })
         .join("\n");
       return `### ${t.sbaTopicName}\n- Hub: ${web_url}${seriesHref(t)}\n${essays}`;
     })
     .join("\n\n");
 
-  const recent = posts.slice(0, 40).map((p) => {
-    const date = postDate(p);
-    const abstract = extractTextFromHtml(p.content, 220);
-    return `- [${p.subHeading}](${web_url}${articleHref(p)})${date ? ` (${date.slice(0, 10)})` : ""}\n  ${abstract}`;
-  });
+  const essayBlock = indexable
+    .map((p) => {
+      const date = postDate(p);
+      const dek = (p.dek || "").trim();
+      const abstract = dek || extractTextFromHtml(p.content, 220);
+      return `- [${p.subHeading}](${web_url}${articleHref(p)})${date ? ` (${date.slice(0, 10)})` : ""}\n  ${abstract}`;
+    })
+    .join("\n\n");
 
-  const work = studies.map(
-    (c) =>
-      `### ${c.title}\n${c.tagline}\n- Page: ${web_url}${c.href}\n${c.externalUrl ? `- Live: ${c.externalUrl}\n` : ""}- Problem: ${c.problem}\n- Outcome: ${c.outcome.join("; ")}`
-  ).join("\n\n");
+  const work = studies
+    .map(
+      (c) =>
+        `### ${c.title}\n${c.tagline}\n- Page: ${web_url}${c.href}\n${c.externalUrl ? `- Live: ${c.externalUrl}\n` : ""}- Problem: ${c.problem}\n- Outcome: ${c.outcome.join("; ")}`
+    )
+    .join("\n\n");
 
   const text = `# Syed Baqir Ali | full index for LLMs
 
@@ -50,6 +67,7 @@ export async function GET() {
 - Contact: ${web_url}/contact
 - RSS: ${web_url}/feed.xml
 - Short index: ${web_url}/llms.txt
+- Sitemap: ${web_url}/sitemap.xml
 
 ## Work case studies
 
@@ -59,9 +77,9 @@ ${work}
 
 ${seriesBlock || "(none loaded)"}
 
-## Recent essays (abstracts)
+## Essays (title, date, dek)
 
-${recent.join("\n\n") || "(none loaded)"}
+${essayBlock || "(none loaded)"}
 
 ## Citation policy
 

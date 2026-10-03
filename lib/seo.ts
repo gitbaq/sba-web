@@ -165,3 +165,49 @@ export function breadcrumbJsonLd(
     })),
   };
 }
+
+export function professionalServiceJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: SITE.name,
+    url: absoluteUrl("/for/clients"),
+    description:
+      "Software and AI delivery: custom AI solutions, cloud integration, and product engineering.",
+    image: SITE.ogImage,
+    email: SITE.email,
+    sameAs: [SITE.linkedin, SITE.github, SITE.x, "https://www.codingburo.com"],
+    areaServed: "Worldwide",
+    serviceType: [
+      "Custom AI solutions",
+      "Cloud integration",
+      "DevOps and automation",
+    ],
+  };
+}
+
+export function projectJsonLd(input: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  externalUrl?: string;
+  dateCreated?: string;
+}) {
+  const sameAs = input.externalUrl ? [input.externalUrl] : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: input.title,
+    description: input.description,
+    url: absoluteUrl(input.path),
+    image: input.image || SITE.ogImage,
+    dateCreated: input.dateCreated,
+    author: {
+      "@type": "Person",
+      name: SITE.name,
+      url: SITE.url,
+    },
+    sameAs,
+  };
+}

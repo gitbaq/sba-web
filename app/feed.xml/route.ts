@@ -9,6 +9,9 @@ import {
 } from "@/lib/articles";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
 function escapeXml(s: string) {
   return s
     .replace(/&/g, "&amp;")
