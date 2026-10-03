@@ -68,24 +68,31 @@ export function pageMeta({
   const ogTitle = absoluteTitle ? title : `${title} | ${SITE.name}`;
   const img = image || SITE.ogImage;
 
-  const openGraph: Metadata["openGraph"] = {
-    title: ogTitle,
-    description: desc,
-    url,
-    siteName: SITE.name,
-    locale: SITE.locale,
-    type: ogType,
-    images: [{ url: img, width: 1200, height: 630, alt: title || SITE.name }],
-  };
-
-  if (ogType === "article") {
-    Object.assign(openGraph, {
-      publishedTime,
-      modifiedTime,
-      authors: authors?.length ? authors : [SITE.name],
-      section,
-    });
-  }
+  const images = [{ url: img, width: 1200, height: 630, alt: title || SITE.name }];
+  const openGraph: Metadata["openGraph"] =
+    ogType === "article"
+      ? {
+          title: ogTitle,
+          description: desc,
+          url,
+          siteName: SITE.name,
+          locale: SITE.locale,
+          type: "article",
+          publishedTime,
+          modifiedTime,
+          authors: authors?.length ? authors : [SITE.name],
+          section,
+          images,
+        }
+      : {
+          title: ogTitle,
+          description: desc,
+          url,
+          siteName: SITE.name,
+          locale: SITE.locale,
+          type: "website",
+          images,
+        };
 
   return {
     title: absoluteTitle ? { absolute: title } : title,
