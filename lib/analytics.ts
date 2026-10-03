@@ -2,9 +2,12 @@
 
 export type AnalyticsEvent =
   | "subscribe_submit"
+  | "subscribe_confirmed"
   | "audience_select"
   | "cta_click"
+  | "cta_book_call_click"
   | "article_read_depth"
+  | "essay_read_50"
   | "contact_submit";
 
 declare global {

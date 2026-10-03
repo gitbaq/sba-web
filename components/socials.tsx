@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Icons from "./Icons";
 import { SOCIAL_LINKS } from "@/lib/siteShell";
+import { trackEvent } from "@/lib/analytics";
 
 const ICON_BY_KEY = {
   linkedin: Icons.FaLinkedin,
@@ -22,6 +25,11 @@ const Socials = () => {
               aria-label={label}
               title={label}
               className='inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+              onClick={() => {
+                if (key === "calendly") {
+                  trackEvent("cta_book_call_click", { href, location: "footer" });
+                }
+              }}
             >
               <Icon className='h-[1.125rem] w-[1.125rem]' aria-hidden />
             </a>

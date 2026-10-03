@@ -199,6 +199,7 @@ export default async function WritingArticlePage({
                 {dek}
               </p>
             ) : null}
+            {tldr ? <TldrBlock tldr={tldr} className='mt-1' /> : null}
 
             <div className='flex flex-wrap items-center gap-3'>
               <Image
@@ -234,10 +235,8 @@ export default async function WritingArticlePage({
       </div>
 
       <main className='mx-auto w-full max-w-3xl px-4 pt-4 pb-28 md:pt-5'>
-        {tldr ? <TldrBlock tldr={tldr} className='mb-5' /> : null}
-
         {subtopic.imageUrl && (
-          <div className='relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-5 bg-secondary ring-1 ring-border/80'>
+          <div className='relative mb-5 aspect-[16/9] w-full overflow-hidden rounded-2xl bg-secondary ring-1 ring-border/80'>
             <Image
               priority
               fill
@@ -252,7 +251,6 @@ export default async function WritingArticlePage({
           </div>
         )}
 
-        <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
         <ArticleToc items={toc} />
 
         <article className='article-prose'>{parse(beforeMid || html)}</article>
@@ -260,7 +258,7 @@ export default async function WritingArticlePage({
         {afterMid ? (
           <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
             <p className='accent-label mb-2'>{SUBSCRIBE.eyebrow}</p>
-            <p className='mb-4 text-sm text-muted-foreground leading-relaxed max-w-md'>
+            <p className='mb-4 max-w-md text-sm leading-relaxed text-muted-foreground'>
               {SUBSCRIBE.heading}. {SUBSCRIBE.blurb}
             </p>
             <SubscribeForm variant='inline' submitLabel={CTA.subscribe} />
@@ -271,11 +269,11 @@ export default async function WritingArticlePage({
           <article className='article-prose'>{parse(afterMid)}</article>
         ) : null}
 
-        <div className='mt-14'>
+        <div className='mt-14 flex flex-col gap-10'>
           <AuthorBox />
+          <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
+          <ArticleEndCta related={related} series={seriesTopic} />
         </div>
-
-        <ArticleEndCta related={related} series={seriesTopic} />
       </main>
     </>
   );

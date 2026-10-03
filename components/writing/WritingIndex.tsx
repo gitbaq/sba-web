@@ -23,6 +23,8 @@ export default function WritingIndex({
 }: Props) {
   const [query, setQuery] = useState(initialQuery);
   const [activeTag, setActiveTag] = useState(initialTag);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 20;
 
   const tags = useMemo(() => {
     const set = new Set<string>();
@@ -44,6 +46,13 @@ export default function WritingIndex({
     });
   }, [posts, query, activeTag]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageItems = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   return (
     <div className='flex flex-col gap-8'>
       <div className='flex flex-col gap-4'>
@@ -55,7 +64,10 @@ export default function WritingIndex({
             id='writing-search'
             type='search'
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
             placeholder='Search titles…'
             className='input-field w-full rounded-md bg-background px-3 py-2.5 text-sm min-h-11'
           />
@@ -102,7 +114,10 @@ export default function WritingIndex({
               <li>
                 <Link
                   href='/writing'
-                  onClick={() => setActiveTag("")}
+                  onClick={() => {
+                    setActiveTag("");
+                    setPage(1);
+                  }}
                   className={[
                     "inline-flex min-h-9 items-center rounded-full border px-3 text-sm transition-colors",
                     !activeTag
@@ -119,7 +134,10 @@ export default function WritingIndex({
                   <li key={tag}>
                     <Link
                       href={`/writing?tag=${encodeURIComponent(tag)}`}
-                      onClick={() => setActiveTag(tag)}
+                      onClick={() => {
+                        setActiveTag(tag);
+                        setPage(1);
+                      }}
                       className={[
                         "inline-flex min-h-9 items-center rounded-full border px-3 text-sm transition-colors",
                         active
@@ -151,19 +169,48 @@ export default function WritingIndex({
             onClick={() => {
               setQuery("");
               setActiveTag("");
+              setPage(1);
             }}
           >
             Clear filters
           </button>
         </p>
       ) : (
-        <ul className='flex flex-col list-none p-0 m-0'>
-          {filtered.map((post) => (
-            <li key={post.id}>
-              <EssayCard post={post} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className='m-0 flex list-none flex-col p-0'>
+            {pageItems.map((post) => (
+              <li key={post.id}>
+                <EssayCard post={post} />
+              </li>
+            ))}
+          </ul>
+          {filtered.length > PAGE_SIZE ? (
+            <nav
+              aria-label='Writing pages'
+              className='flex flex-wrap items-center justify-between gap-3 pt-2'
+            >
+              <button
+                type='button'
+                className='inline-flex min-h-11 items-center text-sm font-semibold text-brand underline-offset-4 hover:underline disabled:opacity-40'
+                disabled={currentPage <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+              >
+                Previous
+              </button>
+              <p className='text-sm text-muted-foreground tabular-nums'>
+                Page {currentPage} of {totalPages}
+              </p>
+              <button
+                type='button'
+                className='inline-flex min-h-11 items-center text-sm font-semibold text-brand underline-offset-4 hover:underline disabled:opacity-40'
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              >
+                Next
+              </button>
+            </nav>
+          ) : null}
+        </>
       )}
     </div>
   );

@@ -25,18 +25,18 @@ GitHub issues: owner said no.
 | P2-10 | 2 | Remove meta-navigation fluff | done | overhaul/p2-trust | Not present on live public pages |
 | P2-11 | 2 | Confidence copy (Cobu status) | done | overhaul/p2-trust | "in active development"; sanitizes API copy |
 | P2-12 | 2 | Copy lint in verify-live | done | overhaul/p2-trust | Banned + dash checks always on; HTML dash normalize |
-| P3-01 | 3 | Subscribe flow end to end | doing | overhaul/p3-readers | Core API exists; added `/api/unsubscribe` alias + service/rate-limit tests; E2E mail still owner-verify |
-| P3-02 | 3 | One SubscribeForm + placements | doing | overhaul/p3-readers | `SUBSCRIBE` copy; hero/inline/end; series page form added |
-| P3-03 | 3 | Form quality / honeypot | done | overhaul/p3-readers | No visible "Website" label; aria-hidden honeypot |
-| P3-04 | 3 | Welcome email with three essays | todo | — | |
-| P3-05 | 3 | Analytics events | todo | — | |
-| P3-06 | 3 | Long-form page anatomy | todo | — | |
-| P3-07 | 3 | Reading layout typography | todo | — | |
-| P3-08 | 3 | Related content | todo | — | Helper exists; verify UX |
-| P3-09 | 3 | Series navigation | todo | — | |
-| P3-10 | 3 | Listing cards and filters | todo | — | |
-| P3-11 | 3 | Homepage rules | todo | — | |
-| P3-12 | 3 | Site search | todo | — | |
+| P3-01 | 3 | Subscribe flow end to end | done | overhaul/p3-readers | Owner verified submit/confirm/unsubscribe |
+| P3-02 | 3 | One SubscribeForm + placements | done | overhaul/p3-readers | hero/inline/end; series + case study |
+| P3-03 | 3 | Form quality / honeypot | done | overhaul/p3-readers | |
+| P3-04 | 3 | Welcome email with three essays | done | overhaul/p3-content-ops | Uses Start here ids; deploy backend to activate |
+| P3-05 | 3 | Analytics events | done | overhaul/p3-readers | GA4: subscribe, confirm, contact, essay_read_50, book call |
+| P3-06 | 3 | Long-form page anatomy | done | overhaul/p3-readers | Essay + case study end blocks aligned |
+| P3-07 | 3 | Reading layout typography | done | overhaul/p3-readers | 18px / 1.65 / ~65ch + code styles |
+| P3-08 | 3 | Related content | done | overhaul/p3-readers | Series/tags only; skip weak matches |
+| P3-09 | 3 | Series navigation | done | overhaul/p3-readers | Live-only prev/next; landing + subscribe |
+| P3-10 | 3 | Listing cards and filters | done | overhaul/p3-readers | Cards + filters; paginate above 20 |
+| P3-11 | 3 | Homepage rules | done | overhaul/p3-readers | Subscribe primary; Latest vs Start here deduped |
+| P3-12 | 3 | Site search | todo | — | WritingIndex search is client filter; FULLTEXT/Pagefind next |
 | P3-13 | 3 | Topic hubs | todo | — | |
 | P4-01 | 4 | Dynamic sitemap | todo | — | `/sitemap` exists; want `sitemap.ts` / indexable only |
 | P4-02 | 4 | robots.ts | todo | — | |
@@ -82,5 +82,5 @@ GitHub issues: owner said no.
 ### Phase 2
 
 - Deployed with `overhaul/p3-readers` + backend (2026-10-04).
-- verify-live: 25/26 OK; remaining fail is em/en dash on Rust essay body/title (P2-12).
+- verify-live: **26/26 OK** (dash entities normalized).
 - Opinion series: keep for now.
