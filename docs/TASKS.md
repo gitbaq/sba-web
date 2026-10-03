@@ -81,7 +81,6 @@ GitHub issues: owner said no.
 
 ### Phase 2
 
-- In progress on `overhaul/p2-trust` (not fully deployed yet).
-- After deploy: `npm run revalidate:all` then `npm run verify:live`.
-- Remaining P2: Opinion series decision (P2-04); Planned unpublished series rows if API exposes them (P2-03).
-- Owner: update Cobu `result` in admin to "in active development" (FE already sanitizes the old phrase).
+- Deployed with `overhaul/p3-readers` + backend (2026-10-04).
+- verify-live: 25/26 OK; remaining fail is em/en dash on Rust essay body/title (P2-12).
+- Opinion series: keep for now.
