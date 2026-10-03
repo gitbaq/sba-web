@@ -7,12 +7,17 @@ import EssayCard from "@/components/EssayCard";
 import { isIndexable, postTags } from "@/lib/articles";
 import { seriesHref } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
+import { topicHubHref, topicHubSlug } from "@/lib/topicHubs";
 
 type Props = {
   posts: SubTopic[];
   series: Topic[];
   initialQuery?: string;
   initialTag?: string;
+  /** Tags with enough essays for a hub page (P3-13). */
+  hubTags?: string[];
+  /** When true, list is already server-filtered; skip client query filter. */
+  serverSearchActive?: boolean;
 };
 
 export default function WritingIndex({
@@ -20,6 +25,8 @@ export default function WritingIndex({
   series,
   initialQuery = "",
   initialTag = "",
+  hubTags = [],
+  serverSearchActive = false,
 }: Props) {
   const [query, setQuery] = useState(initialQuery);
   const [activeTag, setActiveTag] = useState(initialTag);
@@ -32,6 +39,11 @@ export default function WritingIndex({
     return Array.from(set).sort((a, b) => a.localeCompare(b));
   }, [posts]);
 
+  const hubSet = useMemo(
+    () => new Set(hubTags.map((t) => topicHubSlug(t))),
+    [hubTags]
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return posts.filter((p) => {
@@ -39,12 +51,12 @@ export default function WritingIndex({
         const pt = postTags(p);
         if (!pt.includes(activeTag.toLowerCase())) return false;
       }
-      if (!q) return true;
+      if (serverSearchActive || !q) return true;
       const hay =
         `${p.heading} ${p.subHeading} ${p.sbaTopicName} ${p.dek || ""} ${p.tags || ""}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [posts, query, activeTag]);
+  }, [posts, query, activeTag, serverSearchActive]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -60,17 +72,31 @@ export default function WritingIndex({
           <label htmlFor='writing-search' className='sr-only'>
             Search writing
           </label>
-          <input
-            id='writing-search'
-            type='search'
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setPage(1);
-            }}
-            placeholder='Search titles…'
-            className='input-field w-full rounded-md bg-background px-3 py-2.5 text-sm min-h-11'
-          />
+          <form
+            action='/writing'
+            method='get'
+            className='flex flex-col gap-2 sm:flex-row sm:items-center'
+            onSubmit={() => setPage(1)}
+          >
+            <input
+              id='writing-search'
+              name='query'
+              type='search'
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setPage(1);
+              }}
+              placeholder='Search essays…'
+              className='input-field min-h-11 w-full rounded-md bg-background px-3 py-2.5 text-sm'
+            />
+            <button
+              type='submit'
+              className='craft-cta-primary inline-flex h-11 min-h-11 shrink-0 items-center justify-center border-0 px-4 text-sm font-semibold'
+            >
+              Search
+            </button>
+          </form>
         </div>
 
         {series.length > 0 && (
@@ -130,13 +156,20 @@ export default function WritingIndex({
               </li>
               {tags.map((tag) => {
                 const active = activeTag.toLowerCase() === tag;
+                const hub = hubSet.has(topicHubSlug(tag));
                 return (
                   <li key={tag}>
                     <Link
-                      href={`/writing?tag=${encodeURIComponent(tag)}`}
+                      href={
+                        hub
+                          ? topicHubHref(tag)
+                          : `/writing?tag=${encodeURIComponent(tag)}`
+                      }
                       onClick={() => {
-                        setActiveTag(tag);
-                        setPage(1);
+                        if (!hub) {
+                          setActiveTag(tag);
+                          setPage(1);
+                        }
                       }}
                       className={[
                         "inline-flex min-h-9 items-center rounded-full border px-3 text-sm transition-colors",

@@ -7,6 +7,11 @@ import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
 import { pageMeta } from "@/lib/seo";
+import {
+  eligibleTopicHubs,
+  enrichPostsWithSeries,
+  searchEssays,
+} from "@/lib/topicHubs";
 
 export const revalidate = 60;
 
@@ -25,9 +30,18 @@ export default async function WritingPage({
   searchParams: SearchParams;
 }) {
   const { query, tag } = await searchParams;
-  const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
   const topics = await getAllTopicsSafe();
+  const allPosts = enrichPostsWithSeries(
+    (await getAllSubtopicsSorted()).filter(isIndexable),
+    topics
+  );
+  const searched =
+    query && query.trim().length >= 2 ? await searchEssays(query) : null;
+  const posts = searched
+    ? enrichPostsWithSeries(searched, topics)
+    : allPosts;
   const series = topics.filter((t) => (t.subTopicList?.length ?? 0) > 0);
+  const hubs = eligibleTopicHubs(allPosts);
 
   return (
     <div className='w-full'>
@@ -65,9 +79,21 @@ export default async function WritingPage({
       </div>
 
       <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14 flex flex-col gap-14'>
-        <StartHere posts={posts} />
+        {!searched ? <StartHere posts={allPosts} /> : null}
 
-        {series.length > 0 && (
+        {searched ? (
+          <p className='text-sm text-muted-foreground'>
+            Showing server search results for “{(query || "").trim()}”.{" "}
+            <Link
+              href='/writing'
+              className='font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              Clear search
+            </Link>
+          </p>
+        ) : null}
+
+        {!searched && series.length > 0 && (
           <section aria-labelledby='series-cards'>
             <div className='mb-6 flex flex-wrap items-end justify-between gap-3'>
               <div>
@@ -86,7 +112,7 @@ export default async function WritingPage({
                 All series
               </Link>
             </div>
-            <ul className='grid gap-4 sm:grid-cols-2 list-none p-0 m-0'>
+            <ul className='m-0 grid list-none gap-4 p-0 sm:grid-cols-2'>
               {series.map((t) => (
                 <li key={t.id}>
                   <SeriesCard topic={t} />
@@ -96,6 +122,18 @@ export default async function WritingPage({
           </section>
         )}
 
+        {!searched && hubs.length > 0 ? (
+          <p className='text-sm text-muted-foreground'>
+            Topic hubs:{" "}
+            <Link
+              href='/writing/topics'
+              className='font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              Browse topics
+            </Link>
+          </p>
+        ) : null}
+
         <section aria-labelledby='all-essays'>
           <div className='mb-6'>
             <p className='accent-label mb-1'>Library</p>
@@ -103,7 +141,7 @@ export default async function WritingPage({
               id='all-essays'
               className='display-title text-2xl md:text-3xl'
             >
-              All essays
+              {searched ? "Search results" : "All essays"}
             </h2>
           </div>
           <WritingIndex
@@ -111,6 +149,8 @@ export default async function WritingPage({
             series={series}
             initialQuery={query || ""}
             initialTag={tag || ""}
+            hubTags={hubs.map((h) => h.tag)}
+            serverSearchActive={Boolean(searched)}
           />
         </section>
       </main>

@@ -5,8 +5,9 @@ import { notFound } from "next/navigation";
 import CaseStudySummary from "@/components/CaseStudySummary";
 import AuthorBox from "@/components/AuthorBox";
 import SubscribeForm from "@/components/SubscribeForm";
+import JsonLd from "@/components/JsonLd";
 import { getWorkProject } from "@/lib/work";
-import { pageMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMeta, projectJsonLd } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
 import "@/app/(blog)/writing/[slug]/article.css";
@@ -40,6 +41,23 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
 
   return (
     <main className='mx-auto w-full max-w-3xl px-4 py-12 md:py-16'>
+      <JsonLd
+        data={projectJsonLd({
+          title: study.title,
+          description: study.tagline,
+          path: `/work/${slug}`,
+          image: study.mark?.startsWith("http") ? study.mark : undefined,
+          externalUrl: study.externalUrl,
+          dateCreated: study.timeline,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Work", path: "/work" },
+          { name: study.title, path: `/work/${slug}` },
+        ])}
+      />
       <nav
         aria-label='Breadcrumb'
         className='mb-8 text-sm text-muted-foreground'

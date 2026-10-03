@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import AudienceShell from "@/components/audience/AudienceShell";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
+import JsonLd from "@/components/JsonLd";
 import { CALENDLY_URL, getWorkProjects } from "@/lib/work";
-import { pageMeta } from "@/lib/seo";
+import { pageMeta, professionalServiceJsonLd } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 
 export const revalidate = 60;
@@ -56,6 +57,8 @@ export default async function ForClientsPage() {
   const studies = await getWorkProjects();
 
   return (
+    <>
+    <JsonLd data={professionalServiceJsonLd()} />
     <AudienceShell
       eyebrow='Clients'
       title='Outcomes over slide decks'
@@ -166,5 +169,6 @@ export default async function ForClientsPage() {
         </a>
       </section>
     </AudienceShell>
+    </>
   );
 }

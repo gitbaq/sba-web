@@ -32,7 +32,14 @@ const SAMPLE_PATHS = [
   "/privacy",
 ];
 
-const SKIP_PREFIXES = ["/feed.xml", "/llms.txt", "/llms-full.txt", "/sitemap", "/robots.txt"];
+const SKIP_PREFIXES = [
+  "/feed.xml",
+  "/llms.txt",
+  "/llms-full.txt",
+  "/sitemap",
+  "/sitemap.xml",
+  "/robots.txt",
+];
 
 function stripTags(html) {
   return html
@@ -232,8 +239,79 @@ async function main() {
     blox.errors.push("og:title matches homepage (inheritance bug)");
   }
 
+  // Phase 4 discoverability surfaces (not HTML page checks).
+  const discovery = [];
+  async function checkDiscovery(path, assertFn) {
+    const url = `${BASE}${path}`;
+    const { status, text } = await fetchText(url);
+    const errors = [];
+    if (status !== 200) errors.push(`status ${status}`);
+    else {
+      try {
+        assertFn(text, errors);
+      } catch (e) {
+        errors.push(String(e?.message || e));
+      }
+    }
+    discovery.push({ path, errors });
+  }
+
+  await checkDiscovery("/sitemap.xml", (text, errors) => {
+    if (!text.includes("<urlset") || !text.includes("<loc>")) {
+      errors.push("missing urlset/loc");
+    }
+    if (text.includes("/learning/")) {
+      errors.push("contains legacy /learning/ URLs");
+    }
+  });
+  await checkDiscovery("/sitemap", (text, errors) => {
+    if (!text.includes("<urlset") || !text.includes("<loc>")) {
+      errors.push("missing urlset/loc");
+    }
+  });
+  await checkDiscovery("/robots.txt", (text, errors) => {
+    if (!/User-Agent:\s*\*/i.test(text)) errors.push("missing User-Agent: *");
+    if (!/GPTBot/i.test(text)) errors.push("missing GPTBot allow rule");
+    if (!/ClaudeBot/i.test(text)) errors.push("missing ClaudeBot allow rule");
+    if (!/PerplexityBot/i.test(text)) errors.push("missing PerplexityBot");
+    if (!/Google-Extended/i.test(text)) errors.push("missing Google-Extended");
+    if (!/Sitemap:\s*https?:\/\/.+/i.test(text)) errors.push("missing Sitemap");
+  });
+  await checkDiscovery("/feed.xml", (text, errors) => {
+    if (!text.includes("<rss")) errors.push("not RSS");
+    if (!text.includes("<lastBuildDate>")) errors.push("missing lastBuildDate");
+    if (!text.includes("content:encoded")) errors.push("missing content:encoded");
+    if (!text.includes("<description>")) errors.push("missing description");
+  });
+  await checkDiscovery("/llms.txt", (text, errors) => {
+    if (!text.includes("Syed Baqir Ali")) errors.push("missing site name");
+    if (!text.includes("## Essays")) errors.push("missing Essays section");
+    if (!text.includes("/writing/")) errors.push("missing writing links");
+  });
+
+  const bloxHtml = htmlResults.find((r) => r.path === "/work/blox");
+  if (bloxHtml) {
+    const { text } = await fetchText(`${BASE}/work/blox`);
+    if (!text.includes('"@type":"SoftwareApplication"') && !text.includes('"@type": "SoftwareApplication"')) {
+      bloxHtml.errors.push("missing SoftwareApplication JSON-LD");
+    }
+    if (!text.includes("BreadcrumbList")) {
+      bloxHtml.errors.push("missing BreadcrumbList JSON-LD");
+    }
+  }
+  const clientsHtml = htmlResults.find((r) => r.path === "/for/clients");
+  if (clientsHtml) {
+    const { text } = await fetchText(`${BASE}/for/clients`);
+    if (
+      !text.includes('"@type":"ProfessionalService"') &&
+      !text.includes('"@type": "ProfessionalService"')
+    ) {
+      clientsHtml.errors.push("missing ProfessionalService JSON-LD");
+    }
+  }
+
   let failed = 0;
-  for (const r of results) {
+  for (const r of [...results, ...discovery]) {
     if (r.skipped) {
       console.log(`SKIP ${r.path}`);
       continue;
@@ -247,7 +325,9 @@ async function main() {
     }
   }
 
-  console.log(`\nChecked ${htmlResults.length} HTML URLs; ${failed} failed.`);
+  console.log(
+    `\nChecked ${htmlResults.length} HTML URLs + ${discovery.length} discovery URLs; ${failed} failed.`
+  );
   process.exit(failed ? 1 : 0);
 }
 

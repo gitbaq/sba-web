@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
-import LatestWriting from "@/components/home/LatestWriting";
 import {
   getAllTopicsSafe,
   getTopicById,
@@ -10,10 +9,12 @@ import {
   seriesSlug,
 } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
-import { pageMeta } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
 import SubscribeForm from "@/components/SubscribeForm";
+import PaginatedEssayList from "@/components/writing/PaginatedEssayList";
+import JsonLd from "@/components/JsonLd";
 
 type Params = Promise<{ topicSlug: string }>;
 
@@ -74,6 +75,14 @@ export default async function SeriesDetailPage({
 
   return (
     <main className='mx-auto w-full max-w-5xl px-4 py-12 md:py-16'>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Writing", path: "/writing" },
+          { name: "Series", path: "/writing/series" },
+          { name: topic.sbaTopicName, path: seriesHref(topic) },
+        ])}
+      />
       <nav aria-label='Breadcrumb' className='mb-8 text-sm text-muted-foreground'>
         <Link href='/writing' className='hover:text-brand underline-offset-4 hover:underline'>
           Writing
@@ -106,11 +115,12 @@ export default async function SeriesDetailPage({
         </p>
       </header>
 
-      <LatestWriting
-        posts={posts}
-        title='Essays in this series'
-        showViewAll={false}
-      />
+      <section aria-labelledby='series-essays' className='flex flex-col gap-6'>
+        <h2 id='series-essays' className='display-title text-2xl md:text-3xl'>
+          Essays in this series
+        </h2>
+        <PaginatedEssayList posts={posts} listLabel='Series essays' />
+      </section>
 
       <section
         aria-labelledby='series-subscribe'
