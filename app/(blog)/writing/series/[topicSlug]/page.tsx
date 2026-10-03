@@ -11,6 +11,9 @@ import {
 } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
 import { pageMeta } from "@/lib/seo";
+import { CTA } from "@/lib/ctas";
+import { SUBSCRIBE } from "@/lib/copy";
+import SubscribeForm from "@/components/SubscribeForm";
 
 type Params = Promise<{ topicSlug: string }>;
 
@@ -101,21 +104,6 @@ export default async function SeriesDetailPage({
           {posts.length} {posts.length === 1 ? "essay" : "essays"} · newest
           first
         </p>
-        <p>
-          <Link
-            href='/subscribe'
-            className='text-brand font-medium underline-offset-4 hover:underline'
-          >
-            Subscribe
-          </Link>
-          {" · "}
-          <a
-            href='/feed.xml'
-            className='text-muted-foreground underline-offset-4 hover:underline'
-          >
-            RSS
-          </a>
-        </p>
       </header>
 
       <LatestWriting
@@ -123,6 +111,23 @@ export default async function SeriesDetailPage({
         title='Essays in this series'
         showViewAll={false}
       />
+
+      <section
+        aria-labelledby='series-subscribe'
+        className='mt-14 max-w-xl border-t border-border pt-10'
+      >
+        <p className='accent-label mb-2'>{SUBSCRIBE.eyebrow}</p>
+        <h2
+          id='series-subscribe'
+          className='display-title mb-3 text-2xl md:text-3xl'
+        >
+          {SUBSCRIBE.heading}
+        </h2>
+        <p className='mb-4 text-muted-foreground leading-relaxed'>
+          {SUBSCRIBE.blurb}
+        </p>
+        <SubscribeForm variant='end' submitLabel={CTA.subscribe} />
+      </section>
     </main>
   );
 }

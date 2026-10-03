@@ -5,6 +5,7 @@ import {
   github_url,
   work_projects_url,
 } from "@/utils/endpoints/endpoints";
+import { COBU_STATUS_LINE } from "@/lib/copy";
 import { readJson } from "@/lib/http";
 
 export type CaseStudy = {
@@ -53,8 +54,7 @@ export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
     mark: "/portfolio/cobu/mark.png",
     role: "Software engineer / subject-matter expert",
     timeline: "2025",
-    result:
-      "A living product for brainstorming ideas (still maturing toward full capability).",
+    result: COBU_STATUS_LINE,
     problem:
       "Most AI chat tools are either generic assistants or opaque enterprise stacks. People need a focused place to brainstorm, discuss, and pressure-test ideas, with a real choice of models and fresh web context when it matters.",
     approach: [
@@ -131,25 +131,41 @@ export const FALLBACK_ABOUT: AboutConfig = {
   ],
 };
 
+function sanitizeVisitorCopy(text: string): string {
+  return text.replace(
+    /still maturing toward full capability/gi,
+    "in active development"
+  );
+}
+
 function mapProject(raw: Record<string, unknown>): CaseStudy {
   const slug = String(raw.slug || "");
+  const fallback = FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
   return {
     id: raw.id != null ? Number(raw.id) : undefined,
     slug,
-    title: String(raw.title || ""),
-    tagline: String(raw.tagline || ""),
+    title: String(raw.title || fallback?.title || ""),
+    tagline: String(raw.tagline || fallback?.tagline || ""),
     href: `/work/${slug}`,
-    externalUrl: raw.externalUrl ? String(raw.externalUrl) : undefined,
-    mark: String(raw.mark || "/ai4.png"),
-    role: String(raw.role || ""),
-    timeline: String(raw.timeline || ""),
-    result: String(raw.result || ""),
-    problem: String(raw.problem || ""),
+    externalUrl: raw.externalUrl
+      ? String(raw.externalUrl)
+      : fallback?.externalUrl,
+    mark: String(raw.mark || fallback?.mark || "/ai4.png"),
+    role: String(raw.role || fallback?.role || ""),
+    timeline: String(raw.timeline || fallback?.timeline || ""),
+    result: sanitizeVisitorCopy(
+      String(raw.result || fallback?.result || "")
+    ),
+    problem: String(raw.problem || fallback?.problem || ""),
     approach: Array.isArray(raw.approach)
       ? raw.approach.map(String)
-      : [],
-    outcome: Array.isArray(raw.outcome) ? raw.outcome.map(String) : [],
-    stack: Array.isArray(raw.stack) ? raw.stack.map(String) : [],
+      : fallback?.approach || [],
+    outcome: Array.isArray(raw.outcome)
+      ? raw.outcome.map(String)
+      : fallback?.outcome || [],
+    stack: Array.isArray(raw.stack)
+      ? raw.stack.map(String)
+      : fallback?.stack || [],
     sortOrder: raw.sortOrder != null ? Number(raw.sortOrder) : undefined,
     isVisible:
       raw.isVisible === undefined ? true : Boolean(raw.isVisible),

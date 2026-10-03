@@ -6,28 +6,28 @@ GitHub issues: owner said no.
 
 | ID | Phase | Title | Status | Branch / PR | Notes |
 | --- | --- | --- | --- | --- | --- |
-| P1-01 | 1 | Baseline audit | done | overhaul/p1-foundation | `docs/audit-baseline.md` + live headers 2026-10-04 |
-| P1-02 | 1 | Revalidation on deploy and publish | done | overhaul/p1-foundation | `/api/revalidate` `all`; Spring `FrontendCacheRevalidator`; `npm run revalidate:all` |
-| P1-03 | 1 | Keep shared layout static | done | overhaul/p1-foundation | `LoginLink` SSR `/login` only |
-| P1-04 | 1 | One shared shell config | done | overhaul/p1-foundation | `lib/siteShell.ts`; Substack removed; Cobu naming aligned |
-| P1-05 | 1 | Server-render every public route | done | overhaul/p1-foundation | Public RSC; HomeGate unused; verify-live checks Loading |
-| P1-06 | 1 | Central metadata helper for all route types | done | overhaul/p1-foundation | `pageMeta` on essay + work + listings; no keywords |
-| P1-07 | 1 | `scripts/verify-live.mjs` + npm + CI | done | overhaul/p1-foundation | `npm run verify:live`; `.github/workflows/verify-live.yml` |
-| P2-01 | 2 | Remove cadence claims | todo | — | |
-| P2-02 | 2 | Real dates only | todo | — | |
-| P2-03 | 2 | Unfinished series labelled Planned | todo | — | |
-| P2-04 | 2 | Single source for series and tags | todo | — | Owner: Opinion series? |
-| P2-05 | 2 | Permanent URL rule + 301s | todo | — | |
-| P2-06 | 2 | External/imported content policy | todo | — | Owner removing Substack stub |
-| P2-07 | 2 | No foreign-hosted assets | todo | — | |
-| P2-08 | 2 | Remove admin/developer voice | todo | — | |
-| P2-09 | 2 | No duplicate blocks on a page | todo | — | Home Latest vs Start here |
-| P2-10 | 2 | Remove meta-navigation fluff | todo | — | |
-| P2-11 | 2 | Confidence copy (Cobu status) | todo | — | Owner wording |
-| P2-12 | 2 | Copy lint in verify-live | todo | — | Partial bans already in verify-live |
-| P3-01 | 3 | Subscribe flow end to end | todo | — | Partial work may exist; verify against checklist |
-| P3-02 | 3 | One SubscribeForm + placements | todo | — | Component exists; audit placements |
-| P3-03 | 3 | Form quality / honeypot | todo | — | |
+| P1-01 | 1 | Baseline audit | done | overhaul/p1-foundation | Live verified 2026-10-04 |
+| P1-02 | 1 | Revalidation on deploy and publish | done | overhaul/p1-foundation | Secret required (401 without it) |
+| P1-03 | 1 | Keep shared layout static | done | overhaul/p1-foundation | |
+| P1-04 | 1 | One shared shell config | done | overhaul/p1-foundation | |
+| P1-05 | 1 | Server-render every public route | done | overhaul/p1-foundation | |
+| P1-06 | 1 | Central metadata helper for all route types | done | overhaul/p1-foundation | |
+| P1-07 | 1 | `scripts/verify-live.mjs` + npm + CI | done | overhaul/p1-foundation | 26/26 OK post-deploy |
+| P2-01 | 2 | Remove cadence claims | done | overhaul/p2-trust | `lib/copy.ts` `CADENCE_LINE` |
+| P2-02 | 2 | Real dates only | done | overhaul/p2-trust | `shouldShowUpdated` / backfill guard already in place |
+| P2-03 | 2 | Unfinished series labelled Planned | done | overhaul/p2-trust | SeriesNav live-only; Planned labels in essay body; unpublished rows only if API exposes them |
+| P2-04 | 2 | Single source for series and tags | done | overhaul/p2-trust | Owner: keep Opinion for now; may retire later |
+| P2-05 | 2 | Permanent URL rule + 301s | done | overhaul/p2-trust | Slug + legacy redirects already in `lib/articles` |
+| P2-06 | 2 | External/imported content policy | done | overhaul/p2-trust | Stub id=19 `noindex`, out of sitemap/feed; learning sidebar Substack link removed |
+| P2-07 | 2 | No foreign-hosted assets | done | overhaul/p2-trust | Essay images on `sbaweb-bucket`; no Substack hosts in API |
+| P2-08 | 2 | Remove admin/developer voice | done | overhaul/p2-trust | StartHere blurb fixed |
+| P2-09 | 2 | No duplicate blocks on a page | done | overhaul/p2-trust | Latest excludes Start here ids |
+| P2-10 | 2 | Remove meta-navigation fluff | done | overhaul/p2-trust | Not present on live public pages |
+| P2-11 | 2 | Confidence copy (Cobu status) | done | overhaul/p2-trust | "in active development"; sanitizes API copy |
+| P2-12 | 2 | Copy lint in verify-live | done | overhaul/p2-trust | Banned + dash checks always on; HTML dash normalize |
+| P3-01 | 3 | Subscribe flow end to end | doing | overhaul/p3-readers | Core API exists; added `/api/unsubscribe` alias + service/rate-limit tests; E2E mail still owner-verify |
+| P3-02 | 3 | One SubscribeForm + placements | doing | overhaul/p3-readers | `SUBSCRIBE` copy; hero/inline/end; series page form added |
+| P3-03 | 3 | Form quality / honeypot | done | overhaul/p3-readers | No visible "Website" label; aria-hidden honeypot |
 | P3-04 | 3 | Welcome email with three essays | todo | — | |
 | P3-05 | 3 | Analytics events | todo | — | |
 | P3-06 | 3 | Long-form page anatomy | todo | — | |
@@ -72,9 +72,16 @@ GitHub issues: owner said no.
 
 ### Phase 1
 
-- Revalidate: code ready (`/api/revalidate` + Spring + `revalidate:all`). Run against prod after deploy.
-- verify-live: script added. Expect FAIL on current production until this branch deploys (Blox OG inherit, SSR callbackUrl on some pages, banned phrases from stale HTML).
-- Sample URLs: `/`, `/writing`, `/work/blox`, `/about`, `/for/clients` (re-check after deploy).
-- Lighthouse: deferred until deploy (prod still mixed old/new HTML).
-- Owner review: pending
+- Revalidate: secret is set (unauthenticated POST returns 401). Owner can run `REVALIDATE_SECRET=... npm run revalidate:all` after deploys; Spring publish hook uses the same secret.
+- verify-live (2026-10-04 post-deploy): **26/26 OK** (phase-1 checks).
+- Sample URLs: `/work/blox` og:title/url/description are page-specific; SSR Login is `/login`.
+- Lighthouse: not required to close P1; optional later.
+- Owner review: verified live; proceeding to Phase 2.
 - Owner decisions applied: no GitHub issues; remove Substack from footer Projects.
+
+### Phase 2
+
+- In progress on `overhaul/p2-trust` (not fully deployed yet).
+- After deploy: `npm run revalidate:all` then `npm run verify:live`.
+- Remaining P2: Opinion series decision (P2-04); Planned unpublished series rows if API exposes them (P2-03).
+- Owner: update Cobu `result` in admin to "in active development" (FE already sanitizes the old phrase).

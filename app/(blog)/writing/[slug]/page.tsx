@@ -39,6 +39,7 @@ import { getAllTopicsSafe, getTopicById } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
 import { breadcrumbJsonLd, pageMeta, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
+import { SUBSCRIBE } from "@/lib/copy";
 import "./article.css";
 
 export const revalidate = 60;
@@ -258,10 +259,9 @@ export default async function WritingArticlePage({
 
         {afterMid ? (
           <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
-            <p className='accent-label mb-2'>Newsletter</p>
+            <p className='accent-label mb-2'>{SUBSCRIBE.eyebrow}</p>
             <p className='mb-4 text-sm text-muted-foreground leading-relaxed max-w-md'>
-              Get new essays by email. New essays as they publish. Unsubscribe
-              anytime.
+              {SUBSCRIBE.heading}. {SUBSCRIBE.blurb}
             </p>
             <SubscribeForm variant='inline' submitLabel={CTA.subscribe} />
           </div>

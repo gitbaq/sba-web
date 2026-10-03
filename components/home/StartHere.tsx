@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SubTopic } from "@/types/types";
 import EssayCard from "@/components/EssayCard";
 import { pickEssaysByIds } from "@/lib/homeConfig";
+import { START_HERE_BLURB } from "@/lib/copy";
 
 type Props = {
   posts: SubTopic[];
@@ -27,7 +28,7 @@ export default function StartHere({ posts, startHereIds }: Props) {
           Three places to begin
         </h2>
         <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
-          Hand-picked essays to begin with. Updated from admin when needed.
+          {START_HERE_BLURB}
         </p>
       </div>
       <ul className='m-0 flex list-none flex-col p-0'>

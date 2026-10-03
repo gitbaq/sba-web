@@ -9,6 +9,7 @@ import {
   getAllSubtopicsSorted,
 } from "@/utils/services/getLatestSubtopics";
 import { pageMeta, SITE } from "@/lib/seo";
+import { CADENCE_LINE } from "@/lib/copy";
 import { CTA } from "@/lib/ctas";
 import { isIndexable } from "@/lib/articles";
 import {
@@ -41,11 +42,13 @@ export default async function Home() {
         p.isPublished === "1") &&
       isIndexable(p)
   );
+  const startHereIds = homeConfig.startHereEssayIds;
   const latestForHome = buildLatestWithBoost(
     latest,
     indexable,
     homeConfig.featuredEssayId,
-    3
+    3,
+    startHereIds
   );
   const featuredWork = work[0];
 
@@ -82,7 +85,7 @@ export default async function Home() {
             </p>
             <SubscribeForm variant='hero' submitLabel={CTA.subscribe} />
             <p className='mt-2 text-xs text-muted-foreground'>
-              New essays as they publish. Unsubscribe anytime.
+              {CADENCE_LINE} Unsubscribe anytime.
             </p>
           </div>
         </div>
@@ -121,10 +124,7 @@ export default async function Home() {
         </div>
 
         {/* 3. Start here */}
-        <StartHere
-          posts={indexable}
-          startHereIds={homeConfig.startHereEssayIds}
-        />
+        <StartHere posts={indexable} startHereIds={startHereIds} />
 
         {/* 4. Work with me */}
         <section aria-labelledby='work-strip' className='home-section'>

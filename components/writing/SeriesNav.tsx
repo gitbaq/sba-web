@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { Topic, SubTopic } from "@/types/types";
-import { articleHref } from "@/lib/articles";
+import { articleHref, isIndexable } from "@/lib/articles";
 import { seriesHref } from "@/utils/services/getTopics";
+
+function isLive(s: SubTopic): boolean {
+  const published =
+    s.isPublished === true ||
+    s.isPublished === "true" ||
+    s.isPublished === "1";
+  return published && isIndexable(s);
+}
 
 function sortSeries(list: SubTopic[]): SubTopic[] {
   return [...list].sort((a, b) => {
@@ -22,9 +30,11 @@ export default function SeriesNav({
   currentId: number;
 }) {
   if (!topic?.subTopicList?.length) return null;
-  if (topic.subTopicList.length < 2) return null;
 
-  const ordered = sortSeries(topic.subTopicList);
+  // Only link live essays. Unpublished parts stay off the nav (P2-03).
+  const ordered = sortSeries(topic.subTopicList.filter(isLive));
+  if (ordered.length < 2) return null;
+
   const idx = ordered.findIndex((s) => s.id === currentId);
   const prev = idx > 0 ? ordered[idx - 1] : null;
   const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1] : null;

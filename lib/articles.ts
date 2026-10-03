@@ -226,6 +226,12 @@ export function labelPlannedTopics(html: string): string {
     );
 }
 
+/** Replace em/en dashes in HTML text nodes so visitor copy stays ASCII-safe (P2-12). */
+export function normalizeDashesInHtml(html: string): string {
+  if (!html) return "";
+  return html.replace(/\u2014/g, ". ").replace(/\u2013/g, "-");
+}
+
 /** Prepare essay HTML for render: links, demotion, TOC ids. */
 export function prepareArticleHtml(
   html: string,
@@ -236,6 +242,7 @@ export function prepareArticleHtml(
     out = labelPlannedTopics(out);
   }
   out = demoteBodyHeadings(out, { title: opts?.title, dek: opts?.dek });
+  out = normalizeDashesInHtml(out);
   return injectHeadingIds(out);
 }
 
