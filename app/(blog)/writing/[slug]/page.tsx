@@ -37,7 +37,7 @@ import EssayShareActions from "@/components/EssayShareActions";
 import SubscribeForm from "@/components/SubscribeForm";
 import { getAllTopicsSafe, getTopicById } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
-import { breadcrumbJsonLd, SITE } from "@/lib/seo";
+import { breadcrumbJsonLd, pageMeta, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import "./article.css";
 
@@ -54,40 +54,27 @@ export async function generateMetadata({
   const subtopic = await resolveArticle(slug);
   if (!subtopic) return {};
 
-  const description = subtopic.dek || extractTextFromHtml(subtopic.content);
-  const imageUrl =
-    subtopic.ogImageUrl || subtopic.imageUrl || `${web_url}/ai4.png`;
-  const canonicalPath = articleHref(subtopic);
-  const url = subtopic.canonicalUrl || `${web_url}${canonicalPath}`;
+  const description =
+    subtopic.dek || extractTextFromHtml(subtopic.content) || SITE.description;
+  const imageUrl = subtopic.ogImageUrl || subtopic.imageUrl || undefined;
+  const absoluteImage = imageUrl
+    ? imageUrl.startsWith("http")
+      ? imageUrl
+      : `${web_url}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`
+    : undefined;
 
-  return {
-    title: subtopic.subHeading,
+  return pageMeta({
+    title: subtopic.subHeading || subtopic.heading || "Essay",
     description,
-    authors: [{ name: "Syed Baqir Ali" }],
-    robots: isIndexable(subtopic) ? undefined : { index: false, follow: true },
-    openGraph: {
-      title: subtopic.subHeading,
-      description,
-      url,
-      siteName: "Syed Baqir Ali",
-      images: [
-        { url: imageUrl, width: 1200, height: 630, alt: subtopic.heading },
-      ],
-      locale: "en_US",
-      type: "article",
-      publishedTime: subtopic.publishDate,
-      modifiedTime: articleModifiedDate(subtopic),
-      section: subtopic.sbaTopicName || subtopic.heading,
-      tags: [subtopic.heading, subtopic.sbaTopicName].filter(Boolean) as string[],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: subtopic.subHeading,
-      description,
-      images: [imageUrl],
-    },
-    alternates: { canonical: url },
-  };
+    path: articleHref(subtopic),
+    image: absoluteImage,
+    ogType: "article",
+    publishedTime: subtopic.publishDate,
+    modifiedTime: articleModifiedDate(subtopic),
+    authors: [SITE.name],
+    section: subtopic.sbaTopicName || subtopic.heading,
+    noIndex: !isIndexable(subtopic),
+  });
 }
 
 export default async function WritingArticlePage({

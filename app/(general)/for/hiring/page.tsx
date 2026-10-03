@@ -8,6 +8,8 @@ import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
 import { pageMeta } from "@/lib/seo";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = pageMeta({
   title: "Review for a role",
   description:

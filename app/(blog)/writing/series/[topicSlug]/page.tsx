@@ -10,8 +10,11 @@ import {
   seriesSlug,
 } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
+import { pageMeta } from "@/lib/seo";
 
 type Params = Promise<{ topicSlug: string }>;
+
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -24,11 +27,11 @@ export async function generateMetadata({
   const topics = await getAllTopicsSafe();
   const topic = getTopicById(topics, parsed.id);
   if (!topic) return {};
-  return {
-    title: topic.sbaTopicName,
+  return pageMeta({
+    title: topic.sbaTopicName || "Series",
     description: `Essays in the ${topic.sbaTopicName} series by Syed Baqir Ali.`,
-    alternates: { canonical: seriesHref(topic) },
-  };
+    path: seriesHref(topic),
+  });
 }
 
 export default async function SeriesDetailPage({

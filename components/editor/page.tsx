@@ -189,7 +189,8 @@ export default function XEditor({ params }: { params?: Params }) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            paths: [path, "/writing", "/"],
+            tag: "essays",
+            paths: [path, "/writing", "/writing/series", "/"],
           }),
         });
       } catch {

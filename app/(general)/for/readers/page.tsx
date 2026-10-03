@@ -12,6 +12,8 @@ import { CTA } from "@/lib/ctas";
 import { pageMeta } from "@/lib/seo";
 import { getHomePageConfig, pickEssaysByIds } from "@/lib/homeConfig";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = pageMeta({
   title: "Read the essays",
   description:

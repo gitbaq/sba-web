@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CaseStudySummary from "@/components/CaseStudySummary";
 import { getWorkProject } from "@/lib/work";
+import { pageMeta } from "@/lib/seo";
 
 type Params = Promise<{ slug: string }>;
 
@@ -17,11 +18,14 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = await getWorkProject(slug);
   if (!study) return {};
-  return {
+  return pageMeta({
     title: study.title,
     description: study.tagline,
-    alternates: { canonical: `/work/${slug}` },
-  };
+    path: `/work/${slug}`,
+    image: study.mark?.startsWith("http")
+      ? study.mark
+      : undefined,
+  });
 }
 
 export default async function CaseStudyPage({ params }: { params: Params }) {

@@ -1,35 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
 
-function LoginLinkInner({
-  className,
-  children = "Login",
-}: {
-  className?: string;
-  children?: React.ReactNode;
-}) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
-  const current =
-    pathname && pathname !== "/login"
-      ? `${pathname}${search ? `?${search}` : ""}`
-      : "";
-  const href = current
-    ? `/login?callbackUrl=${encodeURIComponent(current)}`
-    : "/login";
-
-  return (
-    <Link href={href} className={className}>
-      {children}
-    </Link>
-  );
-}
-
-/** Login link that returns the user to the page they came from. */
+/**
+ * Footer Login link. SSR always renders `/login` so public pages stay cacheable.
+ * After mount, attach callbackUrl from window.location (no useSearchParams).
+ */
 export default function LoginLink({
   className,
   children = "Login",
@@ -37,15 +14,20 @@ export default function LoginLink({
   className?: string;
   children?: React.ReactNode;
 }) {
+  const [href, setHref] = useState("/login");
+
+  useEffect(() => {
+    const path = `${window.location.pathname}${window.location.search}`;
+    if (!path || path.startsWith("/login") || path.startsWith("/logout")) {
+      setHref("/login");
+      return;
+    }
+    setHref(`/login?callbackUrl=${encodeURIComponent(path)}`);
+  }, []);
+
   return (
-    <Suspense
-      fallback={
-        <Link href='/login' className={className}>
-          {children}
-        </Link>
-      }
-    >
-      <LoginLinkInner className={className}>{children}</LoginLinkInner>
-    </Suspense>
+    <Link href={href} className={className} prefetch={false}>
+      {children}
+    </Link>
   );
 }
