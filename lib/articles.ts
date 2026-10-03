@@ -226,10 +226,18 @@ export function labelPlannedTopics(html: string): string {
     );
 }
 
-/** Replace em/en dashes in HTML text nodes so visitor copy stays ASCII-safe (P2-12). */
+/** Replace em/en dashes (chars + HTML entities) so visitor copy stays ASCII-safe (P2-12). */
 export function normalizeDashesInHtml(html: string): string {
   if (!html) return "";
-  return html.replace(/\u2014/g, ". ").replace(/\u2013/g, "-");
+  return html
+    .replace(/\u2014/g, ". ")
+    .replace(/\u2013/g, "-")
+    .replace(/&mdash;/gi, ". ")
+    .replace(/&#8212;/g, ". ")
+    .replace(/&#x2014;/gi, ". ")
+    .replace(/&ndash;/gi, "-")
+    .replace(/&#8211;/g, "-")
+    .replace(/&#x2013;/gi, "-");
 }
 
 /** Prepare essay HTML for render: links, demotion, TOC ids. */
