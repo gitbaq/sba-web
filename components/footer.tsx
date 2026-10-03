@@ -3,30 +3,8 @@ import Link from "next/link";
 import Socials from "./socials";
 import ThemeComponent from "./ThemeComponent";
 import LoginLink from "./LoginLink";
-import {
-  blox_url,
-  cobu_url,
-  github_url,
-  substack_url,
-} from "@/utils/endpoints/endpoints";
-
-const NAV = [
-  { href: "/writing", label: "Writing" },
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/subscribe", label: "Subscribe" },
-  { href: "/writing/series", label: "Series" },
-  { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy" },
-  { href: "/feed.xml", label: "RSS", external: true },
-] as const;
-
-const PROJECTS = [
-  { href: cobu_url, label: "Cobu: AI RAG Agent" },
-  { href: blox_url, label: "Blox: Productivity" },
-  { href: substack_url, label: "The Reasoning Stack (Blog)" },
-  { href: github_url, label: "My Code Repos" },
-] as const;
+import { FOOTER_NAV, FOOTER_PROJECTS } from "@/lib/siteShell";
+import { SITE } from "@/lib/seo";
 
 const Footer = () => {
   const year = new Date().getFullYear();
@@ -42,7 +20,7 @@ const Footer = () => {
             Syed <span>Baqir Ali</span>
           </Link>
           <p className='footer-muted max-w-xs text-sm leading-relaxed'>
-            Practical notes on software, AI, and leading teams.
+            {SITE.tagline}
           </p>
           <p className='footer-muted pt-1 text-xs'>
             © {year} Syed Baqir Ali
@@ -54,7 +32,7 @@ const Footer = () => {
             Explore
           </p>
           <ul className='m-0 flex list-none flex-col gap-2 p-0'>
-            {NAV.map((item) => (
+            {FOOTER_NAV.map((item) => (
               <li key={item.href}>
                 {"external" in item && item.external ? (
                   <a href={item.href} className='footer-link footer-muted text-sm'>
@@ -78,7 +56,7 @@ const Footer = () => {
             Projects
           </p>
           <ul className='m-0 flex list-none flex-col gap-2 p-0'>
-            {PROJECTS.map((item) => (
+            {FOOTER_PROJECTS.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}

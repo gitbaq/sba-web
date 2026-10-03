@@ -12,14 +12,7 @@ import Icons from "./Icons";
 import { usePathname } from "next/navigation";
 import ThemeToggleComponent from "./ThemeToggleComponent";
 import { ManageNavMobileItems } from "./ManageNav";
-
-const links = [
-  { href: "/writing", label: "Writing" },
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/subscribe", label: "Subscribe", emphasize: true },
-];
+import { PRIMARY_NAV } from "@/lib/siteShell";
 
 function linkActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -35,15 +28,15 @@ export default function NavLinks() {
         aria-label='Primary'
         className='md:flex flex-row hidden gap-5 items-center justify-center h-full text-sm'
       >
-        {links.map((l) => (
+        {PRIMARY_NAV.map((l) => (
           <Link
             key={l.href}
             href={l.href}
             className={`nav-link relative flex flex-row gap-2 items-center text-[13px] tracking-wide transition-colors duration-150 ${
-              l.emphasize
+              "emphasize" in l && l.emphasize
                 ? "font-semibold text-brand"
                 : "text-muted-foreground"
-            } ${linkActive(pathname, l.href) && !l.emphasize ? "active_top !text-foreground" : ""}`}
+            } ${linkActive(pathname, l.href) && !("emphasize" in l && l.emphasize) ? "active_top !text-foreground" : ""}`}
           >
             {l.label}
           </Link>
@@ -58,12 +51,12 @@ export default function NavLinks() {
             <Icons.EllipsisVertical aria-hidden />
           </DropdownMenuTrigger>
           <DropdownMenuContent className='bg-card text-foreground border border-border z-50 rounded-md p-2 w-48 shadow-md text-sm'>
-            {links.map((l) => (
+            {PRIMARY_NAV.map((l) => (
               <DropdownMenuItem key={l.href} asChild>
                 <Link
                   href={l.href}
                   className={`flex flex-row gap-3 items-center w-full p-2 rounded icons ${
-                    l.emphasize ? "font-semibold text-brand" : ""
+                    "emphasize" in l && l.emphasize ? "font-semibold text-brand" : ""
                   }`}
                 >
                   {l.label}

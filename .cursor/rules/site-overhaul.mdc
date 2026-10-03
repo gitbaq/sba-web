@@ -1,0 +1,40 @@
+---
+description: Standing rules for the syedbaqirali.com overhaul
+alwaysApply: true
+---
+
+# Project rules
+
+## Source of truth
+- The master prompt is `CURSOR_PROMPT.md` in the repo root. It supersedes `SITE_OVERHAUL.md`.
+- Track work in `docs/TASKS.md`. Build one phase at a time, highest value first.
+- Stop for owner review at the end of each phase. Run `scripts/verify-live.mjs` before closing a phase.
+- Fix problems at the template, data, or pipeline level, never on a single page or essay.
+
+## Stack
+- Next.js App Router, TypeScript, server components by default.
+- Spring Boot API, MySQL on AWS RDS. Deployed with Docker on EC2.
+- Add `"use client"` only for real interactivity (forms, toggles). Never fetch public page content in client components.
+
+## Rendering and SEO
+- Every public page must contain its full content in the initial HTML.
+- Use `generateMetadata`. Every page needs a unique title, description, canonical, and correct Open Graph URL.
+- Use `next/image` with `sizes` and meaningful alt text.
+- Server-render JSON-LD. Never add fake ratings, reviews, or metrics.
+
+## Content and copy
+- Never invent facts. Use `TODO(owner): <what is needed>` for missing information.
+- No em-dashes or en-dashes in any code comment, string, or copy. Use periods, commas, colons, or hyphens.
+- Short sentences. No marketing filler. One primary call to action per page.
+
+## Engineering
+- Small commits named by task ID, for example `P1-03: unique metadata per route`.
+- Add or update tests for new backend logic (tokens, rate limiting, status transitions).
+- No new paid services. Prefer AWS services already in use and free tiers.
+- Never log raw email addresses. Store token hashes, not raw tokens.
+- Do not delete data. Use migrations that keep legacy values (for example `legacy_slug`).
+
+## Before finishing any task
+- Run lint, type check, and tests.
+- Check the page in light and dark themes at 360px and 1280px widths.
+- Report what changed and anything that needs owner input.

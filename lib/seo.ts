@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 export const SITE = {
   name: "Syed Baqir Ali",
   url: "https://www.syedbaqirali.com",
@@ -20,56 +22,83 @@ export function absoluteUrl(path: string): string {
   return `${SITE.url}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Build route metadata with unique title, description, canonical, and OG. */
+function clampDescription(text: string, max = 155): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim()}…`;
+}
+
+type PageMetaInput = {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  /** Use when title already includes the brand (home). */
+  absoluteTitle?: boolean;
+  ogType?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
+  section?: string;
+  noIndex?: boolean;
+};
+
+/**
+ * Central metadata for website, article, and project routes.
+ * Sets unique title, description, canonical, and matching OG + Twitter tags.
+ * Never sets meta keywords.
+ */
 export function pageMeta({
   title,
   description,
   path,
   image,
   absoluteTitle = false,
-}: {
-  title: string;
-  description: string;
-  path: string;
-  image?: string;
-  absoluteTitle?: boolean;
-}): {
-  title: string | { absolute: string };
-  description: string;
-  alternates: { canonical: string };
-  openGraph: {
-    title: string;
-    description: string;
-    url: string;
-    type: "website";
-    images?: { url: string; width: number; height: number; alt: string }[];
-  };
-  twitter: {
-    card: "summary_large_image";
-    title: string;
-    description: string;
-    images?: string[];
-  };
-} {
+  ogType = "website",
+  publishedTime,
+  modifiedTime,
+  authors,
+  section,
+  noIndex = false,
+}: PageMetaInput): Metadata {
   const url = absoluteUrl(path);
+  const desc = clampDescription(description);
   const ogTitle = absoluteTitle ? title : `${title} | ${SITE.name}`;
   const img = image || SITE.ogImage;
+
+  const openGraph: Metadata["openGraph"] = {
+    title: ogTitle,
+    description: desc,
+    url,
+    siteName: SITE.name,
+    locale: SITE.locale,
+    type: ogType,
+    images: [{ url: img, width: 1200, height: 630, alt: title || SITE.name }],
+  };
+
+  if (ogType === "article") {
+    Object.assign(openGraph, {
+      publishedTime,
+      modifiedTime,
+      authors: authors?.length ? authors : [SITE.name],
+      section,
+    });
+  }
+
   return {
     title: absoluteTitle ? { absolute: title } : title,
-    description,
+    description: desc,
     alternates: { canonical: url },
-    openGraph: {
-      title: ogTitle,
-      description,
-      url,
-      type: "website",
-      images: [{ url: img, width: 1200, height: 630, alt: SITE.name }],
-    },
+    robots: noIndex ? { index: false, follow: true } : undefined,
+    openGraph,
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
-      description,
+      description: desc,
       images: [img],
+      creator: SITE.twitter,
     },
   };
 }

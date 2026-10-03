@@ -4,6 +4,8 @@ import SeriesCard from "@/components/SeriesCard";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { pageMeta } from "@/lib/seo";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = pageMeta({
   title: "Series",
   description:

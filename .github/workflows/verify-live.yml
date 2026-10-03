@@ -1,0 +1,16 @@
+name: Verify live
+
+on:
+  workflow_dispatch:
+  # After Phase 1 is live and stable, re-enable a daily schedule.
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run verify-live (phase-1 checks) against production
+        run: npm run verify:live -- https://www.syedbaqirali.com
