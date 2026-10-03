@@ -137,13 +137,13 @@ export function LearningSidebar() {
                         <Image
                           className='rounded-full'
                           src={cobu_url + "/cb-logo.png"}
-                          alt='Visit Cobu: AI Agent'
+                          alt='Visit Cobu'
                           width={20}
                           height={20}
-                          priority
+                          sizes='20px'
                         />
                         <Link href={cobu_url} target='_cobu'>
-                          Cobu: AI RAG Agent
+                          Cobu: AI brainstorm buddy
                         </Link>
                       </div>
                     </SidebarMenuButton>
@@ -163,13 +163,13 @@ export function LearningSidebar() {
                         <Image
                           className='rounded-full border border-stone-300'
                           src='/logos/blox.png'
-                          alt='Visit Cobu: AI Agent'
+                          alt='Visit Blox'
                           width={20}
                           height={20}
-                          priority
+                          sizes='20px'
                         />
                         <Link href={blox_url} target='_blox'>
-                          Blox: Productivity
+                          Blox: Productivity hub
                         </Link>
                       </div>
                     </SidebarMenuButton>

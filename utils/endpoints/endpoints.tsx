@@ -29,6 +29,7 @@ export const newsletter_subscribe_url = baseURL + "/api/subscribe";
 export const newsletter_confirm_url = baseURL + "/api/subscribe/confirm";
 export const newsletter_unsubscribe_url = baseURL + "/api/unsubscribe";
 export const newsletter_send_url = baseURL + "/secure/newsletter/v1/send";
+export const newsletter_stats_url = baseURL + "/secure/newsletter/v1/stats";
 export const home_config_url = baseURL + "/home/v1";
 export const home_config_secure_url = baseURL + "/secure/home/v1";
 export const work_projects_url = baseURL + "/work/v1";

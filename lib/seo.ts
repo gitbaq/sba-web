@@ -171,7 +171,7 @@ export function professionalServiceJsonLd() {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     name: SITE.name,
-    url: absoluteUrl("/for/clients"),
+    url: absoluteUrl("/work-with-me"),
     description:
       "Software and AI delivery: custom AI solutions, cloud integration, and product engineering.",
     image: SITE.ogImage,

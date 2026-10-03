@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +22,8 @@ import { toast } from "sonner";
 import FormMessages from "@/components/FormMessages";
 import Socials from "@/components/socials";
 import Icons from "@/components/Icons";
+import ObfuscatedEmail from "@/components/ObfuscatedEmail";
+import TurnstileField, { isTurnstileConfigured } from "@/components/TurnstileField";
 import { trackEvent } from "@/lib/analytics";
 import { LINKEDIN_URL } from "@/lib/audience";
 
@@ -39,12 +41,15 @@ const formSchema = z.object({
   reason: z.enum(REASONS),
   subject: z.string().max(255),
   message: z.string().min(1).max(2000),
+  website: z.string().max(200).optional(),
 });
 
 export default function ContactClient() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const onTurnstile = useCallback((token: string) => setTurnstileToken(token), []);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,6 +57,7 @@ export default function ContactClient() {
       reason: "Project",
       subject: "",
       message: "",
+      website: "",
     },
   });
 
@@ -61,10 +67,16 @@ export default function ContactClient() {
     setSuccess(null);
 
     try {
+      if (isTurnstileConfigured() && !turnstileToken) {
+        throw new Error("Complete the spam check and try again.");
+      }
       const payload = {
         email: values.email,
-        subject: `[${values.reason}] ${values.subject}`.slice(0, 255),
+        reason: values.reason,
+        subject: values.subject,
         message: values.message,
+        website: values.website || "",
+        turnstileToken: turnstileToken || undefined,
       };
       const res = await fetch(contact_url, {
         method: "POST",
@@ -75,14 +87,17 @@ export default function ContactClient() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(
-          "Message could not be sent right now. Try LinkedIn or email below."
+          data.error ||
+            "Message could not be sent right now. Try LinkedIn or email below."
         );
       }
       setSuccess("Thank you. Your message was received.");
       toast("Thank you. Message received.");
-      trackEvent("contact_submit", { status: "success" });
+      trackEvent("contact_submit", { status: "success", reason: values.reason });
       form.reset();
+      setTurnstileToken("");
     } catch (err) {
       trackEvent("contact_submit", { status: "error" });
       setError((err as Error).message);
@@ -167,12 +182,23 @@ export default function ContactClient() {
                       />
                     </FormControl>
                     <FormDescription>
-                      I aim to reply within 24 hours.
+                      I read every message and reply when I can.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <div className='hidden' aria-hidden='true'>
+                <label htmlFor='website'>Website</label>
+                <input
+                  id='website'
+                  type='text'
+                  tabIndex={-1}
+                  autoComplete='off'
+                  {...form.register("website")}
+                />
+              </div>
+              <TurnstileField onToken={onTurnstile} />
               <div className='pt-1'>
                 <Button
                   type='submit'
@@ -200,12 +226,11 @@ export default function ContactClient() {
               LinkedIn
             </a>{" "}
             or email{" "}
-            <a
-              href='mailto:hello@syedbaqirali.com'
+            <ObfuscatedEmail
+              user='hello'
+              domain='syedbaqirali.com'
               className='text-brand font-medium underline-offset-4 hover:underline'
-            >
-              hello@syedbaqirali.com
-            </a>
+            />
             .
           </p>
           <Socials />
@@ -226,10 +251,10 @@ export default function ContactClient() {
             </Link>
             {" · "}
             <Link
-              href='/about'
+              href='/work-with-me'
               className='text-brand font-medium underline-offset-4 hover:underline'
             >
-              About
+              Work with me
             </Link>
           </p>
         </section>

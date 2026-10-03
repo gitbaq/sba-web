@@ -6,6 +6,7 @@ import { SubTopic } from "@/types/types";
 import { useAuth } from "@/utils/AuthContext";
 import {
   newsletter_send_url,
+  newsletter_stats_url,
   subtopics_url,
 } from "@/utils/endpoints/endpoints";
 import { isIndexable } from "@/lib/articles";
@@ -13,6 +14,15 @@ import { readJson } from "@/lib/http";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+
+type Stats = {
+  total?: number;
+  pending?: number;
+  confirmed?: number;
+  unsubscribed?: number;
+  confirmationRatePercent?: number;
+  topSignupPages?: { sourcePath?: string; count?: number }[];
+};
 
 type SendResult = {
   essayId?: number;
@@ -25,6 +35,8 @@ type SendResult = {
   failed?: number;
   message?: string;
   emailEnabled?: boolean;
+  alreadySent?: boolean;
+  newsletterSentAt?: string | null;
   error?: string;
 };
 
@@ -34,6 +46,20 @@ export default function NewsletterAdminClient() {
   const [essayId, setEssayId] = useState<number | "">("");
   const [loading, setLoading] = useState(false);
   const [lastResult, setLastResult] = useState<SendResult | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
+
+  const loadStats = useCallback(async () => {
+    if (!token) return;
+    try {
+      const res = await fetch(newsletter_stats_url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return;
+      setStats(await readJson<Stats>(res, {}));
+    } catch {
+      /* non-fatal */
+    }
+  }, [token]);
 
   const loadEssays = useCallback(async () => {
     try {
@@ -64,7 +90,11 @@ export default function NewsletterAdminClient() {
 
   useEffect(() => {
     void loadEssays();
-  }, [loadEssays]);
+    void loadStats();
+  }, [loadEssays, loadStats]);
+
+  const selected = essays.find((e) => e.id === essayId);
+  const alreadySent = Boolean(selected?.newsletterSentAt);
 
   async function runSend(dryRun: boolean) {
     if (!token || essayId === "") {
@@ -73,7 +103,9 @@ export default function NewsletterAdminClient() {
     }
     if (!dryRun) {
       const ok = window.confirm(
-        "Send this essay to all confirmed subscribers? This cannot be undone."
+        alreadySent
+          ? "This essay was already emailed. Send again to all confirmed subscribers?"
+          : "Send this essay to all confirmed subscribers? Publishing alone does not email anyone. This send cannot be undone."
       );
       if (!ok) return;
     }
@@ -89,6 +121,7 @@ export default function NewsletterAdminClient() {
         body: JSON.stringify({
           essayId: Number(essayId),
           dryRun,
+          force: alreadySent && !dryRun,
         }),
       });
       const data = (await readJson<SendResult>(res, {})) as SendResult;
@@ -99,6 +132,9 @@ export default function NewsletterAdminClient() {
       }
       setLastResult(data);
       toast.success(data.message || (dryRun ? "Dry run done" : "Send done"));
+      if (!dryRun && res.ok) {
+        void loadEssays();
+      }
     } catch {
       toast.error("Request failed");
     } finally {
@@ -119,6 +155,35 @@ export default function NewsletterAdminClient() {
 
   return (
     <div className='flex flex-col gap-8'>
+      {stats ? (
+        <section className='max-w-xl rounded-lg border border-border bg-secondary/30 p-4 text-sm'>
+          <p className='mb-2 font-semibold'>Subscriber metrics</p>
+          <ul className='m-0 list-none space-y-1 p-0 text-muted-foreground'>
+            <li>Total: {stats.total ?? 0}</li>
+            <li>Confirmed: {stats.confirmed ?? 0}</li>
+            <li>Pending: {stats.pending ?? 0}</li>
+            <li>Unsubscribed: {stats.unsubscribed ?? 0}</li>
+            <li>
+              Confirmation rate: {stats.confirmationRatePercent ?? 0}%
+            </li>
+          </ul>
+          {stats.topSignupPages && stats.topSignupPages.length > 0 ? (
+            <div className='mt-4'>
+              <p className='mb-2 font-semibold text-foreground'>
+                Top signup pages
+              </p>
+              <ul className='m-0 list-none space-y-1 p-0 text-muted-foreground'>
+                {stats.topSignupPages.map((row) => (
+                  <li key={String(row.sourcePath)}>
+                    {row.sourcePath}: {row.count}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
       <section className='flex flex-col gap-4 max-w-xl'>
         <div className='flex flex-col gap-2'>
           <Label htmlFor='essay'>Published essay</Label>
@@ -134,15 +199,23 @@ export default function NewsletterAdminClient() {
             {essays.map((e) => (
               <option key={e.id} value={e.id}>
                 {e.subHeading || e.heading} (#{e.id})
+                {e.newsletterSentAt ? " · emailed" : " · not emailed"}
               </option>
             ))}
           </select>
         </div>
         <p className='text-sm text-muted-foreground leading-relaxed'>
-          Dry run shows how many confirmed subscribers would get the email. Send
-          emails the essay title, dek, and link. Requires SES production access
-          for addresses that are not verified identities.
+          Saving or publishing an essay never emails subscribers. Use Dry run,
+          then Send, only when you want a blast. Emails include the title, dek,
+          and link.
         </p>
+        {selected?.newsletterSentAt ? (
+          <p className='text-sm text-foreground'>
+            Last emailed: {new Date(selected.newsletterSentAt).toLocaleString()}
+          </p>
+        ) : (
+          <p className='text-sm text-muted-foreground'>Not emailed yet.</p>
+        )}
         <div className='flex flex-wrap gap-2'>
           <Button
             type='button'
@@ -198,6 +271,9 @@ export default function NewsletterAdminClient() {
             )}
             {typeof lastResult.emailEnabled === "boolean" && (
               <li>SES enabled: {lastResult.emailEnabled ? "yes" : "no"}</li>
+            )}
+            {typeof lastResult.alreadySent === "boolean" && (
+              <li>Already emailed before: {lastResult.alreadySent ? "yes" : "no"}</li>
             )}
             {lastResult.message && <li>{lastResult.message}</li>}
             {lastResult.error && (

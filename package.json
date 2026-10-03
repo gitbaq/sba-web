@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "verify:live": "node scripts/verify-live.mjs",
     "verify:live:full": "node scripts/verify-live.mjs --full",
-    "revalidate:all": "node scripts/revalidate-all.mjs"
+    "revalidate:all": "node scripts/revalidate-all.mjs",
+    "post-deploy": "node scripts/post-deploy.mjs"
   },
   "dependencies": {
     "@daypicker/react": "^10.0.1",

@@ -28,8 +28,15 @@ const SAMPLE_PATHS = [
   "/about",
   "/contact",
   "/subscribe",
-  "/for/clients",
+  "/work-with-me",
   "/privacy",
+];
+
+const REDIRECT_CHECKS = [
+  { from: "/for/clients", expectIncludes: "/work-with-me" },
+  { from: "/for/readers", expectIncludes: "/writing" },
+  { from: "/for/hiring", expectIncludes: "/about" },
+  { from: "/learning", expectIncludes: "/writing" },
 ];
 
 const SKIP_PREFIXES = [
@@ -239,6 +246,20 @@ async function main() {
     blox.errors.push("og:title matches homepage (inheritance bug)");
   }
 
+  // Redirect checks (P6-03 / P8-04).
+  const redirects = [];
+  for (const { from, expectIncludes } of REDIRECT_CHECKS) {
+    const { status, location } = await fetchText(`${BASE}${from}`);
+    const errors = [];
+    if (status < 300 || status >= 400) {
+      errors.push(`expected 3xx, got ${status}`);
+    }
+    if (!location || !location.includes(expectIncludes)) {
+      errors.push(`location ${location || "(none)"} missing ${expectIncludes}`);
+    }
+    redirects.push({ path: from, errors });
+  }
+
   // Phase 4 discoverability surfaces (not HTML page checks).
   const discovery = [];
   async function checkDiscovery(path, assertFn) {
@@ -311,7 +332,7 @@ async function main() {
   }
 
   let failed = 0;
-  for (const r of [...results, ...discovery]) {
+  for (const r of [...results, ...redirects, ...discovery]) {
     if (r.skipped) {
       console.log(`SKIP ${r.path}`);
       continue;
@@ -326,7 +347,7 @@ async function main() {
   }
 
   console.log(
-    `\nChecked ${htmlResults.length} HTML URLs + ${discovery.length} discovery URLs; ${failed} failed.`
+    `\nChecked ${htmlResults.length} HTML URLs + ${redirects.length} redirects + ${discovery.length} discovery URLs; ${failed} failed.`
   );
   process.exit(failed ? 1 : 0);
 }

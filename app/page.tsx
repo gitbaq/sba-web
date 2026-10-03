@@ -50,8 +50,6 @@ export default async function Home() {
     3,
     startHereIds
   );
-  const featuredWork = work[0];
-
   return (
     <div className='flex w-full flex-col'>
       {/* 1. Hero: brand, one H1, one sub, subscribe only */}
@@ -132,13 +130,31 @@ export default async function Home() {
           <h2 id='work-strip' className='display-title text-2xl md:text-3xl'>
             Outcomes for product and engineering teams
           </h2>
-          <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
-            {featuredWork
-              ? `${featuredWork.title}: ${featuredWork.tagline}`
-              : "Selected delivery work across AI, cloud, and software systems."}
-          </p>
+          {work.length > 0 ? (
+            <ul className='mt-4 m-0 flex list-none flex-col gap-3 p-0'>
+              {work.map((study) => (
+                <li key={study.slug}>
+                  <Link
+                    href={study.href}
+                    className='group inline-flex min-h-11 flex-col justify-center'
+                  >
+                    <span className='font-semibold text-foreground group-hover:text-brand'>
+                      {study.title}
+                    </span>
+                    <span className='text-sm text-muted-foreground leading-relaxed'>
+                      {study.result || study.tagline}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
+              Selected delivery work across AI, cloud, and software systems.
+            </p>
+          )}
           <Link
-            href='/for/clients'
+            href='/work-with-me'
             className='mt-5 inline-flex min-h-11 items-center font-semibold text-brand underline-offset-4 hover:underline'
           >
             Explore client work

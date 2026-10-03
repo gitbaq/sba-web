@@ -29,46 +29,44 @@ export default function PrivacyPage() {
         <section className='flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Contact form</h2>
           <p className='leading-relaxed text-muted-foreground'>
-            When you submit the contact form, I store your email, subject,
-            reason, and message so I can reply. I do not sell this data.
+            When you submit the contact form, I store your email, reason
+            (Project, Role, Question about writing, or Other), subject, and
+            message so I can reply. Spam checks may use Cloudflare Turnstile. I
+            do not sell this data.
           </p>
         </section>
 
         <section className='flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Newsletter</h2>
           <p className='leading-relaxed text-muted-foreground'>
-            If you subscribe, I store your email to send new essays. You can
-            unsubscribe at any time. I do not share the list with third parties
-            for marketing.
+            If you subscribe, I store your email and the page you subscribed from
+            after a double opt-in confirmation. I use that to send new essays and
+            a welcome message. You can unsubscribe at any time via the link in
+            every email. I do not share the list with third parties for marketing.
           </p>
         </section>
 
         <section className='flex flex-col gap-3'>
-          <h2 className='display-title text-2xl'>Analytics</h2>
+          <h2 className='display-title text-2xl'>Analytics and ads</h2>
           <p className='leading-relaxed text-muted-foreground'>
-            The site may use privacy-respecting analytics to understand traffic.
-            No sale of personal data.
+            The site uses Google Analytics 4 for traffic, Vercel Analytics and
+            Speed Insights for performance, and may show Google AdSense ads. These
+            providers may set cookies or similar identifiers per their policies.
+            No sale of personal data by me.
           </p>
         </section>
 
         <section className='flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Contact</h2>
           <p className='leading-relaxed text-muted-foreground'>
-            Questions about this policy:{" "}
-            <a
-              href={`mailto:${SITE.email}`}
-              className='font-medium text-brand underline-offset-4 hover:underline'
-            >
-              {SITE.email}
-            </a>{" "}
-            or the{" "}
+            Questions about this policy: use the{" "}
             <Link
               href='/contact'
               className='font-medium text-brand underline-offset-4 hover:underline'
             >
               contact form
-            </Link>
-            .
+            </Link>{" "}
+            or email the address listed as {SITE.email} on that page.
           </p>
         </section>
       </main>

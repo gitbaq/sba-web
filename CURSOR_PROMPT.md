@@ -198,10 +198,11 @@ Value: quality that supports every earlier phase.
 - Approve each phase plan and each phase result.
 - Decide: cadence wording, "Opinion" series, Substack footer link, Cobu status wording, Cobu footer name.
 - Supply: full text of the Substack stub essay, case-study metrics, testimonials, CV PDF, credentials wording, engagement model or pricing signal.
-- Set up: SES production access and DNS (SPF, DKIM, DMARC), CloudFront, Search Console, analytics host.
+- Set up: SES production access (done 2026-10-04), DNS (SPF, DKIM, DMARC), CloudFront, Search Console, analytics host.
 
 ## 8. Backlog (not scheduled)
 
+- Branded HTML email shell for SES (confirm, welcome, essay issue): table layout, inline styles, button CTA, header/footer, keep plain-text part. Stay on SES; no paid ESP.
 - Free PDF primer from a series as a signup incentive.
 - Public archive of sent newsletter issues.
 - Teaching and workshops page.

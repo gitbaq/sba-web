@@ -60,9 +60,9 @@ async function body() {
 
 ## Audience paths
 
-- Hiring managers: ${web_url}/for/hiring
-- Clients: ${web_url}/for/clients
-- Readers: ${web_url}/for/readers
+- Hiring managers: ${web_url}/about#hiring
+- Clients: ${web_url}/work-with-me
+- Readers: ${web_url}/writing
 
 ## Work
 

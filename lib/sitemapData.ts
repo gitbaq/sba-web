@@ -107,17 +107,7 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
       priority: 0.3,
     },
     {
-      url: `${SITE.url}/for/hiring`,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${SITE.url}/for/clients`,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${SITE.url}/for/readers`,
+      url: `${SITE.url}/work-with-me`,
       changeFrequency: "monthly",
       priority: 0.7,
     },

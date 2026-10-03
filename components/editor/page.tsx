@@ -321,6 +321,10 @@ export default function XEditor({ params }: { params?: Params }) {
             {isLoading ? "Saving…" : "Save"}
           </Button>
         </div>
+        <p className='text-sm text-muted-foreground'>
+          Save and Publish only update the site. They do not email subscribers.
+          Send from Admin → Newsletter when ready.
+        </p>
       </div>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-border bg-card p-5'>
