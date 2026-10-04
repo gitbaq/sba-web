@@ -10,7 +10,7 @@ import { CTA } from "@/lib/ctas";
 import { CADENCE_LINE, SUBSCRIBE } from "@/lib/copy";
 
 export const metadata: Metadata = pageMeta({
-  title: "Subscribe",
+  title: "Subscribe to Newsletter",
   description:
     "Get new essays by email. AI, software systems, and engineering leadership. Unsubscribe anytime.",
   path: "/subscribe",

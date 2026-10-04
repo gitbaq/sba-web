@@ -3,7 +3,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,7 +14,6 @@ import { Control, FieldPath, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import Icons from "@/components/Icons";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { login_url } from "@/utils/endpoints/endpoints";
@@ -25,21 +23,12 @@ import { useAuth } from "@/utils/AuthContext";
 import { readJson } from "@/lib/http";
 
 const formSchema = z.object({
-  usernameOrEmail: z.string().trim(),
-  password: z
-    .string()
-    .min(8, { error: "Be at least 8 characters long" })
-    .regex(/[a-zA-Z]/, { error: "Contain at least one letter." })
-    .regex(/[0-9]/, { error: "Contain at least one number." })
-    .regex(/[^a-zA-Z0-9]/, {
-      error: "Contain at least one special character.",
-    })
-    .trim(),
+  usernameOrEmail: z.string().trim().min(1, { error: "Enter username or email." }),
+  password: z.string().min(1, { error: "Enter your password." }),
 });
 
 /** Only allow same-origin relative paths (block open redirects). */
 function safeReturnPath(url: string | null): string {
-  // Default: Admin home. Deep-links (e.g. /admin/about, /editor/…) keep their callback.
   if (!url || !url.startsWith("/") || url.startsWith("//")) return "/admin";
   if (url.startsWith("/login") || url.startsWith("/logout")) return "/admin";
   if (url === "/") return "/admin";
@@ -48,7 +37,7 @@ function safeReturnPath(url: string | null): string {
 
 function LoginForm() {
   const { login } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -61,6 +50,12 @@ function LoginForm() {
       password: "",
     },
   });
+
+  const isReaderReturn =
+    !!callbackUrl &&
+    callbackUrl.startsWith("/") &&
+    !callbackUrl.startsWith("/admin") &&
+    !callbackUrl.startsWith("/editor");
 
   async function dologin(formData: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -80,49 +75,65 @@ function LoginForm() {
         res?: { token?: string; username?: string; email?: string };
       } | null>(response, null);
       if (!data?.res?.token) {
-        const message = "Login succeeded but returned an empty response. Try again.";
+        const message =
+          "Login succeeded but returned an empty response. Try again.";
         toast(message);
         setError(message);
         setIsLoading(false);
         return;
       }
       login(data.res.token, data.res.username || "", data.res.email || "");
-      toast("Logged In!");
+      toast("Logged in");
       setIsLoading(false);
-
       document.location.href = nextUrl;
     } else if (response.status === 401) {
-      const message: string = "Username or password is incorrect";
+      const message = "Username or password is incorrect";
       toast(message);
       setError(message);
       setIsLoading(false);
     } else {
       const data = await readJson(response, null);
-      const error: string = data ? JSON.stringify(data) : `HTTP ${response.status}`;
-      setError(error);
+      const err = data ? JSON.stringify(data) : `HTTP ${response.status}`;
+      setError(err);
       setIsLoading(false);
-      throw new Error(error);
+      throw new Error(err);
     }
   }
 
+  const signupHref =
+    callbackUrl && callbackUrl.startsWith("/")
+      ? `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`
+      : "/signup";
+
   return (
-    <div className='w-full max-w-lg rounded-2xl border-2 border-stone-200 dark:border-gray-800 p-5'>
-      <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-2xl'>
-        <div className='text-lg font-semibold '>Login</div>
-      </section>
-      <section className='border border-accent border-t-slate-200'>
+    <div className='w-full'>
+      <div className='life-hero'>
+        <header className='relative z-[2] mx-auto flex w-full max-w-3xl flex-col gap-3 px-4 pt-6 pb-12 md:pt-8 md:pb-16'>
+          <p className='accent-label'>Account</p>
+          <h1 className='display-title text-4xl text-foreground md:text-5xl'>
+            {isReaderReturn ? "Log in to continue" : "Admin login"}
+          </h1>
+          <p className='max-w-xl text-lg leading-relaxed text-foreground/80'>
+            {isReaderReturn
+              ? "Use your reader account to comment on essays."
+              : "Sign in to manage the site."}
+          </p>
+        </header>
+      </div>
+
+      <main className='mx-auto flex w-full max-w-md flex-col gap-8 px-4 py-10 md:py-14'>
         <FormMessages error={error} success={success} />
         <Form {...form}>
           <form
-            className='space-y-4 w-full p-3'
+            className='flex flex-col gap-5'
             onSubmit={form.handleSubmit(dologin)}
           >
             <LoginFormField
               name='usernameOrEmail'
-              label='Username Or Email'
-              placeholder='Username Or Email'
+              label='Username or email'
+              placeholder='you@example.com'
               formControl={form.control}
-              required={true}
+              required
             />
             <LoginFormField
               name='password'
@@ -130,76 +141,49 @@ function LoginForm() {
               placeholder='Password'
               inputType='password'
               formControl={form.control}
-              required={true}
+              required
             />
-            {/* <div className='flex flex-col justify-end items-end gap-3 p-2 rounded-sm'> */}
-            <Button type='submit' className='bg-amber-500 w-full'>
-              {!isLoading ? (
-                <span className='flex flex-row items-baseline gap-2'>
-                  <Icons.User /> Login
-                </span>
-              ) : (
-                <span className='flex flex-row items-baseline gap-2'>
-                  <Icons.Bot /> Logging In
-                </span>
-              )}
+            <Button
+              type='submit'
+              className='craft-cta-primary border-0 w-full h-11'
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in…" : "Log in"}
             </Button>
-            {/* </div> */}
           </form>
         </Form>
-      </section>
-      <section className='flex flex-row w-full py-3 gap-2 justify-between'>
-        <div className='text-xs'>
-          <Link href='/forgotpassword' className='icons text-sky-400'>
-            Forgot Password?
-          </Link>
+
+        <div className='flex flex-col gap-2 text-sm text-muted-foreground'>
+          <p>
+            <Link
+              href='/forgotpassword'
+              className='font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              Forgot password?
+            </Link>
+          </p>
+          <p>
+            Need an account?{" "}
+            <Link
+              href={signupHref}
+              className='font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
-        <div className='text-xs'>
-          Don&apos;t have an account?{" "}
-          <Link href='/signup' className='icons text-sky-400'>
-            Signup
-          </Link>
-        </div>
-      </section>
-      <div className='space-y-0 w-full p-3'>
-        <section className='flex flex-row w-full justify-center text-center items-center gap-2 text-slate-400 relative'>
-          <span className='border-t border-accent w-full absolute -z-10'></span>
-          <h3 className='flex bg-accent text-primary h-full rounded-full p-3 aspect-square items-center justify-center'>
-            or
-          </h3>
-        </section>
-        <section className='flex flex-row w-full py-5 justify-center gap-2'>
-          <Button className='w-full' variant='secondary'>
-            <Icons.FaGoogle />
-            Continue With Google
-          </Button>
-        </section>
-        <section className='flex flex-row w-full justify-around gap-2'>
-          <Button className='w-full' variant='secondary'>
-            <Icons.FaLinkedin />
-            LinkedIn
-          </Button>
-          <Button className='w-full' variant='secondary'>
-            <Icons.FaGithub />
-            Github
-          </Button>
-          <Button className='w-full' variant='secondary'>
-            <Icons.FaFacebook />
-            Facebook
-          </Button>
-        </section>
-      </div>
+      </main>
     </div>
   );
 }
 
 export default function Login() {
   return (
-    <main className='flex flex-col w-full items-center h-full py-3 px-2'>
-      <Suspense fallback='Loading..'>
-        <LoginForm />
-      </Suspense>
-    </main>
+    <Suspense
+      fallback={<p className='p-8 text-muted-foreground'>Loading…</p>}
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
 
@@ -207,50 +191,44 @@ interface LoginFormFieldProps {
   name: FieldPath<z.infer<typeof formSchema>>;
   label: string;
   placeholder: string;
-  description?: string;
   inputType?: string;
-  readonly?: boolean;
-  defaultValue?: string | number | readonly string[] | undefined;
   formControl: Control<z.infer<typeof formSchema>, unknown>;
   required?: boolean;
 }
 
-const LoginFormField: React.FC<LoginFormFieldProps> = ({
+function LoginFormField({
   name,
   label,
   placeholder,
-  description,
   inputType,
-  readonly,
   formControl,
   required,
-}) => {
+}: LoginFormFieldProps) {
   return (
     <FormField
       control={formControl}
       name={name}
       render={({ field }) => (
-        <FormItem className=' w-full'>
-          {inputType != "hidden" && (
-            <FormLabel className='ml-1 font-semibold'>
-              {label}
-              {required && <span className='text-red-500'>*</span>}
-            </FormLabel>
-          )}
+        <FormItem className='w-full'>
+          <FormLabel className='font-semibold'>
+            {label}
+            {required ? <span className='text-destructive'> *</span> : null}
+          </FormLabel>
           <FormControl>
             <Input
-              className='input-field w-full focus-visible:ring-0'
+              className='input-field h-11'
               placeholder={placeholder}
               type={inputType || "text"}
-              readOnly={readonly}
+              autoComplete={
+                inputType === "password" ? "current-password" : "username"
+              }
               required={required}
               {...field}
             />
           </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
       )}
     />
   );
-};
+}

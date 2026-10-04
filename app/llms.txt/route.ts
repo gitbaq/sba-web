@@ -58,7 +58,7 @@ async function body() {
 - Writing index: ${web_url}/writing
 - Series index: ${web_url}/writing/series
 - Work / case studies: ${web_url}/work
-- Subscribe: ${web_url}/subscribe
+- Subscribe to Newsletter: ${web_url}/subscribe
 
 ## Audience paths
 

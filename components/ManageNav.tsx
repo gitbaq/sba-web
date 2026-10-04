@@ -46,7 +46,7 @@ export default function ManageNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`nav-link hidden md:inline-flex items-center gap-1 text-[13px] tracking-wide transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm px-1 min-h-11 ${
+        className={`nav-link hidden md:inline-flex items-center gap-1.5 pr-1.5 text-[13px] tracking-wide transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm px-1 min-h-11 ${
           anyActive
             ? "font-semibold text-foreground"
             : "text-muted-foreground"
@@ -54,7 +54,7 @@ export default function ManageNav() {
         aria-label='Manage site'
       >
         Manage
-        <Icons.ChevronDown className='h-3.5 w-3.5 opacity-70' aria-hidden />
+        <Icons.ChevronDown className='h-3.5 w-3.5 shrink-0 opacity-70' aria-hidden />
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-64'>
         <DropdownMenuLabel>Admin</DropdownMenuLabel>

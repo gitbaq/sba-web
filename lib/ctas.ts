@@ -2,7 +2,7 @@ import { LINKEDIN_URL } from "@/lib/audience";
 
 /** Canonical CTA labels - same wording everywhere. */
 export const CTA = {
-  subscribe: "Subscribe",
+  subscribe: "Subscribe to Newsletter",
   writing: "Read the latest",
   work: "View work",
   contact: "Contact",
