@@ -111,6 +111,10 @@ export default function MediaPicker({
 
   async function upload(file: File) {
     if (!token) return;
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image must be 10MB or smaller");
+      return;
+    }
     setUploading(true);
     try {
       const body = new FormData();
@@ -124,11 +128,14 @@ export default function MediaPicker({
         }
       );
       if (!res.ok) {
-        const err = await readJson<{ message?: string; detail?: string } | null>(
-          res,
-          null
+        const err = await readJson<{
+          message?: string;
+          detail?: string;
+          errors?: string[];
+        } | null>(res, null);
+        throw new Error(
+          err?.errors?.[0] || err?.message || err?.detail || "Upload failed"
         );
-        throw new Error(err?.message || err?.detail || "Upload failed");
       }
       const data = await readJson<{ url?: string } | null>(res, null);
       if (!data?.url) throw new Error("No URL returned");

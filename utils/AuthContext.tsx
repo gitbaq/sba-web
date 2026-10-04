@@ -89,6 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           handleUnauthorized();
           return;
         }
+        // 404 is fine if the profile endpoint is not deployed yet.
         if (response.ok) {
           const userData = await readJson(response, null);
           if (userData) setUser(userData);

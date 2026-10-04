@@ -89,7 +89,7 @@ export default function WorkAdminClient() {
 
   async function revalidateWork() {
     try {
-      await fetch("/api/revalidate", {
+      await fetch("/api/admin/revalidate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
