@@ -3,7 +3,6 @@ import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import parse from "html-react-parser";
 import { web_url } from "@/utils/endpoints/endpoints";
 import {
   articleHref,
@@ -24,6 +23,7 @@ import {
   resolveArticle,
 } from "@/utils/services/getLatestSubtopics";
 import EditorLink from "@/components/editor/editorLink";
+import ArticleBody from "@/components/writing/ArticleBody";
 import ArticleToc from "@/components/writing/ArticleToc";
 import ArticleEndCta from "@/components/writing/ArticleEndCta";
 import ReadingProgress from "@/components/writing/ReadingProgress";
@@ -35,7 +35,8 @@ import TldrBlock from "@/components/TldrBlock";
 import AuthorBox from "@/components/AuthorBox";
 import EssayShareActions from "@/components/EssayShareActions";
 import SubscribeForm from "@/components/SubscribeForm";
-import { getAllTopicsSafe, getTopicById } from "@/utils/services/getTopics";
+import { findTopicForPost, getAllTopicsSafe } from "@/utils/services/getTopics";
+import { enrichPostsWithSeries } from "@/lib/topicHubs";
 import { seriesStyle } from "@/lib/seriesColors";
 import { breadcrumbJsonLd, pageMeta, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
@@ -54,6 +55,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const subtopic = await resolveArticle(slug);
   if (!subtopic) return {};
+  const topics = await getAllTopicsSafe();
+  // Series membership is the only source for article:section (O-1: Opinion is real).
+  const section =
+    findTopicForPost(topics, subtopic)?.sbaTopicName ||
+    subtopic.sbaTopicName ||
+    undefined;
 
   const description =
     subtopic.dek || extractTextFromHtml(subtopic.content) || SITE.description;
@@ -73,7 +80,7 @@ export async function generateMetadata({
     publishedTime: subtopic.publishDate,
     modifiedTime: articleModifiedDate(subtopic),
     authors: [SITE.name],
-    section: subtopic.sbaTopicName || subtopic.heading,
+    section,
     noIndex: !isIndexable(subtopic),
   });
 }
@@ -92,29 +99,25 @@ export default async function WritingArticlePage({
     permanentRedirect(articleHref(subtopic));
   }
 
-  const all = await getAllSubtopicsSorted();
-  const related = relatedPosts(subtopic, all, 3);
   const topics = await getAllTopicsSafe();
-  const seriesTopic =
-    getTopicById(topics, subtopic.topicId) ||
-    topics.find(
-      (t) =>
-        t.sbaTopicName === subtopic.sbaTopicName ||
-        t.subTopicList?.some((s) => s.id === subtopic.id)
-    );
+  const all = enrichPostsWithSeries(await getAllSubtopicsSorted(), topics);
+  const current = enrichPostsWithSeries([subtopic], topics)[0] || subtopic;
+  const related = relatedPosts(current, all, 3);
+  const seriesTopic = findTopicForPost(topics, current);
   const published = subtopic.publishDate || postDate(subtopic);
   const modified = articleModifiedDate(subtopic);
   const showUpdated = shouldShowUpdated(subtopic);
   const minutes = estimateReadingMinutes(subtopic.content || "");
-  const html = prepareArticleHtml(subtopic.content || "", {
-    title: subtopic.subHeading,
-    dek: subtopic.dek?.trim(),
-    essayId: subtopic.id,
+  const html = prepareArticleHtml(current.content || "", {
+    title: current.subHeading,
+    dek: current.dek?.trim(),
+    essayId: current.id,
+    series: seriesTopic?.sbaTopicName || current.sbaTopicName,
   });
   const toc = extractToc(html);
   const [beforeMid, afterMid] = splitHtmlAtMidpoint(html);
-  const iURL = subtopic.imageUrl || "/ai4.png";
-  const topicLabel = subtopic.heading || subtopic.sbaTopicName;
+  const iURL = current.imageUrl || "/ai4.png";
+  const topicLabel = seriesTopic?.sbaTopicName || current.sbaTopicName || "";
   const url = `${web_url}${articleHref(subtopic)}`;
   const dek = subtopic.dek?.trim();
   const tldr = subtopic.tldr?.trim();
@@ -260,7 +263,11 @@ export default async function WritingArticlePage({
 
         <ArticleToc items={toc} />
 
-        <article className='article-prose'>{parse(beforeMid || html)}</article>
+        <ArticleBody
+          html={beforeMid || html}
+          title={subtopic.subHeading}
+          className='article-prose'
+        />
 
         {afterMid ? (
           <div className='my-12 rounded-lg border border-border bg-secondary/30 p-5 md:p-6'>
@@ -273,7 +280,11 @@ export default async function WritingArticlePage({
         ) : null}
 
         {afterMid ? (
-          <article className='article-prose'>{parse(afterMid)}</article>
+          <ArticleBody
+            html={afterMid}
+            title={subtopic.subHeading}
+            className='article-prose'
+          />
         ) : null}
 
         <div className='mt-14 flex flex-col gap-10'>

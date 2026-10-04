@@ -5,6 +5,13 @@ import {
   github_url,
   work_projects_url,
 } from "@/utils/endpoints/endpoints";
+import {
+  ABOUT_BIO,
+  ABOUT_CREDENTIALS,
+  ABOUT_HIRING_BLURB,
+  ABOUT_HOME_BLURB,
+  ABOUT_TITLE_LINE,
+} from "@/lib/aboutContent";
 import { COBU_STATUS_LINE } from "@/lib/copy";
 import { readJson } from "@/lib/http";
 
@@ -99,25 +106,12 @@ export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
 
 export const FALLBACK_ABOUT: AboutConfig = {
   displayName: "Syed Baqir Ali",
-  title: "Software innovation and AI leader",
-  bio: "Through writing and shipped work, I help individuals and teams harness technology, streamline processes, and build projects that make an impact. Research-depth, still easy to follow.",
+  title: ABOUT_TITLE_LINE,
+  bio: ABOUT_BIO,
   photoUrl: "/sba-photo-2-small.png",
-  hiringBlurb:
-    "Background, writing samples, and how I think about systems. Profile and experience live on LinkedIn; case studies and essays are on this site.",
-  homeBlurb:
-    "I write and build at the intersection of AI research and enterprise engineering. Plain language, concrete tradeoffs.",
-  credentials: [
-    { label: "25+ years in SWE and AI" },
-    { label: "Master of Artificial Intelligence, UNSW Sydney" },
-    { label: "PMP, PMI-ACP, PMI-PBA" },
-    { label: "AWS Certified AI Practitioner" },
-    {
-      label: "Co-author on Amazon",
-      href: "https://www.amazon.com.au/stores/Syed-Baqir-Ali/author/B0G81DNV2T",
-    },
-    { label: "Book reviewer, Manning Publications" },
-    { label: "Casual Academic, UNSW CS/IT" },
-  ],
+  hiringBlurb: ABOUT_HIRING_BLURB,
+  homeBlurb: ABOUT_HOME_BLURB,
+  credentials: ABOUT_CREDENTIALS,
 };
 
 function sanitizeVisitorCopy(text: string): string {
@@ -207,6 +201,77 @@ export async function getWorkProject(
   return FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
 }
 
+const STALE_ABOUT_TITLES = new Set([
+  "Software innovation and AI leader",
+  "Software Innovation and AI Leader",
+]);
+
+const ORG_NAME_PATTERNS: RegExp[] = [
+  /\bRevenue\s+NSW\b/gi,
+  /\bNSW\s+Revenue\b/gi,
+  /\bSaudi\s+Aramco\b/gi,
+  /\bAramco\b/gi,
+  /\bUniversity of Central Punjab\b/gi,
+  /\bUNSW(?:\s+Sydney)?\b/gi,
+  /\bManning Publications\b/gi,
+];
+
+function stripOrgMentions(text: string): string {
+  let next = text;
+  for (const pattern of ORG_NAME_PATTERNS) {
+    next = next.replace(pattern, "");
+  }
+  return next
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,;:])/g, "$1")
+    .replace(/,\s*,/g, ",")
+    .replace(/\bat\s+,/gi, ",")
+    .replace(/\bat\s*\./gi, ".")
+    .trim();
+}
+
+function normalizeAboutConfig(raw: {
+  displayName: string;
+  title: string;
+  bio: string;
+  photoUrl: string;
+  hiringBlurb: string;
+  homeBlurb: string;
+  credentials: Credential[];
+}): AboutConfig {
+  const title = stripOrgMentions(raw.title);
+  const staleTitle = !title || STALE_ABOUT_TITLES.has(title);
+  const credentials = raw.credentials
+    .map((c) => ({
+      label: stripOrgMentions(c.label),
+      href: c.href,
+    }))
+    .filter(
+      (c) =>
+        c.label &&
+        !/revenue\s*nsw|aramco|unsw|central\s*punjab|manning/i.test(c.label)
+    );
+
+  return {
+    displayName: raw.displayName || FALLBACK_ABOUT.displayName,
+    title: staleTitle ? FALLBACK_ABOUT.title : title,
+    bio: staleTitle
+      ? FALLBACK_ABOUT.bio
+      : stripOrgMentions(raw.bio) || FALLBACK_ABOUT.bio,
+    photoUrl: raw.photoUrl || FALLBACK_ABOUT.photoUrl,
+    hiringBlurb: staleTitle
+      ? FALLBACK_ABOUT.hiringBlurb
+      : stripOrgMentions(raw.hiringBlurb) || FALLBACK_ABOUT.hiringBlurb,
+    homeBlurb: staleTitle
+      ? FALLBACK_ABOUT.homeBlurb
+      : stripOrgMentions(raw.homeBlurb) || FALLBACK_ABOUT.homeBlurb,
+    credentials:
+      staleTitle || credentials.length === 0
+        ? FALLBACK_ABOUT.credentials
+        : credentials,
+  };
+}
+
 export async function getAboutConfig(): Promise<AboutConfig> {
   try {
     const res = await fetch(about_config_url, {
@@ -215,22 +280,23 @@ export async function getAboutConfig(): Promise<AboutConfig> {
     if (!res.ok) return FALLBACK_ABOUT;
     const data = await readJson<Record<string, unknown> | null>(res, null);
     if (!data) return FALLBACK_ABOUT;
-    return {
+    const credentials = Array.isArray(data.credentials)
+      ? data.credentials
+          .map((c: { label?: string; href?: string }) => ({
+            label: String(c.label || ""),
+            href: c.href ? String(c.href) : undefined,
+          }))
+          .filter((c: Credential) => c.label)
+      : FALLBACK_ABOUT.credentials;
+    return normalizeAboutConfig({
       displayName: (data.displayName as string) || FALLBACK_ABOUT.displayName,
       title: (data.title as string) || FALLBACK_ABOUT.title,
       bio: (data.bio as string) || FALLBACK_ABOUT.bio,
       photoUrl: (data.photoUrl as string) || FALLBACK_ABOUT.photoUrl,
       hiringBlurb: (data.hiringBlurb as string) || FALLBACK_ABOUT.hiringBlurb,
       homeBlurb: (data.homeBlurb as string) || FALLBACK_ABOUT.homeBlurb,
-      credentials: Array.isArray(data.credentials)
-        ? data.credentials
-            .map((c: { label?: string; href?: string }) => ({
-              label: String(c.label || ""),
-              href: c.href ? String(c.href) : undefined,
-            }))
-            .filter((c: Credential) => c.label)
-        : FALLBACK_ABOUT.credentials,
-    };
+      credentials,
+    });
   } catch {
     return FALLBACK_ABOUT;
   }

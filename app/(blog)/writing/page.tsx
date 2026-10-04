@@ -6,6 +6,7 @@ import SeriesCard from "@/components/SeriesCard";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
 import { getAllTopicsSafe } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
+import { getHomePageConfig } from "@/lib/homeConfig";
 import { pageMeta } from "@/lib/seo";
 import {
   eligibleTopicHubs,
@@ -30,7 +31,10 @@ export default async function WritingPage({
   searchParams: SearchParams;
 }) {
   const { query, tag } = await searchParams;
-  const topics = await getAllTopicsSafe();
+  const [topics, homeConfig] = await Promise.all([
+    getAllTopicsSafe(),
+    getHomePageConfig(),
+  ]);
   const allPosts = enrichPostsWithSeries(
     (await getAllSubtopicsSorted()).filter(isIndexable),
     topics
@@ -79,7 +83,12 @@ export default async function WritingPage({
       </div>
 
       <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14 flex flex-col gap-14'>
-        {!searched ? <StartHere posts={allPosts} /> : null}
+        {!searched ? (
+          <StartHere
+            posts={allPosts}
+            startHereIds={homeConfig.startHereEssayIds}
+          />
+        ) : null}
 
         {searched ? (
           <p className='text-sm text-muted-foreground'>

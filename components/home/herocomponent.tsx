@@ -23,8 +23,8 @@ const HeroComponent = () => {
 
     {
       id: 5,
-      heading: "DevOps and Automation",
-      text: "Enhance software delivery pipelines with CI/CD processes, containerization (Docker), and orchestration (Kubernetes), improving efficiency and reducing time-to-market",
+      heading: "Book review and authoring",
+      text: "Manuscript review for publishers and scoped authoring or co-authoring on AI and software titles",
     },
   ];
   return (

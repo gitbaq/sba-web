@@ -19,8 +19,7 @@ export function enrichPostsWithSeries(
   }
   return posts.map((post) => ({
     ...post,
-    sbaTopicName:
-      post.sbaTopicName || seriesByEssayId.get(post.id) || post.heading || "",
+    sbaTopicName: post.sbaTopicName || seriesByEssayId.get(post.id) || "",
   }));
 }
 
@@ -58,7 +57,7 @@ export function tagHubCounts(posts: SubTopic[]): Map<string, number> {
     if (!isIndexable(post)) continue;
     const tags = new Set(postTags(post));
     // Series label also counts toward hubs when present.
-    const series = (post.sbaTopicName || post.heading || "").trim().toLowerCase();
+    const series = (post.sbaTopicName || "").trim().toLowerCase();
     if (series) tags.add(series);
     for (const tag of tags) {
       counts.set(tag, (counts.get(tag) || 0) + 1);
@@ -84,7 +83,7 @@ export function essaysForTopicHub(posts: SubTopic[], tag: string): SubTopic[] {
     if (tags.includes(needle) || tags.some((t) => topicHubSlug(t) === slug)) {
       return true;
     }
-    const series = (post.sbaTopicName || post.heading || "").trim().toLowerCase();
+    const series = (post.sbaTopicName || "").trim().toLowerCase();
     return series === needle || topicHubSlug(series) === slug;
   });
 }

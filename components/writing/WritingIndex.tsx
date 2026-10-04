@@ -9,6 +9,10 @@ import { seriesHref } from "@/utils/services/getTopics";
 import { seriesStyle } from "@/lib/seriesColors";
 import { topicHubHref, topicHubSlug } from "@/lib/topicHubs";
 
+/** Only tags used by this many essays are shown as filters. */
+const MIN_TAG_ESSAYS = 2;
+const ACRONYMS = new Set(["ai", "nlp", "llm", "llms", "ml", "gpt", "bert", "api", "gpu"]);
+
 type Props = {
   posts: SubTopic[];
   series: Topic[];
@@ -33,10 +37,37 @@ export default function WritingIndex({
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 20;
 
-  const tags = useMemo(() => {
-    const set = new Set<string>();
-    posts.forEach((p) => postTags(p).forEach((t) => set.add(t)));
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  const { tags, tagLabels } = useMemo(() => {
+    const counts = new Map<string, number>();
+    const labels = new Map<string, string>();
+    posts.forEach((p) => {
+      const raw = (p.tags || "").split(",").map((t) => t.trim()).filter(Boolean);
+      const seen = new Set<string>();
+      raw.forEach((t) => {
+        const key = t.toLowerCase();
+        if (seen.has(key)) return;
+        seen.add(key);
+        counts.set(key, (counts.get(key) || 0) + 1);
+        const hasUpper = /[A-Z]/.test(t);
+        if (hasUpper && !labels.has(key)) labels.set(key, t);
+      });
+    });
+    const display = (key: string) =>
+      labels.get(key) ||
+      key
+        .split(/(\s+)/)
+        .map((w) =>
+          ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)
+        )
+        .join("");
+    const list = Array.from(counts.entries())
+      .filter(([, n]) => n >= MIN_TAG_ESSAYS)
+      .map(([key]) => key)
+      .sort((a, b) => a.localeCompare(b));
+    return {
+      tags: list,
+      tagLabels: new Map(list.map((k) => [k, display(k)] as const)),
+    };
   }, [posts]);
 
   const hubSet = useMemo(
@@ -178,7 +209,7 @@ export default function WritingIndex({
                           : "border-border text-muted-foreground hover:border-brand/40 hover:text-foreground",
                       ].join(" ")}
                     >
-                      {tag}
+                      {tagLabels.get(tag) || tag}
                     </Link>
                   </li>
                 );

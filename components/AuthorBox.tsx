@@ -2,6 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAboutConfig } from "@/lib/work";
 
+const OPTIMIZED_HOSTS = new Set([
+  "sbaweb-bucket.s3.ap-southeast-2.amazonaws.com",
+  "www.syedbaqirali.com",
+  "ai.syedbaqirali.com",
+]);
+
+function shouldOptimize(src: string): boolean {
+  if (src.startsWith("/") && !src.startsWith("//")) return true;
+  try {
+    const url = new URL(src);
+    return url.protocol === "https:" && OPTIMIZED_HOSTS.has(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 type Props = {
   className?: string;
 };
@@ -26,7 +42,7 @@ export default async function AuthorBox({ className = "" }: Props) {
         height={72}
         className='h-[72px] w-[72px] shrink-0 rounded-full object-cover ring-1 ring-border'
         sizes='72px'
-        unoptimized={about.photoUrl.startsWith("http")}
+        unoptimized={!shouldOptimize(about.photoUrl)}
       />
       <div className='flex flex-col gap-2'>
         <h2 id='author-box' className='font-display text-lg font-semibold'>
