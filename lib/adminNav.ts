@@ -72,6 +72,12 @@ export const ADMIN_NAV_SECTIONS: AdminNavSection[] = [
         menuLabel: "Manage Subscribers",
         description: "List, filter, and manage subscriptions",
       },
+      {
+        href: "/admin/comments",
+        label: "Comments",
+        menuLabel: "Moderate Comments",
+        description: "Approve or reject reader comments",
+      },
     ],
   },
 ];

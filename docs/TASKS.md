@@ -122,4 +122,9 @@ GitHub issues: owner said no.
 - Public: growth/rounded audience signal; self-send essay links via confirm email (HMAC token, rate limited, generic responses).
 - Backend: send logs + `payload_json`, drafts table, scheduler, header URL sanitize (https or site-relative only).
 - Hardening checks: newsletter unit tests green; FE typecheck/lint clean of errors. Deploy FE+BE from `overhaul/next` then `npm run post-deploy`.
-- Next after deploy: reader accounts + moderated comments MVP (separate from newsletter subscribers).
+
+### Reader comments (moderated MVP)
+
+- Essay comments: public approved list; authenticated submit as PENDING; admin approve/reject at `/admin/comments`.
+- Reader signup/login reused; `/secure/**` admin APIs gated to admin username (readers may only hit profile + comment POST).
+- Essay end CTA: subscribe if not subscribed; login/signup to comment; self-send behind a text link.

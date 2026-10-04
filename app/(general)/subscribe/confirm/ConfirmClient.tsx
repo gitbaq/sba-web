@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { newsletter_confirm_url } from "@/utils/endpoints/endpoints";
 import { trackEvent } from "@/lib/analytics";
 import { readJson } from "@/lib/http";
+import { markNewsletterSubscribed } from "@/lib/newsletterPreference";
 
 function ConfirmInner() {
   const searchParams = useSearchParams();
@@ -31,7 +32,10 @@ function ConfirmInner() {
         }>(res, {});
         if (cancelled) return;
         const status = data.status || "error";
-        setOk(status === "confirmed" || status === "already_confirmed");
+        const confirmed =
+          status === "confirmed" || status === "already_confirmed";
+        setOk(confirmed);
+        if (confirmed) markNewsletterSubscribed();
         setMessage(data.message || "Could not confirm.");
         trackEvent("subscribe_confirmed", { status });
       } catch {

@@ -45,6 +45,7 @@ const MANAGE_ICONS: Record<string, IconComp> = {
   "/admin/about": Icons.User,
   "/admin/newsletter": Icons.Mails,
   "/admin/subscribers": Icons.Users,
+  "/admin/comments": Icons.FaMessage,
 };
 
 function AdminNavLink({

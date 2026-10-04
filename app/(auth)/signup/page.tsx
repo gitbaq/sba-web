@@ -18,9 +18,11 @@ import Icons from "@/components/Icons";
 // import { redirect } from "next/navigation";
 import Link from "next/link";
 import { signup_url } from "@/utils/endpoints/endpoints";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import FormMessages from "@/components/FormMessages";
 import { readJson } from "@/lib/http";
+import { useRouter, useSearchParams } from "next/navigation";
+
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 );
@@ -48,14 +50,23 @@ const formSchema = z
     username: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    phone: z.string().regex(phoneRegex, "Invalid Number!"),
+    phone: z
+      .string()
+      .optional()
+      .refine(
+        (v) => !v || !v.trim() || phoneRegex.test(v),
+        "Invalid Number!"
+      ),
   })
   .refine((data) => data.password === data.confirm_password, {
     path: ["confirm_password"],
     error: "Passwords do not match",
   });
 
-export default function Signup() {
+function SignupForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -94,21 +105,31 @@ export default function Signup() {
       } else if (data.errors) {
         setError("Error: " + data.errors);
       } else {
-        setSuccess(`Welcome! ${data.firstName}`);
-        toast(`Welcome! ${data.firstName}`);
+        setSuccess(`Welcome! ${data.firstName || "You can log in now."}`);
+        toast("Account created. Log in to comment.");
+        const login = new URL("/login", window.location.origin);
+        if (callbackUrl && callbackUrl.startsWith("/")) {
+          login.searchParams.set("callbackUrl", callbackUrl);
+        }
+        router.push(login.pathname + login.search);
       }
     } catch (error) {
-      setError("" + error.message);
+      setError("" + (error as Error).message);
     } finally {
       setIsLoading(false);
     }
   }
 
+  const loginHref =
+    callbackUrl && callbackUrl.startsWith("/")
+      ? `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
+      : "/login";
+
   return (
     <main className='flex flex-col w-full items-center h-full py-3 px-2'>
       <div className='w-full max-w-lg'>
         <section className='flex flex-col w-full justify-start gap-1 p-2 bg-accent rounded-t-lg'>
-          <div className='text-lg font-semibold'>Signup</div>
+          <div className='text-lg font-semibold'>Sign up to comment</div>
         </section>
         <FormMessages error={error} success={success} />
         <Form {...form}>
@@ -182,7 +203,7 @@ export default function Signup() {
               </Button>
               <span className='text-xs'>
                 Already have an account?{" "}
-                <Link href='/login' className='icons text-sky-500'>
+                <Link href={loginHref} className='icons text-sky-500'>
                   Login
                 </Link>{" "}
                 here
@@ -192,6 +213,14 @@ export default function Signup() {
         </Form>
       </div>
     </main>
+  );
+}
+
+export default function Signup() {
+  return (
+    <Suspense fallback={<p className='p-8 text-muted-foreground'>Loading…</p>}>
+      <SignupForm />
+    </Suspense>
   );
 }
 
