@@ -25,8 +25,8 @@ export default function PrivacyPage() {
         </header>
       </div>
 
-      <main className='mx-auto flex w-full max-w-3xl flex-col gap-10 px-4 py-10 md:py-14'>
-        <section className='flex flex-col gap-3'>
+      <main className='page-stack mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
+        <section className='page-section flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Contact form</h2>
           <p className='leading-relaxed text-muted-foreground'>
             When you submit the contact form, I store your email, reason
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
           </p>
         </section>
 
-        <section className='flex flex-col gap-3'>
+        <section className='page-section flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Newsletter</h2>
           <p className='leading-relaxed text-muted-foreground'>
             If you subscribe, I store your email and the page you subscribed from
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
           </p>
         </section>
 
-        <section className='flex flex-col gap-3'>
+        <section className='page-section flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Analytics and ads</h2>
           <p className='leading-relaxed text-muted-foreground'>
             The site uses Google Analytics 4 for traffic, Vercel Analytics and
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
           </p>
         </section>
 
-        <section className='flex flex-col gap-3'>
+        <section className='page-section flex flex-col gap-3'>
           <h2 className='display-title text-2xl'>Contact</h2>
           <p className='leading-relaxed text-muted-foreground'>
             Questions about this policy: use the{" "}

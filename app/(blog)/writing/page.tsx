@@ -82,7 +82,7 @@ export default async function WritingPage({
         </header>
       </div>
 
-      <main className='mx-auto w-full max-w-3xl px-4 py-10 md:py-14 flex flex-col gap-14'>
+      <main className='page-stack mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
         {!searched ? (
           <StartHere
             posts={allPosts}
@@ -91,7 +91,7 @@ export default async function WritingPage({
         ) : null}
 
         {searched ? (
-          <p className='text-sm text-muted-foreground'>
+          <p className='page-section text-sm text-muted-foreground'>
             Showing server search results for “{(query || "").trim()}”.{" "}
             <Link
               href='/writing'
@@ -103,7 +103,7 @@ export default async function WritingPage({
         ) : null}
 
         {!searched && series.length > 0 && (
-          <section aria-labelledby='series-cards'>
+          <section aria-labelledby='series-cards' className='page-section'>
             <div className='mb-6 flex flex-wrap items-end justify-between gap-3'>
               <div>
                 <p className='accent-label mb-1'>Browse</p>
@@ -132,7 +132,7 @@ export default async function WritingPage({
         )}
 
         {!searched && hubs.length > 0 ? (
-          <p className='text-sm text-muted-foreground'>
+          <p className='page-section page-section-no-rule text-sm text-muted-foreground'>
             Topic hubs:{" "}
             <Link
               href='/writing/topics'
@@ -143,7 +143,7 @@ export default async function WritingPage({
           </p>
         ) : null}
 
-        <section aria-labelledby='all-essays'>
+        <section aria-labelledby='all-essays' className='page-section'>
           <div className='mb-6'>
             <p className='accent-label mb-1'>Library</p>
             <h2

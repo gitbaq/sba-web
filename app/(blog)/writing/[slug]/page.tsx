@@ -19,13 +19,13 @@ import {
 } from "@/lib/articles";
 import {
   getAllSubtopicsSorted,
-  relatedPosts,
   resolveArticle,
 } from "@/utils/services/getLatestSubtopics";
 import EditorLink from "@/components/editor/editorLink";
 import ArticleBody from "@/components/writing/ArticleBody";
 import ArticleToc from "@/components/writing/ArticleToc";
 import ArticleEndCta from "@/components/writing/ArticleEndCta";
+import PopularEssaysHero from "@/components/writing/PopularEssaysHero";
 import ReadingProgress from "@/components/writing/ReadingProgress";
 import StickySubscribeBar from "@/components/writing/StickySubscribeBar";
 import SeriesNav from "@/components/writing/SeriesNav";
@@ -36,11 +36,17 @@ import AuthorBox from "@/components/AuthorBox";
 import EssayShareActions from "@/components/EssayShareActions";
 import SubscribeForm from "@/components/SubscribeForm";
 import { findTopicForPost, getAllTopicsSafe } from "@/utils/services/getTopics";
+import { getHomePageConfig } from "@/lib/homeConfig";
+import {
+  loadPopularIds,
+  pickPopularFromOtherSeries,
+} from "@/lib/popularEssays";
 import { enrichPostsWithSeries } from "@/lib/topicHubs";
 import { seriesStyle } from "@/lib/seriesColors";
 import { breadcrumbJsonLd, pageMeta, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
+import EssayEngagement from "@/components/writing/EssayEngagement";
 import "./article.css";
 
 export const revalidate = 60;
@@ -99,11 +105,25 @@ export default async function WritingArticlePage({
     permanentRedirect(articleHref(subtopic));
   }
 
-  const topics = await getAllTopicsSafe();
-  const all = enrichPostsWithSeries(await getAllSubtopicsSorted(), topics);
+  const [topics, homeConfig, allPosts, popularIds] = await Promise.all([
+    getAllTopicsSafe(),
+    getHomePageConfig(),
+    getAllSubtopicsSorted(),
+    loadPopularIds(),
+  ]);
+  const enriched = enrichPostsWithSeries(allPosts, topics);
   const current = enrichPostsWithSeries([subtopic], topics)[0] || subtopic;
-  const related = relatedPosts(current, all, 3);
   const seriesTopic = findTopicForPost(topics, current);
+  const popular = pickPopularFromOtherSeries(enriched, {
+    currentId: current.id,
+    currentSeries: seriesTopic?.sbaTopicName || current.sbaTopicName,
+    popularIds,
+    preferredIds: [
+      ...(homeConfig.featuredEssayId ? [homeConfig.featuredEssayId] : []),
+      ...homeConfig.startHereEssayIds,
+    ],
+    limit: 3,
+  });
   const published = subtopic.publishDate || postDate(subtopic);
   const modified = articleModifiedDate(subtopic);
   const showUpdated = shouldShowUpdated(subtopic);
@@ -232,13 +252,6 @@ export default async function WritingArticlePage({
                   {` · ${minutes} min read`}
                 </span>
               </div>
-              <div className='ml-auto'>
-                <EssayShareActions
-                  url={url}
-                  title={subtopic.subHeading || subtopic.heading}
-                  summary={dek || subtopic.subHeading}
-                />
-              </div>
             </div>
           </header>
         </div>
@@ -288,9 +301,17 @@ export default async function WritingArticlePage({
         ) : null}
 
         <div className='mt-14 flex flex-col gap-10'>
-          <AuthorBox />
+          <EssayEngagement essayId={current.id} />
+          <EssayShareActions
+            variant='panel'
+            url={url}
+            title={subtopic.subHeading || subtopic.heading}
+            summary={dek || subtopic.subHeading}
+          />
           <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
-          <ArticleEndCta related={related} series={seriesTopic} />
+          <ArticleEndCta />
+          <AuthorBox />
+          <PopularEssaysHero posts={popular} />
         </div>
       </main>
     </>

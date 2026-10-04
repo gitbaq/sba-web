@@ -17,7 +17,7 @@ export default function StartHere({ posts, startHereIds }: Props) {
   return (
     <section
       aria-labelledby='start-here'
-      className='home-section home-section-no-rule'
+      className='page-section page-section-no-rule home-section home-section-no-rule'
     >
       <div className='mb-8'>
         <p className='accent-label mb-2'>Start here</p>

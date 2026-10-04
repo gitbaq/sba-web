@@ -33,6 +33,8 @@ export const ABOUT_WHAT_I_DO = [
   "Write about AI, software, and engineering practice.",
   "Build and ship products. Cobu is an AI brainstorming tool. Blox helps you plan goals and habits.",
   "Help teams modernize legacy systems and adopt AI safely.",
+  "Run teaching and workshops for engineering leads on AI and delivery practice.",
+  "Review technical manuscripts and co-author books on AI and software.",
 ] as const;
 
 export const ABOUT_CREDENTIALS: AboutCredential[] = [
