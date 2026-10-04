@@ -53,9 +53,9 @@ GitHub issues: owner said no.
 | P5-04 | 5 | Show every project consistently | done | overhaul/p5-through-p8 | Home lists Cobu + Blox with result lines |
 | P5-05 | 5 | Proof / testimonials | done | overhaul/p5-through-p8 | Manning reviewer + Amazon co-author; no fake client quotes |
 | P5-06 | 5 | Contact spam protection | done | overhaul/p5-through-p8 | Honeypot, rate limit, optional Turnstile, obfuscated email |
-| P5-07 | 5 | Optional service pages | backlog | — | Later when each service has real content |
+| P5-07 | 5 | Optional service pages | blocked | — | Blocked until each service has real content |
 | P6-01 | 6 | About bio and credentials | done | overhaul/p5-through-p8 | Teaching section; no visitor TODOs |
-| P6-02 | 6 | CV + hiring section | backlog | — | CV PDF later; `#hiring` uses LinkedIn + contact |
+| P6-02 | 6 | CV + hiring section | blocked | — | Blocked until CV PDF is available; `#hiring` uses LinkedIn + contact |
 | P6-03 | 6 | Simplify nav; retire /for/* | done | overhaul/p5-through-p8 | Nav + 301s to work-with-me / about#hiring / writing |
 | P7-01 | 7 | Image sizes and alts | done | overhaul/p5-through-p8 | Sidebar alts/sizes; about alt |
 | P7-02 | 7 | CloudFront | blocked | — | TODO(owner) |
@@ -69,8 +69,11 @@ GitHub issues: owner said no.
 | P8-04 | 8 | Post-deploy checklist automation | done | overhaul/p5-through-p8 | `npm run post-deploy` |
 | BL-01 | backlog | Branded HTML email shell (SES) | done | overhaul/p5-through-p8 | Shared HTML shell + CTA buttons; plain-text kept |
 | BL-02 | backlog | Simplify offers for readers/clients | done | overhaul/p5-through-p8 | Offer summary, credentials, related work per service, get-in-touch |
-| BL-03 | backlog | Per-service pages | todo | — | After each service has real content |
-| BL-04 | backlog | Teaching / workshops revenue | todo | — | Keep in plan; start with paid half-day workshop |
+| BL-03 | backlog | Per-service pages | blocked | — | Same as P5-07; unblock when service pages have real content |
+| BL-04 | backlog | Teaching / workshops revenue | done | — | Half-day workshop offer on `/work-with-me` |
+| BL-05 | backlog | Essay view counts | done | — | `/essays/v1/{id}/view` + stats; 12h visitor dedupe |
+| BL-06 | backlog | Engagement signals | done | — | Clap once per visitor; shown on essay pages |
+| BL-07 | backlog | Popular ranking from views | done | — | Popular strip prefers `/essays/v1/popular` then curated fallback |
 
 ## Phase verification log
 

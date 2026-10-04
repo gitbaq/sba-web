@@ -11,7 +11,7 @@ export type ServiceOffering = {
   problem: string;
   deliver: string;
   /** Visual accent for card distinction (left border + eyebrow). */
-  accent: "ai" | "cx" | "cloud" | "editorial";
+  accent: "ai" | "cloud" | "editorial" | "teach";
   indexLabel: string;
   /** Related case studies or essays. */
   related: RelatedLink[];
@@ -19,10 +19,11 @@ export type ServiceOffering = {
 
 export const SERVICE_ACCENT_CLASS: Record<ServiceOffering["accent"], string> = {
   ai: "border-l-brand bg-brand-muted/40",
-  cx: "border-l-teal-700 bg-teal-50/80 dark:border-l-teal-400 dark:bg-teal-950/30",
   cloud: "border-l-slate-600 bg-slate-50/90 dark:border-l-slate-300 dark:bg-slate-900/40",
   editorial:
     "border-l-amber-800 bg-amber-50/70 dark:border-l-amber-500/80 dark:bg-amber-950/25",
+  teach:
+    "border-l-emerald-800 bg-emerald-50/70 dark:border-l-emerald-500/80 dark:bg-emerald-950/25",
 };
 
 export const SERVICE_OFFERINGS: ServiceOffering[] = [
@@ -41,30 +42,33 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
     ],
   },
   {
-    slug: "ai-customer-experience",
-    title: "AI-driven customer experience",
-    forWhom: "Teams that want assistants or support automation without ops chaos.",
-    problem: "Support load grows faster than headcount; chatbots that frustrate customers.",
-    deliver:
-      "Assistants and workflows grounded in your content, with clear handoff to humans.",
-    accent: "cx",
-    indexLabel: "02",
-    related: [
-      { label: "Cobu case study", href: "/work/cobu" },
-      { label: "NLP writing", href: "/writing/series" },
-    ],
-  },
-  {
     slug: "cloud-integration",
     title: "Cloud integration",
     forWhom: "Teams modernizing systems that need room for AI and lower infra drag.",
     problem: "Legacy stacks that block releases, or cloud spend without clear ownership.",
     deliver: "Migration and integration on AWS, Azure, or GCP with operable defaults.",
     accent: "cloud",
-    indexLabel: "03",
+    indexLabel: "02",
     related: [
       { label: "Blox case study", href: "/work/blox" },
       { label: "Cobu case study", href: "/work/cobu" },
+    ],
+  },
+  {
+    slug: "teaching-workshops",
+    title: "Teaching and workshops",
+    forWhom:
+      "Engineering leads and teams who want a focused half-day on AI practice or modern delivery.",
+    problem:
+      "Teams need shared language and a practical starting point, not a multi-week course platform.",
+    deliver:
+      "A paid half-day workshop for engineering leads, built from the essay series on this site. Book a call to scope the day.",
+    accent: "teach",
+    indexLabel: "03",
+    related: [
+      { label: "Writing series", href: "/writing/series" },
+      { label: "Book a call", href: "https://calendly.com/syedbaqirali/30min" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {

@@ -37,6 +37,7 @@ import {
   Link2,
   ChevronDown,
   Settings2,
+  Heart,
 } from "lucide-react";
 
 import {
@@ -108,6 +109,7 @@ export const Icons = {
   Link: Link2,
   ChevronDown,
   Settings2,
+  Heart,
   FaUserTie,
   FaReadme,
   FaMessage,

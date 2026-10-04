@@ -10,17 +10,15 @@ const HeroComponent = () => {
       text: "Design and implement AI-powered applications (e.g., Generative AI, predictive analytics, NLP tools)",
     },
     {
-      id: 7,
-      heading: "AI-Driven CX",
-      text: "Positive Customer Experience, Intelligent chatbots, Virtual assistants, or Automated support systems enhance customer engagement while minimizing human intervention",
-      icon: "FaRobot",
-    },
-    {
       id: 4,
       heading: "Cloud Integration",
       text: "Modernize and migrate legacy Java applications to the cloud (AWS, Azure, GCP) for improved flexibility and reduced infrastructure costs and seamless integration with AI technologies",
     },
-
+    {
+      id: 6,
+      heading: "Teaching and workshops",
+      text: "A paid half-day workshop for engineering leads, built from the essay series on this site",
+    },
     {
       id: 5,
       heading: "Book review and authoring",

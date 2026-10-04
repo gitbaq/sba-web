@@ -41,6 +41,14 @@ export const media_list_url = baseURL + "/secure/media/v1";
 export const contact_url = baseURL + "/contact/v1";
 export const contact_secure_url = baseURL + "/secure/contact/v1";
 
+export const essay_stats_url = (essayId: number) =>
+  `${baseURL}/essays/v1/${essayId}/stats`;
+export const essay_view_url = (essayId: number) =>
+  `${baseURL}/essays/v1/${essayId}/view`;
+export const essay_clap_url = (essayId: number) =>
+  `${baseURL}/essays/v1/${essayId}/clap`;
+export const essay_popular_url = `${baseURL}/essays/v1/popular`;
+
 export const signup_url = baseURL + "/auth/v1/signup";
 export const login_url = baseURL + "/auth/v1/login3";
 // export const login_url = baseURLAuth + "/api/auth/signin";

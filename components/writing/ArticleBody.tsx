@@ -1,5 +1,10 @@
 import Image from "next/image";
-import parse, { Element, type HTMLReactParserOptions } from "html-react-parser";
+import parse, {
+  Element,
+  domToReact,
+  type HTMLReactParserOptions,
+  type DOMNode,
+} from "html-react-parser";
 
 /** Hosts allowed by `images.remotePatterns` in next.config.ts. */
 const OPTIMIZED_HOSTS = new Set([
@@ -27,6 +32,34 @@ function toDimension(value: string | undefined, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? Math.round(n) : fallback;
 }
 
+function mergeRel(existing: string | undefined): string {
+  const parts = new Set(
+    (existing || "")
+      .split(/\s+/)
+      .map((p) => p.trim().toLowerCase())
+      .filter(Boolean)
+  );
+  parts.add("noopener");
+  parts.add("noreferrer");
+  return [...parts].join(" ");
+}
+
+/** Map HTML anchor attribs to valid React props. */
+function anchorProps(
+  attribs: Record<string, string>
+): Record<string, string> {
+  const props: Record<string, string> = {};
+  for (const [key, value] of Object.entries(attribs)) {
+    if (key === "href" || key === "target" || key === "rel") continue;
+    if (key === "class" || key === "classname") {
+      props.className = value;
+      continue;
+    }
+    props[key] = value;
+  }
+  return props;
+}
+
 type Props = {
   html: string;
   /** Used to build alt text when an image has none. */
@@ -39,7 +72,24 @@ export default function ArticleBody({ html, title, className }: Props) {
   let imageCount = 0;
   const options: HTMLReactParserOptions = {
     replace(node) {
-      if (!(node instanceof Element) || node.name !== "img") return undefined;
+      if (!(node instanceof Element)) return undefined;
+
+      if (node.name === "a") {
+        const href = node.attribs.href;
+        if (!href || href.startsWith("#")) return undefined;
+        return (
+          <a
+            {...anchorProps(node.attribs)}
+            href={href}
+            target='_blank'
+            rel={mergeRel(node.attribs.rel)}
+          >
+            {domToReact(node.children as DOMNode[], options)}
+          </a>
+        );
+      }
+
+      if (node.name !== "img") return undefined;
       const src = node.attribs.src;
       if (!src) return undefined;
       imageCount += 1;

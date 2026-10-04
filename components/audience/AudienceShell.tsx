@@ -124,7 +124,7 @@ export default function AudienceShell({
         </header>
       </div>
 
-      <main className='mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-10 md:py-14'>
+      <main className='page-stack mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
         {children}
       </main>
     </div>

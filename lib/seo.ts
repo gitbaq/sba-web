@@ -195,6 +195,7 @@ export function professionalServiceJsonLd() {
       "Custom AI solutions",
       "Cloud integration",
       "Book review and authoring",
+      "Teaching and workshops",
     ],
   };
 }

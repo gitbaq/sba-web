@@ -62,8 +62,8 @@ export default async function About() {
         </div>
       </div>
 
-      <main className='mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-10 md:py-14'>
-        <section aria-labelledby='what-i-do'>
+      <main className='page-stack mx-auto w-full max-w-3xl px-4 py-10 md:py-14'>
+        <section aria-labelledby='what-i-do' className='page-section'>
           <p className='accent-label mb-2'>Practice</p>
           <h2
             id='what-i-do'
@@ -78,7 +78,7 @@ export default async function About() {
           </ul>
         </section>
 
-        <section aria-labelledby='credentials'>
+        <section aria-labelledby='credentials' className='page-section'>
           <p className='accent-label mb-2'>Background</p>
           <h2
             id='credentials'
@@ -92,7 +92,7 @@ export default async function About() {
         <section
           id='hiring'
           aria-labelledby='hiring-heading'
-          className='scroll-mt-24 life-panel'
+          className='page-section scroll-mt-24'
         >
           <p className='accent-label mb-2'>Hiring</p>
           <h2
@@ -121,7 +121,10 @@ export default async function About() {
           </div>
         </section>
 
-        <section aria-labelledby='next-step' className='life-panel'>
+        <section
+          aria-labelledby='next-step'
+          className='page-section life-panel'
+        >
           <p className='accent-label mb-2'>Next</p>
           <h2 id='next-step' className='display-title text-2xl md:text-3xl mb-3'>
             Stay in touch

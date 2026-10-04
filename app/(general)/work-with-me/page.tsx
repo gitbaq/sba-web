@@ -23,24 +23,6 @@ export const metadata: Metadata = pageMeta({
   path: "/work-with-me",
 });
 
-const process = [
-  {
-    step: "01",
-    title: "Listen and frame",
-    text: "Clarify the outcome, constraints, and success metrics before any architecture pitch.",
-  },
-  {
-    step: "02",
-    title: "Build the thin slice",
-    text: "Ship a credible vertical slice early. Proof over promises.",
-  },
-  {
-    step: "03",
-    title: "Harden and hand over",
-    text: "Production readiness, docs, and a path your team can own.",
-  },
-];
-
 export default async function WorkWithMePage() {
   const [studies, about] = await Promise.all([
     getWorkProjects(),
@@ -70,57 +52,10 @@ export default async function WorkWithMePage() {
           },
         ]}
       >
-        <section aria-labelledby='offer-summary' className='flex flex-col gap-4'>
-          <div>
-            <p className='accent-label mb-2'>In short</p>
-            <h2 id='offer-summary' className='display-title text-2xl md:text-3xl'>
-              Three ways to start
-            </h2>
-          </div>
-          <ol className='m-0 grid list-none gap-3 p-0 sm:grid-cols-3'>
-            <li className='rounded-xl border border-border/80 bg-card p-4'>
-              <p className='font-display font-semibold text-foreground'>1. Book a call</p>
-              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
-                A 30 minute call to frame the outcome.
-              </p>
-            </li>
-            <li className='rounded-xl border border-border/80 bg-card p-4'>
-              <p className='font-display font-semibold text-foreground'>2. Scope a thin slice</p>
-              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
-                One service below, sized to prove value before a larger build.
-              </p>
-            </li>
-            <li className='rounded-xl border border-border/80 bg-card p-4'>
-              <p className='font-display font-semibold text-foreground'>3. Or write first</p>
-              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
-                Prefer email? Use{" "}
-                <Link
-                  href='/contact'
-                  className='font-semibold text-brand underline-offset-4 hover:underline'
-                >
-                  Contact
-                </Link>{" "}
-                with reason Project.
-              </p>
-            </li>
-          </ol>
-        </section>
-
-        <section aria-labelledby='why-trust' className='flex flex-col gap-6'>
-          <div>
-            <p className='accent-label mb-2'>Credentials</p>
-            <h2 id='why-trust' className='display-title text-2xl md:text-3xl'>
-              Why teams hire me
-            </h2>
-            <p className='mt-2 max-w-xl text-muted-foreground'>
-              {about.title} 25+ years in software engineering. Essays, shipped
-              products, and practical delivery for teams.
-            </p>
-          </div>
-          <CredentialsStrip credentials={about.credentials} />
-        </section>
-
-        <section aria-labelledby='outcomes' className='flex flex-col gap-6'>
+        <section
+          aria-labelledby='outcomes'
+          className='page-section flex flex-col gap-6'
+        >
           <div>
             <p className='accent-label mb-2'>Services</p>
             <h2 id='outcomes' className='display-title text-2xl md:text-3xl'>
@@ -177,29 +112,66 @@ export default async function WorkWithMePage() {
           </ul>
         </section>
 
-        <section aria-labelledby='process' className='flex flex-col gap-6'>
+        <section
+          aria-labelledby='why-trust'
+          className='page-section flex flex-col gap-6'
+        >
           <div>
-            <p className='accent-label mb-2'>Process</p>
-            <h2 id='process' className='display-title text-2xl md:text-3xl'>
-              How engagements run
+            <p className='accent-label mb-2'>Credentials</p>
+            <h2 id='why-trust' className='display-title text-2xl md:text-3xl'>
+              Why teams hire me
+            </h2>
+            <p className='mt-2 max-w-xl text-muted-foreground'>
+              {about.title} 25+ years in software engineering. Essays, shipped
+              products, and practical delivery for teams.
+            </p>
+          </div>
+          <CredentialsStrip credentials={about.credentials} />
+        </section>
+
+        <section
+          aria-labelledby='offer-summary'
+          className='page-section page-section-band flex flex-col gap-5'
+        >
+          <div>
+            <p className='accent-label mb-2'>In short</p>
+            <h2 id='offer-summary' className='display-title text-2xl md:text-3xl'>
+              Three ways to start
             </h2>
           </div>
-          <ol className='m-0 grid list-none gap-4 p-0 sm:grid-cols-3'>
-            {process.map((p) => (
-              <li key={p.step} className='flex flex-col gap-2'>
-                <span className='font-display text-sm font-semibold text-brand'>
-                  {p.step}
-                </span>
-                <h3 className='font-display text-lg font-semibold'>{p.title}</h3>
-                <p className='text-sm leading-relaxed text-muted-foreground'>
-                  {p.text}
-                </p>
-              </li>
-            ))}
+          <ol className='m-0 grid list-none gap-5 p-0 sm:grid-cols-3 sm:gap-6'>
+            <li>
+              <p className='font-display font-semibold text-foreground'>1. Book a call</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                A 30 minute call to frame the outcome.
+              </p>
+            </li>
+            <li>
+              <p className='font-display font-semibold text-foreground'>2. Scope a thin slice</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                One service above, sized to prove value before a larger build.
+              </p>
+            </li>
+            <li>
+              <p className='font-display font-semibold text-foreground'>3. Or write first</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                Prefer email? Use{" "}
+                <Link
+                  href='/contact'
+                  className='font-semibold text-brand underline-offset-4 hover:underline'
+                >
+                  Contact
+                </Link>{" "}
+                with reason Project.
+              </p>
+            </li>
           </ol>
         </section>
 
-        <section aria-labelledby='proof' className='flex flex-col gap-6'>
+        <section
+          aria-labelledby='proof'
+          className='page-section flex flex-col gap-6'
+        >
           <div>
             <p className='accent-label mb-2'>Proof</p>
             <h2 id='proof' className='display-title text-2xl md:text-3xl'>
@@ -247,7 +219,7 @@ export default async function WorkWithMePage() {
         <section
           id='get-in-touch'
           aria-labelledby='engagement'
-          className='life-panel scroll-mt-24'
+          className='page-section life-panel scroll-mt-24'
         >
           <p className='accent-label mb-2'>Get in touch</p>
           <h2 id='engagement' className='display-title mb-3 text-2xl'>

@@ -1008,26 +1008,49 @@ main a:not([class*="article-entry"]):not([class*="button"]):not(
   background: hsl(var(--background));
 }
 
+/* Shared section rhythm for multi-section pages (hairline, not boxes). */
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.page-section,
 .home-section {
   position: relative;
   padding-block: 0.25rem;
 }
 
+.page-stack > .page-section + .page-section,
 .home-section + .home-section {
   margin-top: 0.5rem;
-  padding-top: 2.5rem;
+  padding-top: 2.75rem;
   border-top: 1px solid hsl(var(--border) / 0.9);
 }
 
-.home-section + .home-section-no-rule {
+.home-section + .home-section-no-rule,
+.page-stack > .page-section + .page-section-no-rule {
   border-top: none;
 }
 
+/* Band and life-panel already frame themselves: no hairline into them. */
+.page-stack > .page-section + .page-section-band,
+.page-stack > .page-section + .page-section.life-panel,
 .home-section + .home-section-band,
-.home-section-band + .home-section {
+.home-section + .home-section.life-panel {
   border-top: none;
   padding-top: 0.25rem;
-  margin-top: 0.25rem;
+  margin-top: 1.5rem;
+}
+
+/* After a band or panel, keep space without a second rule. */
+.page-stack > .page-section-band + .page-section,
+.page-stack > .page-section.life-panel + .page-section,
+.home-section-band + .home-section,
+.home-section.life-panel + .home-section {
+  margin-top: 1.5rem;
+  padding-top: 2.75rem;
+  border-top: none;
 }
 
 /* Hero subscribe: panel border provides separation (no HR) */
@@ -1060,6 +1083,7 @@ main a:not([class*="article-entry"]):not([class*="button"]):not(
   box-shadow: none;
 }
 
+.page-section-band,
 .home-section-band {
   padding: 1.75rem 1.5rem;
   border-radius: 1.25rem;
@@ -1073,6 +1097,7 @@ main a:not([class*="article-entry"]):not([class*="button"]):not(
     hsl(214 28% 97% / 0.85);
 }
 
+.dark .page-section-band,
 .dark .home-section-band {
   background:
     radial-gradient(
