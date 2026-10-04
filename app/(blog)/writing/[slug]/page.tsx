@@ -47,6 +47,8 @@ import { breadcrumbJsonLd, pageMeta, SITE } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
 import EssayEngagement from "@/components/writing/EssayEngagement";
+import EssayComments from "@/components/writing/EssayComments";
+import { fetchApprovedComments } from "@/lib/essayComments";
 import "./article.css";
 
 export const revalidate = 60;
@@ -140,6 +142,7 @@ export default async function WritingArticlePage({
   const topicLabel = seriesTopic?.sbaTopicName || current.sbaTopicName || "";
   const url = `${web_url}${articleHref(subtopic)}`;
   const dek = subtopic.dek?.trim();
+  const approvedComments = await fetchApprovedComments(current.id);
   const tldr = subtopic.tldr?.trim();
 
   const articleLd = {
@@ -307,6 +310,10 @@ export default async function WritingArticlePage({
             url={url}
             title={subtopic.subHeading || subtopic.heading}
             summary={dek || subtopic.subHeading}
+          />
+          <EssayComments
+            essayId={current.id}
+            initialComments={approvedComments}
           />
           <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
           <ArticleEndCta essayId={current.id} />

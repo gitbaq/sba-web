@@ -21,6 +21,7 @@ import FormMessages from "@/components/FormMessages";
 import { trackEvent } from "@/lib/analytics";
 import { readJson } from "@/lib/http";
 import { SUBSCRIBE } from "@/lib/copy";
+import { markNewsletterSubscribed } from "@/lib/newsletterPreference";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -41,9 +42,12 @@ const VARIANT_WRAP: Record<SubscribeVariant, string> = {
 export default function SubscribeForm({
   submitLabel = "Subscribe",
   variant = "hero",
+  onSubscribed,
 }: {
   submitLabel?: string;
   variant?: SubscribeVariant;
+  /** Called after a successful subscribe or already-subscribed response. */
+  onSubscribed?: () => void;
 }) {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
@@ -103,6 +107,8 @@ export default function SubscribeForm({
         setSuccess(message);
         toast(message);
         form.reset({ email: "", company_url: "" });
+        markNewsletterSubscribed();
+        onSubscribed?.();
         return;
       }
 
@@ -117,6 +123,8 @@ export default function SubscribeForm({
       setSuccess(message || SUBSCRIBE.success);
       toast(SUBSCRIBE.success);
       form.reset({ email: "", company_url: "" });
+      markNewsletterSubscribed();
+      onSubscribed?.();
     } catch (err) {
       trackEvent("subscribe_submit", { status: "error" });
       setError("" + (err as Error).message);

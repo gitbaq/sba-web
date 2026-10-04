@@ -71,6 +71,15 @@ export const essay_view_url = (essayId: number) =>
 export const essay_clap_url = (essayId: number) =>
   `${baseURL}/essays/v1/${essayId}/clap`;
 export const essay_popular_url = `${baseURL}/essays/v1/popular`;
+export const essay_comments_url = (essayId: number) =>
+  `${baseURL}/essays/v1/${essayId}/comments`;
+export const essay_comment_submit_url = (essayId: number) =>
+  `${baseURL}/secure/essays/${essayId}/comments`;
+export const comments_admin_url = `${baseURL}/secure/comments/v1`;
+export const comments_approve_url = (id: number) =>
+  `${baseURL}/secure/comments/v1/${id}/approve`;
+export const comments_reject_url = (id: number) =>
+  `${baseURL}/secure/comments/v1/${id}/reject`;
 
 export const signup_url = baseURL + "/auth/v1/signup";
 export const login_url = baseURL + "/auth/v1/login3";

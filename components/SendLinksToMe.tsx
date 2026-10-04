@@ -10,13 +10,19 @@ import { Label } from "@/components/ui/label";
 type Props = {
   essayIds: number[];
   className?: string;
+  /** Shorter copy when revealed from the essay end CTA. */
+  compact?: boolean;
 };
 
 /**
  * Confirmed subscribers can email selected essay links to themselves.
  * Uses a honeypot + generic success copy so membership is not leaked.
  */
-export default function SendLinksToMe({ essayIds, className = "" }: Props) {
+export default function SendLinksToMe({
+  essayIds,
+  className = "",
+  compact = false,
+}: Props) {
   const [email, setEmail] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,14 +75,20 @@ export default function SendLinksToMe({ essayIds, className = "" }: Props) {
       <div>
         <h2
           id='send-links-heading'
-          className='font-display text-lg font-semibold text-foreground'
+          className={
+            compact
+              ? "font-display text-base font-semibold text-foreground"
+              : "font-display text-lg font-semibold text-foreground"
+          }
         >
-          Email these essays to yourself
+          {compact
+            ? "Email this essay to yourself"
+            : "Email these essays to yourself"}
         </h2>
         <p className='mt-1 text-sm text-muted-foreground'>
-          Confirmed subscribers only. We email a confirmation link first, so
-          nobody can send mail to an address they do not own. We never say
-          whether an address is on the list.
+          {compact
+            ? "Confirmed subscribers only. We send a confirmation link first."
+            : "Confirmed subscribers only. We email a confirmation link first, so nobody can send mail to an address they do not own. We never say whether an address is on the list."}
         </p>
       </div>
       <div className='flex flex-col gap-2 sm:flex-row sm:items-end'>
