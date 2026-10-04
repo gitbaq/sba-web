@@ -7,6 +7,7 @@ import { work_projects_secure_url } from "@/utils/endpoints/endpoints";
 import { CaseStudy } from "@/lib/work";
 import { readJson } from "@/lib/http";
 import MediaPicker from "@/components/admin/MediaPicker";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +54,7 @@ function emptyDraft(): Draft {
 
 export default function WorkAdminClient() {
   const { token, isAdmin } = useAuth();
+  const confirm = useConfirm();
   const [rows, setRows] = useState<Draft[]>([]);
   const [editing, setEditing] = useState<Draft | null>(null);
   const [loading, setLoading] = useState(false);
@@ -104,6 +106,14 @@ export default function WorkAdminClient() {
 
   async function saveProject(draft: Draft) {
     if (!token) return;
+    const ok = await confirm({
+      title: draft.id ? "Save project changes?" : "Create this project?",
+      description: draft.id
+        ? `Update “${draft.title || draft.slug}” on the live Work pages.`
+        : `Add “${draft.title || draft.slug}” to the Work portfolio.`,
+      confirmLabel: draft.id ? "Save" : "Create",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const body = {
@@ -151,6 +161,14 @@ export default function WorkAdminClient() {
 
   async function toggleVisible(row: Draft, visible: boolean) {
     if (!token || !row.id) return;
+    const ok = await confirm({
+      title: visible ? "Show this project?" : "Hide this project?",
+      description: visible
+        ? `“${row.title}” will appear on Work pages.`
+        : `“${row.title}” will be hidden from Work pages.`,
+      confirmLabel: visible ? "Show" : "Hide",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(work_projects_secure_url, {
@@ -203,7 +221,13 @@ export default function WorkAdminClient() {
 
   async function remove(row: Draft) {
     if (!token || !row.id) return;
-    if (!window.confirm(`Delete project “${row.title}”?`)) return;
+    const ok = await confirm({
+      title: `Delete “${row.title}”?`,
+      description: "This removes the project from admin and the live site. This cannot be undone.",
+      confirmLabel: "Delete",
+      variant: "destructive",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(`${work_projects_secure_url}/${row.id}`, {

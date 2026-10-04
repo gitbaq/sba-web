@@ -10,6 +10,7 @@ import {
   topics_secure_url,
 } from "@/utils/endpoints/endpoints";
 import { readJson } from "@/lib/http";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +25,7 @@ function essayTitle(essay: SubTopic): string {
 
 export default function SeriesAdminClient() {
   const { token } = useAuth();
+  const confirm = useConfirm();
   const [rows, setRows] = useState<SeriesRow[]>([]);
   const [essays, setEssays] = useState<SubTopic[]>([]);
   const [newName, setNewName] = useState("");
@@ -85,6 +87,12 @@ export default function SeriesAdminClient() {
 
   async function createSeries() {
     if (!token || !newName.trim()) return;
+    const ok = await confirm({
+      title: "Create this series?",
+      description: `Add “${newName.trim()}” to the series list.`,
+      confirmLabel: "Create",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(topics_secure_url, {
@@ -116,6 +124,12 @@ export default function SeriesAdminClient() {
       toast.error("Name is required");
       return;
     }
+    const ok = await confirm({
+      title: "Save series name?",
+      description: `Rename this series to “${name}”.`,
+      confirmLabel: "Save",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(topics_secure_url, {
@@ -142,6 +156,15 @@ export default function SeriesAdminClient() {
 
   async function setSeriesActive(row: SeriesRow, active: boolean) {
     if (!token) return;
+    const label = row.draftName || row.sbaTopicName || "this series";
+    const ok = await confirm({
+      title: active ? "Activate series?" : "Deactivate series?",
+      description: active
+        ? `“${label}” will show as an active series.`
+        : `“${label}” will be deactivated.`,
+      confirmLabel: active ? "Activate" : "Deactivate",
+    });
+    if (!ok) return;
     setRows((prev) =>
       prev.map((r) => (r.id === row.id ? { ...r, isPublished: active } : r))
     );
@@ -172,6 +195,14 @@ export default function SeriesAdminClient() {
 
   async function reassignEssay(essayId: number, targetTopicId: number) {
     if (!token) return;
+    const ok = await confirm({
+      title: targetTopicId ? "Move this essay?" : "Remove essay from series?",
+      description: targetTopicId
+        ? "The essay will move to the selected series."
+        : "The essay will leave this series.",
+      confirmLabel: targetTopicId ? "Move" : "Remove",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(subtopics_secure_url, {
@@ -198,6 +229,15 @@ export default function SeriesAdminClient() {
     if (!token) return;
     const list = essaysBySeries.get(fromSeriesId) || [];
     if (list.length === 0) return;
+    const ok = await confirm({
+      title: toTopicId ? "Move all essays?" : "Remove all essays from series?",
+      description: toTopicId
+        ? `Move ${list.length} essay(s) to the selected series.`
+        : `Remove ${list.length} essay(s) from this series.`,
+      confirmLabel: toTopicId ? "Move all" : "Remove all",
+      variant: "destructive",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       for (const essay of list) {
@@ -235,13 +275,13 @@ export default function SeriesAdminClient() {
       );
       return;
     }
-    if (
-      !window.confirm(
-        `Delete series “${row.draftName || row.sbaTopicName}”? This cannot be undone.`
-      )
-    ) {
-      return;
-    }
+    const ok = await confirm({
+      title: `Delete “${row.draftName || row.sbaTopicName}”?`,
+      description: "This cannot be undone.",
+      confirmLabel: "Delete",
+      variant: "destructive",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
       const res = await fetch(`${topics_secure_url}/${row.id}`, {

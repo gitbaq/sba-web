@@ -1,15 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/utils/AuthContext";
-import {
-  about_config_secure_url,
-  media_upload_url,
-} from "@/utils/endpoints/endpoints";
+import { about_config_secure_url } from "@/utils/endpoints/endpoints";
 import { AboutConfig, Credential, FALLBACK_ABOUT } from "@/lib/work";
 import { readJson } from "@/lib/http";
+import MediaPicker from "@/components/admin/MediaPicker";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,10 +15,10 @@ import { toast } from "sonner";
 
 export default function AboutAdminClient() {
   const { token, isAdmin } = useAuth();
+  const confirm = useConfirm();
   const [form, setForm] = useState<AboutConfig>(FALLBACK_ABOUT);
   const [credText, setCredText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [ready, setReady] = useState(false);
 
   const load = useCallback(async () => {
@@ -71,79 +69,75 @@ export default function AboutAdminClient() {
       });
   }
 
-  async function uploadPhoto(file: File) {
+  async function persistAbout(next: AboutConfig, successMessage: string) {
     if (!token) return;
-    const maxBytes = 10 * 1024 * 1024;
-    if (file.size > maxBytes) {
-      toast.error("Image must be 10MB or smaller");
-      return;
+    const res = await fetch(about_config_secure_url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        ...next,
+        credentials: parseCredentials(credText),
+      }),
+    });
+    if (!res.ok) {
+      const err = await readJson<{
+        message?: string;
+        detail?: string;
+        errors?: string[];
+      } | null>(res, null);
+      throw new Error(
+        err?.errors?.[0] || err?.message || err?.detail || "Save failed"
+      );
     }
-    setUploading(true);
     try {
-      const body = new FormData();
-      body.append("file", file);
-      const res = await fetch(`${media_upload_url}?folder=about`, {
+      await fetch("/api/admin/revalidate", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paths: ["/", "/about", "/work-with-me"],
+          tag: "about-config",
+        }),
       });
-      if (!res.ok) {
-        const err = await readJson<{
-          message?: string;
-          detail?: string;
-          errors?: string[];
-        } | null>(res, null);
-        throw new Error(
-          err?.errors?.[0] || err?.message || err?.detail || "Upload failed"
-        );
-      }
-      const data = await readJson<{ url?: string } | null>(res, null);
-      if (!data?.url) throw new Error("No URL returned");
-      setForm((prev) => ({ ...prev, photoUrl: data.url! }));
-      toast.success("Photo uploaded");
+    } catch {
+      /* best-effort */
+    }
+    toast.success(successMessage);
+    await load();
+  }
+
+  async function commitPhoto(url: string) {
+    const ok = await confirm({
+      title: "Save this photo?",
+      description: "This updates the About photo on the live site.",
+      confirmLabel: "Save photo",
+    });
+    if (!ok) return;
+    const next = { ...form, photoUrl: url };
+    setForm(next);
+    setLoading(true);
+    try {
+      await persistAbout(next, "Photo saved");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
+      toast.error(e instanceof Error ? e.message : "Could not save photo");
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   }
 
   async function save() {
     if (!token) return;
+    const ok = await confirm({
+      title: "Save About page?",
+      description: "This publishes photo, bio, and credentials changes.",
+      confirmLabel: "Save",
+    });
+    if (!ok) return;
     setLoading(true);
     try {
-      const res = await fetch(about_config_secure_url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...form,
-          credentials: parseCredentials(credText),
-        }),
-      });
-      if (!res.ok) {
-        const err = await readJson<{ message?: string; detail?: string } | null>(
-          res,
-          null
-        );
-        throw new Error(err?.message || err?.detail || "Save failed");
-      }
-      try {
-        await fetch("/api/admin/revalidate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            paths: ["/", "/about", "/work-with-me"],
-            tag: "about-config",
-          }),
-        });
-      } catch {
-        /* best-effort */
-      }
-      toast.success("About page updated");
-      await load();
+      await persistAbout(form, "About page updated");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not save");
     } finally {
@@ -173,49 +167,21 @@ export default function AboutAdminClient() {
     <div className='flex flex-col gap-8'>
       <section className='rounded-xl border border-border bg-card p-5 flex flex-col gap-4'>
         <h2 className='font-display text-lg font-semibold'>Photo</h2>
-        <div className='flex flex-col gap-4 sm:flex-row sm:items-start'>
-          <div className='relative h-28 w-28 shrink-0 overflow-hidden rounded-full bg-secondary ring-1 ring-border'>
-            <Image
-              src={form.photoUrl || FALLBACK_ABOUT.photoUrl}
-              alt='About photo preview'
-              fill
-              className='object-cover'
-              sizes='112px'
-              unoptimized={form.photoUrl?.startsWith("http")}
-            />
-          </div>
-          <div className='flex-1 flex flex-col gap-3'>
-            <div>
-              <Label htmlFor='photo-url'>Photo URL</Label>
-              <Input
-                id='photo-url'
-                value={form.photoUrl}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, photoUrl: e.target.value }))
-                }
-                placeholder='/sba-photo-2-small.png'
-              />
-            </div>
-            <div>
-              <Label htmlFor='photo-file'>Or upload image</Label>
-              <Input
-                id='photo-file'
-                type='file'
-                accept='image/jpeg,image/png,image/webp,image/gif'
-                disabled={uploading || loading}
-                className='mt-1 cursor-pointer'
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) void uploadPhoto(file);
-                }}
-              />
-              <p className='mt-1 text-xs text-muted-foreground'>
-                JPEG, PNG, WebP, or GIF up to 10MB. Uploads to S3 when
-                configured. Otherwise paste a public URL.
-              </p>
-            </div>
-          </div>
-        </div>
+        <MediaPicker
+          label='Photo'
+          value={form.photoUrl}
+          roundPreview
+          defaultPrefix='about/'
+          uploadFolder='about'
+          onSelect={(url) =>
+            setForm((prev) => ({ ...prev, photoUrl: url }))
+          }
+          onCommit={(url) => commitPhoto(url)}
+        />
+        <p className='text-xs text-muted-foreground'>
+          Choose from S3 (defaults to the about/ folder; clear the prefix to
+          browse all), upload a new image, or paste a URL and click Save.
+        </p>
       </section>
 
       <section className='rounded-xl border border-border bg-card p-5 flex flex-col gap-4'>
