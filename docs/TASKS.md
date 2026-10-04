@@ -67,9 +67,10 @@ GitHub issues: owner said no.
 | P8-02 | 8 | Uptime / errors | blocked | — | Owner: see `docs/ops-monitoring.md` |
 | P8-03 | 8 | Admin subscriber metrics | done | overhaul/p5-through-p8 | `/secure/newsletter/v1/stats` + admin UI |
 | P8-04 | 8 | Post-deploy checklist automation | done | overhaul/p5-through-p8 | `npm run post-deploy` |
-| BL-01 | backlog | Branded HTML email shell (SES) | todo | — | Confirm/welcome/essay: shared shell, button CTA, plain-text kept; no paid ESP |
-| BL-02 | backlog | Simplify offers for readers/clients | todo | — | Clear offer, credentials, related work, contact path |
-| BL-03 | backlog | Per-service pages | todo | — | After BL-02 has enough content |
+| BL-01 | backlog | Branded HTML email shell (SES) | done | overhaul/p5-through-p8 | Shared HTML shell + CTA buttons; plain-text kept |
+| BL-02 | backlog | Simplify offers for readers/clients | done | overhaul/p5-through-p8 | Offer summary, credentials, related work per service, get-in-touch |
+| BL-03 | backlog | Per-service pages | todo | — | After each service has real content |
+| BL-04 | backlog | Teaching / workshops revenue | todo | — | Keep in plan; start with paid half-day workshop |
 
 ## Phase verification log
 

@@ -202,14 +202,12 @@ Value: quality that supports every earlier phase.
 
 ## 8. Backlog (not scheduled)
 
-- Simplify reader and client paths: clearer offers, credentials, related work per service, and how to get in touch.
-- Per-service pages at `/work-with-me/[service]` when there is real content for each.
+- Per-service pages at `/work-with-me/[service]` when there is real content for each (BL-03).
+- Teaching / workshops as a revenue stream (BL-04): start with a paid half-day workshop for engineering leads, sold via Calendly; curriculum from one essay series; later a recorded cohort or corporate in-house day. No course platform first.
 - CloudFront CDN in front of EC2 (P7-02).
 - Free uptime and error monitoring setup (P8-02, `docs/ops-monitoring.md`).
-- Branded HTML email shell for SES (confirm, welcome, essay issue): table layout, inline styles, button CTA, header/footer, keep plain-text part. Stay on SES; no paid ESP.
 - Downloadable CV PDF and short career timeline on `/about#hiring`.
 - Free PDF primer from a series as a signup incentive.
 - Public archive of sent newsletter issues.
-- Teaching and workshops page.
 - Cross-posting workflow to Substack and LinkedIn with a canonical link back.
 - Print-friendly essay view.
