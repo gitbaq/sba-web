@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 /**
- * Footer Login link. Always lands on Admin home after login
- * (proxy still sets callbackUrl when guarding /admin or /editor).
+ * Footer Login link. Keep href static (no callbackUrl) for CDN/HTML cacheability.
+ * Login page defaults to /admin; proxy still sets callbackUrl for guarded routes.
  */
 export default function LoginLink({
   className,
@@ -12,11 +12,7 @@ export default function LoginLink({
   children?: React.ReactNode;
 }) {
   return (
-    <Link
-      href='/login?callbackUrl=%2Fadmin'
-      className={className}
-      prefetch={false}
-    >
+    <Link href='/login' className={className} prefetch={false}>
       {children}
     </Link>
   );
