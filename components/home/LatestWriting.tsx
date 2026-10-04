@@ -34,7 +34,7 @@ export default function LatestWriting({
             href='/subscribe'
             className='text-brand underline-offset-4 hover:underline'
           >
-            Subscribe
+            Subscribe to Newsletter
           </Link>{" "}
           to get them by email.
         </p>

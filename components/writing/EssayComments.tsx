@@ -164,7 +164,7 @@ export default function EssayComments({
           >
             sign up
           </Link>{" "}
-          to comment, or email this essay to yourself if you already subscribe.
+          to leave a comment. Reader accounts are free.
         </p>
       )}
     </section>

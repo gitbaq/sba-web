@@ -64,7 +64,7 @@ export default async function WritingPage({
               href='/subscribe'
               className='text-brand font-semibold underline-offset-4 hover:underline'
             >
-              Subscribe
+              Subscribe to Newsletter
             </Link>
             <a
               href='/feed.xml'

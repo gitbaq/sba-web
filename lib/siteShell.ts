@@ -7,7 +7,7 @@ export const PRIMARY_NAV = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/work-with-me", label: "Work with me" },
-  { href: "/subscribe", label: "Subscribe", emphasize: true },
+  { href: "/subscribe", label: "Subscribe to Newsletter", emphasize: true },
 ] as const;
 
 /** Footer Explore column. Login is rendered separately (client return URL). */
@@ -16,7 +16,7 @@ export const FOOTER_NAV = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/work-with-me", label: "Work with me" },
-  { href: "/subscribe", label: "Subscribe" },
+  { href: "/subscribe", label: "Subscribe to Newsletter" },
   { href: "/writing/series", label: "Series" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },

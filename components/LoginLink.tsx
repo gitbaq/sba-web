@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 /**
- * Footer Login link. Keep href static (no callbackUrl) for CDN/HTML cacheability.
- * Login page defaults to /admin; proxy still sets callbackUrl for guarded routes.
+ * Footer admin entry. Keep href static (no callbackUrl) for CDN/HTML cacheability.
+ * Readers sign in from essay comment CTAs (/login?callbackUrl=…), not here.
  */
 export default function LoginLink({
   className,
-  children = "Login",
+  children = "Admin login",
 }: {
   className?: string;
   children?: React.ReactNode;

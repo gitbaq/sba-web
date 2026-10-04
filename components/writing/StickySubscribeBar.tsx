@@ -43,7 +43,7 @@ export default function StickySubscribeBar() {
   return (
     <div
       role='region'
-      aria-label='Subscribe prompt'
+      aria-label='Subscribe to newsletter prompt'
       className='fixed bottom-0 inset-x-0 z-40 border-t border-border bg-background/95 backdrop-blur-sm p-3 md:p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]'
     >
       <div className='mx-auto max-w-3xl flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4'>

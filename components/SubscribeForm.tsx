@@ -40,7 +40,7 @@ const VARIANT_WRAP: Record<SubscribeVariant, string> = {
 };
 
 export default function SubscribeForm({
-  submitLabel = "Subscribe",
+  submitLabel = "Subscribe to Newsletter",
   variant = "hero",
   onSubscribed,
 }: {

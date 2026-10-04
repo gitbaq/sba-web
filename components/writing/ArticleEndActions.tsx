@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
 import SubscribeForm from "@/components/SubscribeForm";
@@ -12,9 +10,11 @@ import {
   markNewsletterSubscribed,
 } from "@/lib/newsletterPreference";
 
-/** Essay-end subscribe + optional self-send, without two competing forms. */
+/**
+ * Essay-end newsletter block only.
+ * Comment login/signup lives in EssayComments so the two jobs stay separate.
+ */
 export default function ArticleEndActions({ essayId }: { essayId?: number }) {
-  const pathname = usePathname();
   const [subscribed, setSubscribed] = useState(false);
   const [showSend, setShowSend] = useState(false);
 
@@ -27,12 +27,8 @@ export default function ArticleEndActions({ essayId }: { essayId?: number }) {
     setSubscribed(true);
   }
 
-  const callback = encodeURIComponent(pathname || "/writing");
-  const loginHref = `/login?callbackUrl=${callback}`;
-  const signupHref = `/signup?callbackUrl=${callback}`;
-
   return (
-    <aside className='flex flex-col gap-5 border-t border-border pt-10 max-w-xl'>
+    <aside className='flex flex-col gap-4 border-t border-border pt-10 max-w-xl'>
       {!subscribed ? (
         <div className='flex flex-col gap-3'>
           <p className='accent-label'>{SUBSCRIBE.eyebrow}</p>
@@ -57,52 +53,28 @@ export default function ArticleEndActions({ essayId }: { essayId?: number }) {
             </a>
           </p>
         </div>
-      ) : null}
+      ) : (
+        <div className='flex flex-col gap-1'>
+          <p className='accent-label'>{SUBSCRIBE.eyebrow}</p>
+          <p className='text-sm text-muted-foreground'>
+            You are on the list for new essays.
+          </p>
+        </div>
+      )}
 
       {essayId ? (
         <div className='flex flex-col gap-3'>
-          <p className='text-sm leading-relaxed text-muted-foreground'>
-            <Link
-              href={loginHref}
+          <p className='text-sm text-muted-foreground'>
+            {subscribed ? "Want a copy in your inbox? " : "Already subscribed? "}
+            <button
+              type='button'
+              onClick={() => setShowSend((v) => !v)}
               className='font-semibold text-brand underline-offset-4 hover:underline'
+              aria-expanded={showSend}
             >
-              Log in
-            </Link>
-            {" or "}
-            <Link
-              href={signupHref}
-              className='font-semibold text-brand underline-offset-4 hover:underline'
-            >
-              sign up
-            </Link>{" "}
-            to comment
-            {subscribed ? (
-              <>
-                , or{" "}
-                <button
-                  type='button'
-                  onClick={() => setShowSend((v) => !v)}
-                  className='font-semibold text-brand underline-offset-4 hover:underline'
-                  aria-expanded={showSend}
-                >
-                  email this essay to yourself
-                </button>
-                .
-              </>
-            ) : (
-              <>
-                . Already subscribed?{" "}
-                <button
-                  type='button'
-                  onClick={() => setShowSend((v) => !v)}
-                  className='font-semibold text-brand underline-offset-4 hover:underline'
-                  aria-expanded={showSend}
-                >
-                  Email this essay to yourself
-                </button>
-                .
-              </>
-            )}
+              Email this essay to yourself
+            </button>
+            .
           </p>
 
           {showSend ? (
