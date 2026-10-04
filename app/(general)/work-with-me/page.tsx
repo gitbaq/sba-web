@@ -2,8 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 import AudienceShell from "@/components/audience/AudienceShell";
 import CaseStudyCard from "@/components/work/CaseStudyCard";
+import CredentialsStrip from "@/components/CredentialsStrip";
 import JsonLd from "@/components/JsonLd";
-import { CALENDLY_URL, getWorkProjects } from "@/lib/work";
+import {
+  CALENDLY_URL,
+  getAboutConfig,
+  getWorkProjects,
+} from "@/lib/work";
 import { pageMeta, professionalServiceJsonLd } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SERVICE_ACCENT_CLASS, SERVICE_OFFERINGS } from "@/lib/services";
@@ -14,7 +19,7 @@ export const revalidate = 60;
 export const metadata: Metadata = pageMeta({
   title: "Work with me",
   description:
-    "Book a 30 minute call. Delivery across AI, cloud, and software systems, with selected case studies.",
+    "Book a 30 minute call. AI, cloud, and software delivery with clear outcomes, credentials, and case studies.",
   path: "/work-with-me",
 });
 
@@ -37,15 +42,18 @@ const process = [
 ];
 
 export default async function WorkWithMePage() {
-  const studies = await getWorkProjects();
+  const [studies, about] = await Promise.all([
+    getWorkProjects(),
+    getAboutConfig(),
+  ]);
 
   return (
     <>
       <JsonLd data={professionalServiceJsonLd()} />
       <AudienceShell
         eyebrow='Clients'
-        title='Outcomes over slide decks'
-        description='Practical delivery across AI, cloud, and software systems. Writing that explains the why, not just the what.'
+        title='What I offer'
+        description='AI product slices, cloud integration, and release automation for teams that need shipped outcomes, not slide decks.'
         ctas={[
           {
             href: CALENDLY_URL,
@@ -62,18 +70,73 @@ export default async function WorkWithMePage() {
           },
         ]}
       >
+        <section aria-labelledby='offer-summary' className='flex flex-col gap-4'>
+          <div>
+            <p className='accent-label mb-2'>In short</p>
+            <h2 id='offer-summary' className='display-title text-2xl md:text-3xl'>
+              Three ways to start
+            </h2>
+          </div>
+          <ol className='m-0 grid list-none gap-3 p-0 sm:grid-cols-3'>
+            <li className='rounded-xl border border-border/80 bg-card p-4'>
+              <p className='font-display font-semibold text-foreground'>1. Book a call</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                A paid 30 minute consultation to frame the outcome.
+              </p>
+            </li>
+            <li className='rounded-xl border border-border/80 bg-card p-4'>
+              <p className='font-display font-semibold text-foreground'>2. Scope a thin slice</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                One service below, sized to prove value before a larger build.
+              </p>
+            </li>
+            <li className='rounded-xl border border-border/80 bg-card p-4'>
+              <p className='font-display font-semibold text-foreground'>3. Or write first</p>
+              <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
+                Prefer email? Use{" "}
+                <Link
+                  href='/contact'
+                  className='font-semibold text-brand underline-offset-4 hover:underline'
+                >
+                  Contact
+                </Link>{" "}
+                with reason Project.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section aria-labelledby='why-trust' className='flex flex-col gap-6'>
+          <div>
+            <p className='accent-label mb-2'>Credentials</p>
+            <h2 id='why-trust' className='display-title text-2xl md:text-3xl'>
+              Why teams hire me
+            </h2>
+            <p className='mt-2 max-w-xl text-muted-foreground'>
+              {about.title}. Research-depth writing, shipped products, and
+              delivery across AI and cloud systems.
+            </p>
+          </div>
+          <CredentialsStrip credentials={about.credentials} />
+        </section>
+
         <section aria-labelledby='outcomes' className='flex flex-col gap-6'>
           <div>
             <p className='accent-label mb-2'>Services</p>
             <h2 id='outcomes' className='display-title text-2xl md:text-3xl'>
               How I help
             </h2>
+            <p className='mt-2 max-w-xl text-muted-foreground'>
+              Each offer lists who it is for, what you get, relevant credentials,
+              and related work on this site.
+            </p>
           </div>
           <ul className='m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2'>
             {SERVICE_OFFERINGS.map((o) => (
               <li
                 key={o.slug}
-                className={`rounded-2xl border border-border/80 border-l-4 p-5 shadow-elev1 ${SERVICE_ACCENT_CLASS[o.accent]}`}
+                id={o.slug}
+                className={`scroll-mt-24 rounded-2xl border border-border/80 border-l-4 p-5 shadow-elev1 ${SERVICE_ACCENT_CLASS[o.accent]}`}
               >
                 <p className='mb-2 font-display text-xs font-semibold tracking-widest text-muted-foreground'>
                   {o.indexLabel}
@@ -97,6 +160,30 @@ export default async function WorkWithMePage() {
                   <div>
                     <dt className='font-semibold text-foreground'>Timeline</dt>
                     <dd className='m-0 text-muted-foreground'>{o.timeline}</dd>
+                  </div>
+                  <div>
+                    <dt className='font-semibold text-foreground'>Credentials</dt>
+                    <dd className='m-0 text-muted-foreground'>
+                      <ul className='m-0 list-disc space-y-1 pl-4'>
+                        {o.credentials.map((c) => (
+                          <li key={c}>{c}</li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className='font-semibold text-foreground'>Related work</dt>
+                    <dd className='m-0 flex flex-wrap gap-x-3 gap-y-1 text-muted-foreground'>
+                      {o.related.map((r) => (
+                        <Link
+                          key={r.href + r.label}
+                          href={r.href}
+                          className='font-semibold text-brand underline-offset-4 hover:underline'
+                        >
+                          {r.label}
+                        </Link>
+                      ))}
+                    </dd>
                   </div>
                 </dl>
               </li>
@@ -161,7 +248,7 @@ export default async function WorkWithMePage() {
           </div>
           <p className='max-w-xl leading-relaxed text-muted-foreground'>
             Book reviewer for Manning Publications. Co-author with titles on
-            Amazon. For client references and recommendations, see{" "}
+            Amazon. For recommendations, see{" "}
             <a
               href={LINKEDIN_URL}
               target='_blank'
@@ -174,23 +261,32 @@ export default async function WorkWithMePage() {
           </p>
         </section>
 
-        <section aria-labelledby='engagement' className='life-panel'>
-          <p className='accent-label mb-2'>Engagement</p>
+        <section
+          id='get-in-touch'
+          aria-labelledby='engagement'
+          className='life-panel scroll-mt-24'
+        >
+          <p className='accent-label mb-2'>Get in touch</p>
           <h2 id='engagement' className='display-title mb-3 text-2xl'>
-            How we work together
+            Next step
           </h2>
           <p className='mb-5 max-w-xl leading-relaxed text-muted-foreground'>
-            Book a paid consultation on Calendly. We use that call to frame the
-            outcome, then scope a thin slice before a larger build.
+            Book a paid consultation on Calendly, or send a short note with your
+            goal and constraints. I read every message.
           </p>
-          <a
-            href={CALENDLY_URL}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='craft-cta-primary w-fit'
-          >
-            {CTA.calendly}
-          </a>
+          <div className='flex flex-wrap gap-3'>
+            <a
+              href={CALENDLY_URL}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='craft-cta-primary w-fit'
+            >
+              {CTA.calendly}
+            </a>
+            <Link href='/contact' className='craft-cta-secondary w-fit'>
+              {CTA.contact}
+            </Link>
+          </div>
         </section>
       </AudienceShell>
     </>

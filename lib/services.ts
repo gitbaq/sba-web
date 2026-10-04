@@ -1,4 +1,9 @@
-/** Outcome-led service offerings for /work-with-me (P5-02). */
+/** Outcome-led service offerings for /work-with-me (BL-02). */
+export type RelatedLink = {
+  label: string;
+  href: string;
+};
+
 export type ServiceOffering = {
   slug: string;
   title: string;
@@ -9,6 +14,10 @@ export type ServiceOffering = {
   /** Visual accent for card distinction (left border + eyebrow). */
   accent: "ai" | "cx" | "cloud" | "ops";
   indexLabel: string;
+  /** Credentials that back this offer (plain facts only). */
+  credentials: string[];
+  /** Related case studies or essays. */
+  related: RelatedLink[];
 };
 
 export const SERVICE_ACCENT_CLASS: Record<ServiceOffering["accent"], string> = {
@@ -29,6 +38,15 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
     timeline: "Typical thin slice: 2 to 6 weeks after framing.",
     accent: "ai",
     indexLabel: "01",
+    credentials: [
+      "Master of Artificial Intelligence, UNSW Sydney",
+      "AWS Certified AI Practitioner",
+      "25+ years in software engineering",
+    ],
+    related: [
+      { label: "Cobu case study", href: "/work/cobu" },
+      { label: "Deep Learning series", href: "/writing/series" },
+    ],
   },
   {
     slug: "ai-customer-experience",
@@ -40,6 +58,14 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
     timeline: "Pilot in weeks; harden once the thin slice proves value.",
     accent: "cx",
     indexLabel: "02",
+    credentials: [
+      "Master of Artificial Intelligence, UNSW Sydney",
+      "Shipped multi-provider AI chat (Cobu)",
+    ],
+    related: [
+      { label: "Cobu case study", href: "/work/cobu" },
+      { label: "NLP writing", href: "/writing/series" },
+    ],
   },
   {
     slug: "cloud-integration",
@@ -50,6 +76,15 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
     timeline: "Discovery in days; delivery phased by system boundary.",
     accent: "cloud",
     indexLabel: "03",
+    credentials: [
+      "AWS Certified AI Practitioner",
+      "PMP, PMI-ACP, PMI-PBA",
+      "Production apps on EC2, Docker, and RDS",
+    ],
+    related: [
+      { label: "Blox case study", href: "/work/blox" },
+      { label: "Cobu case study", href: "/work/cobu" },
+    ],
   },
   {
     slug: "devops-automation",
@@ -60,5 +95,13 @@ export const SERVICE_OFFERINGS: ServiceOffering[] = [
     timeline: "Pipeline foundations often land in 1 to 3 weeks.",
     accent: "ops",
     indexLabel: "04",
+    credentials: [
+      "PMP, PMI-ACP, PMI-PBA",
+      "Docker and EC2 production delivery (Blox, Cobu)",
+    ],
+    related: [
+      { label: "Blox case study", href: "/work/blox" },
+      { label: "Work index", href: "/work" },
+    ],
   },
 ];

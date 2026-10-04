@@ -128,8 +128,12 @@ export default async function Home() {
         <section aria-labelledby='work-strip' className='home-section'>
           <p className='accent-label mb-2'>Work with me</p>
           <h2 id='work-strip' className='display-title text-2xl md:text-3xl'>
-            Outcomes for product and engineering teams
+            AI, cloud, and delivery for product teams
           </h2>
+          <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
+            Custom AI slices, cloud integration, and release automation. See
+            services, credentials, and how to book a call.
+          </p>
           {work.length > 0 ? (
             <ul className='mt-4 m-0 flex list-none flex-col gap-3 p-0'>
               {work.map((study) => (
@@ -148,17 +152,21 @@ export default async function Home() {
                 </li>
               ))}
             </ul>
-          ) : (
-            <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
-              Selected delivery work across AI, cloud, and software systems.
-            </p>
-          )}
-          <Link
-            href='/work-with-me'
-            className='mt-5 inline-flex min-h-11 items-center font-semibold text-brand underline-offset-4 hover:underline'
-          >
-            Explore client work
-          </Link>
+          ) : null}
+          <div className='mt-5 flex flex-wrap gap-x-5 gap-y-2'>
+            <Link
+              href='/work-with-me'
+              className='inline-flex min-h-11 items-center font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              See what I offer
+            </Link>
+            <Link
+              href='/work-with-me#get-in-touch'
+              className='inline-flex min-h-11 items-center text-sm font-semibold text-muted-foreground underline-offset-4 hover:text-brand hover:underline'
+            >
+              Get in touch
+            </Link>
+          </div>
         </section>
 
         {/* 5. About snippet */}
