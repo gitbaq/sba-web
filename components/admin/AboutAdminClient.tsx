@@ -73,6 +73,11 @@ export default function AboutAdminClient() {
 
   async function uploadPhoto(file: File) {
     if (!token) return;
+    const maxBytes = 10 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      toast.error("Image must be 10MB or smaller");
+      return;
+    }
     setUploading(true);
     try {
       const body = new FormData();
@@ -83,11 +88,14 @@ export default function AboutAdminClient() {
         body,
       });
       if (!res.ok) {
-        const err = await readJson<{ message?: string; detail?: string } | null>(
-          res,
-          null
+        const err = await readJson<{
+          message?: string;
+          detail?: string;
+          errors?: string[];
+        } | null>(res, null);
+        throw new Error(
+          err?.errors?.[0] || err?.message || err?.detail || "Upload failed"
         );
-        throw new Error(err?.message || err?.detail || "Upload failed");
       }
       const data = await readJson<{ url?: string } | null>(res, null);
       if (!data?.url) throw new Error("No URL returned");
@@ -123,11 +131,11 @@ export default function AboutAdminClient() {
         throw new Error(err?.message || err?.detail || "Save failed");
       }
       try {
-        await fetch("/api/revalidate", {
+        await fetch("/api/admin/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            paths: ["/", "/about"],
+            paths: ["/", "/about", "/work-with-me"],
             tag: "about-config",
           }),
         });
@@ -202,7 +210,8 @@ export default function AboutAdminClient() {
                 }}
               />
               <p className='mt-1 text-xs text-muted-foreground'>
-                Uploads to S3 when configured. Otherwise paste a public URL.
+                JPEG, PNG, WebP, or GIF up to 10MB. Uploads to S3 when
+                configured. Otherwise paste a public URL.
               </p>
             </div>
           </div>

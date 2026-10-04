@@ -148,7 +148,7 @@ export default function HomeAdminClient() {
         throw new Error(body?.message || body?.detail || "save failed");
       }
       try {
-        await fetch("/api/revalidate", {
+        await fetch("/api/admin/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ paths: ["/"], tag: "home-config" }),
