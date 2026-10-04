@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/utils/AuthContext";
-import { ADMIN_MANAGE_LINKS } from "@/lib/adminNav";
+import {
+  ADMIN_MANAGE_LINKS,
+  ADMIN_NAV_SECTIONS,
+  ADMIN_OVERVIEW_LINK,
+} from "@/lib/adminNav";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,23 +47,44 @@ export default function ManageNav() {
         Manage
         <Icons.ChevronDown className='h-3.5 w-3.5 opacity-70' aria-hidden />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-56'>
+      <DropdownMenuContent align='end' className='w-64'>
         <DropdownMenuLabel>Admin</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {ADMIN_MANAGE_LINKS.map((l) => (
-          <DropdownMenuItem key={l.href} asChild>
-            <Link
-              href={l.href}
-              className={`flex flex-col items-start gap-0.5 w-full cursor-pointer ${
-                linkActive(pathname, l.href) ? "bg-accent" : ""
-              }`}
-            >
-              <span className='font-medium'>{l.menuLabel}</span>
-              <span className='text-xs text-muted-foreground font-normal'>
-                {l.description}
-              </span>
-            </Link>
-          </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href={ADMIN_OVERVIEW_LINK.href}
+            className={`flex flex-col items-start gap-0.5 w-full cursor-pointer ${
+              linkActive(pathname, ADMIN_OVERVIEW_LINK.href) ? "bg-accent" : ""
+            }`}
+          >
+            <span className='font-medium'>{ADMIN_OVERVIEW_LINK.menuLabel}</span>
+            <span className='text-xs text-muted-foreground font-normal'>
+              {ADMIN_OVERVIEW_LINK.description}
+            </span>
+          </Link>
+        </DropdownMenuItem>
+        {ADMIN_NAV_SECTIONS.map((section) => (
+          <div key={section.id}>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className='text-xs text-muted-foreground'>
+              {section.label}
+            </DropdownMenuLabel>
+            {section.links.map((l) => (
+              <DropdownMenuItem key={l.href} asChild>
+                <Link
+                  href={l.href}
+                  className={`flex flex-col items-start gap-0.5 w-full cursor-pointer ${
+                    linkActive(pathname, l.href) ? "bg-accent" : ""
+                  }`}
+                >
+                  <span className='font-medium'>{l.menuLabel}</span>
+                  <span className='text-xs text-muted-foreground font-normal'>
+                    {l.description}
+                  </span>
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </div>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
@@ -77,12 +102,25 @@ export function ManageNavMobileItems() {
       <DropdownMenuLabel className='text-xs text-muted-foreground'>
         Manage
       </DropdownMenuLabel>
-      {ADMIN_MANAGE_LINKS.map((l) => (
-        <DropdownMenuItem key={l.href} asChild>
-          <Link href={l.href} className='w-full cursor-pointer'>
-            {l.menuLabel}
-          </Link>
-        </DropdownMenuItem>
+      <DropdownMenuItem asChild>
+        <Link href={ADMIN_OVERVIEW_LINK.href} className='w-full cursor-pointer'>
+          {ADMIN_OVERVIEW_LINK.menuLabel}
+        </Link>
+      </DropdownMenuItem>
+      {ADMIN_NAV_SECTIONS.map((section) => (
+        <div key={section.id}>
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel className='text-xs text-muted-foreground'>
+            {section.label}
+          </DropdownMenuLabel>
+          {section.links.map((l) => (
+            <DropdownMenuItem key={l.href} asChild>
+              <Link href={l.href} className='w-full cursor-pointer'>
+                {l.menuLabel}
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </div>
       ))}
     </>
   );

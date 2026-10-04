@@ -8,7 +8,6 @@ import {
   seriesSlug,
 } from "@/utils/services/getTopics";
 import { isIndexable } from "@/lib/articles";
-import { seriesIntro } from "@/lib/seriesIntros";
 import { breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { SUBSCRIBE } from "@/lib/copy";
@@ -31,9 +30,7 @@ export async function generateMetadata({
   if (!topic) return {};
   return pageMeta({
     title: topic.sbaTopicName || "Series",
-    description:
-      seriesIntro(topic.sbaTopicName) ||
-      `Essays in the ${topic.sbaTopicName} series by Syed Baqir Ali.`,
+    description: `Essays in the ${topic.sbaTopicName} series by Syed Baqir Ali.`,
     path: seriesHref(topic),
     image: null,
   });
@@ -48,7 +45,6 @@ export default async function SeriesDetailPage({
   const topics = await getAllTopicsSafe();
   const topic = findSeriesTopic(topics, topicSlug);
   if (!topic) notFound();
-  const intro = seriesIntro(topic.sbaTopicName);
 
   const canonical = seriesSlug(topic);
   if (topicSlug !== canonical) {
@@ -108,9 +104,6 @@ export default async function SeriesDetailPage({
         <h1 className='font-display text-4xl md:text-5xl tracking-tight'>
           {topic.sbaTopicName}
         </h1>
-        {intro ? (
-          <p className='text-lg leading-relaxed text-foreground'>{intro}</p>
-        ) : null}
         <p className='text-muted-foreground'>
           {posts.length} {posts.length === 1 ? "essay" : "essays"} · newest
           first

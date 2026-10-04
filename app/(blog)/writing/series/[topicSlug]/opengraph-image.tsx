@@ -3,7 +3,6 @@ import {
   findSeriesTopic,
   getAllTopicsSafe,
 } from "@/utils/services/getTopics";
-import { seriesIntro } from "@/lib/seriesIntros";
 import { isIndexable } from "@/lib/articles";
 
 export const runtime = "nodejs";
@@ -25,11 +24,9 @@ export default async function Image({ params }: { params: Params }) {
         s.isPublished === "1") &&
       isIndexable(s)
   ).length;
-  const dek =
-    seriesIntro(topic?.sbaTopicName) ||
-    (count
-      ? `${count} ${count === 1 ? "essay" : "essays"} in this series`
-      : "Essays by Syed Baqir Ali");
+  const dek = count
+    ? `${count} ${count === 1 ? "essay" : "essays"} in this series`
+    : "Essays by Syed Baqir Ali";
 
   return new ImageResponse(
     (

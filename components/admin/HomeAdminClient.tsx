@@ -8,11 +8,11 @@ import {
   home_config_secure_url,
   subtopics_url,
 } from "@/utils/endpoints/endpoints";
-import { DEFAULT_START_HERE_IDS } from "@/lib/homeConfig";
 import { readJson } from "@/lib/http";
 import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { errorMessage, fromApiBody } from "@/lib/adminErrors";
 import { toast } from "sonner";
 
 function isPublishedFlag(flag: unknown): boolean {
@@ -62,29 +62,23 @@ export default function HomeAdminClient() {
           featuredEssayId?: number | null;
           startHereEssayIds?: unknown[];
         } | null>(configRes, null);
-        if (!cfg) {
-          setStartHereIds([
-            DEFAULT_START_HERE_IDS[0],
-            DEFAULT_START_HERE_IDS[1],
-            DEFAULT_START_HERE_IDS[2],
-          ]);
-        } else {
+        if (cfg) {
           setFeaturedEssayId(
             cfg.featuredEssayId != null && Number(cfg.featuredEssayId) > 0
               ? Number(cfg.featuredEssayId)
               : ""
           );
           const ids = Array.isArray(cfg.startHereEssayIds)
-            ? cfg.startHereEssayIds.map((n: unknown) => Number(n)).filter(Boolean)
-            : [...DEFAULT_START_HERE_IDS];
+            ? cfg.startHereEssayIds
+                .map((n: unknown) => Number(n))
+                .filter((n: number) => Number.isFinite(n) && n > 0)
+            : [];
           setStartHereIds([ids[0] || "", ids[1] || "", ids[2] || ""]);
+        } else {
+          setStartHereIds(["", "", ""]);
         }
       } else {
-        setStartHereIds([
-          DEFAULT_START_HERE_IDS[0],
-          DEFAULT_START_HERE_IDS[1],
-          DEFAULT_START_HERE_IDS[2],
-        ]);
+        setStartHereIds(["", "", ""]);
       }
     } catch {
       toast.error("Could not load homepage config");
@@ -154,21 +148,24 @@ export default function HomeAdminClient() {
           res,
           null
         );
-        throw new Error(body?.message || body?.detail || "save failed");
+        throw new Error(fromApiBody(body, "save failed"));
       }
       try {
-        await fetch("/api/admin/revalidate", {
+        const rev = await fetch("/api/admin/revalidate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ paths: ["/"], tag: "home-config" }),
         });
+        if (!rev.ok) {
+          toast.error("Saved, but cache revalidate failed. Refresh may lag.");
+        }
       } catch {
-        /* best-effort */
+        toast.error("Saved, but cache revalidate failed. Refresh may lag.");
       }
       toast.success("Homepage updated");
       await load();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save");
+      toast.error(errorMessage(e, "Could not save"));
     } finally {
       setLoading(false);
     }

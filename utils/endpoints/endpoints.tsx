@@ -28,8 +28,31 @@ export const subs_url = baseURL + "/subs/v1";
 export const newsletter_subscribe_url = baseURL + "/api/subscribe";
 export const newsletter_confirm_url = baseURL + "/api/subscribe/confirm";
 export const newsletter_unsubscribe_url = baseURL + "/api/unsubscribe";
+export const newsletter_audience_url = baseURL + "/api/subscribe/audience";
+export const newsletter_send_links_url = baseURL + "/api/subscribe/send-links";
+export const newsletter_send_links_confirm_url =
+  baseURL + "/api/subscribe/send-links/confirm";
 export const newsletter_send_url = baseURL + "/secure/newsletter/v1/send";
+export const newsletter_preview_url = baseURL + "/secure/newsletter/v1/preview";
+export const newsletter_preview_send_url =
+  baseURL + "/secure/newsletter/v1/preview-send";
+export const newsletter_drafts_url = baseURL + "/secure/newsletter/v1/drafts";
+export const newsletter_draft_url = (id: number) =>
+  `${baseURL}/secure/newsletter/v1/drafts/${id}`;
 export const newsletter_stats_url = baseURL + "/secure/newsletter/v1/stats";
+export const newsletter_sends_url = baseURL + "/secure/newsletter/v1/sends";
+export const newsletter_send_detail_url = (id: number) =>
+  `${baseURL}/secure/newsletter/v1/sends/${id}`;
+export const newsletter_subscribers_url =
+  baseURL + "/secure/newsletter/v1/subscribers";
+export const newsletter_subscribers_growth_url =
+  baseURL + "/secure/newsletter/v1/subscribers/growth";
+export const newsletter_subscriber_resend_url = (id: number) =>
+  `${baseURL}/secure/newsletter/v1/subscribers/${id}/resend-confirmation`;
+export const newsletter_subscriber_unsubscribe_url = (id: number) =>
+  `${baseURL}/secure/newsletter/v1/subscribers/${id}/unsubscribe`;
+export const newsletter_subscriber_delete_url = (id: number) =>
+  `${baseURL}/secure/newsletter/v1/subscribers/${id}`;
 export const home_config_url = baseURL + "/home/v1";
 export const home_config_secure_url = baseURL + "/secure/home/v1";
 export const work_projects_url = baseURL + "/work/v1";

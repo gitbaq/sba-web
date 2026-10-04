@@ -5,14 +5,6 @@ import {
   github_url,
   work_projects_url,
 } from "@/utils/endpoints/endpoints";
-import {
-  ABOUT_BIO,
-  ABOUT_CREDENTIALS,
-  ABOUT_HIRING_BLURB,
-  ABOUT_HOME_BLURB,
-  ABOUT_TITLE_LINE,
-} from "@/lib/aboutContent";
-import { COBU_STATUS_LINE } from "@/lib/copy";
 import { readJson } from "@/lib/http";
 
 export type CaseStudy = {
@@ -49,69 +41,15 @@ export type AboutConfig = {
   credentials: Credential[];
 };
 
-/** Fallback when API is empty or unreachable (pre-seed / offline). */
-export const FALLBACK_CASE_STUDIES: CaseStudy[] = [
-  {
-    slug: "cobu",
-    title: "Cobu",
-    tagline:
-      "AI brainstorm buddy. Chat, explore ideas, and think with OpenAI or Anthropic.",
-    href: "/work/cobu",
-    externalUrl: cobu_url,
-    mark: "/portfolio/cobu/mark.png",
-    role: "Software engineer / subject-matter expert",
-    timeline: "2025",
-    result: COBU_STATUS_LINE,
-    problem:
-      "Most AI chat tools are either generic assistants or opaque enterprise stacks. People need a focused place to brainstorm, discuss, and pressure-test ideas, with a real choice of models and fresh web context when it matters.",
-    approach: [
-      "Center the product on brainstorming and natural conversation, not command menus.",
-      "Let people choose OpenAI or Anthropic so the model fits the task.",
-      "Integrate web search when answers need current information.",
-      "Ship as a living product at codingburo.com on a modern Angular + Spring AI stack.",
-    ],
-    outcome: [
-      "A free-to-join AI brainstorm buddy with multi-provider chat and web search.",
-      "Clear product story: discuss ideas, keep context, share direction.",
-      "Demonstrates end-to-end AI product delivery beyond demos and slides.",
-    ],
-    stack: ["Angular 20", "Spring AI", "OpenAI", "Anthropic"],
-  },
-  {
-    slug: "blox",
-    title: "Blox",
-    tagline: "Productivity hub that helps you keep focus on the task.",
-    href: "/work/blox",
-    externalUrl: blox_url,
-    mark: "/portfolio/blox/mark.png",
-    role: "Software engineer / subject-matter expert",
-    timeline: "2024",
-    result: "A focused hub for goals, habits, and staying on the task at hand.",
-    problem:
-      "Most productivity tools reward complexity: long setups, rigid systems, and guilt when life gets busy. People need a calm place to set achievable goals, build habits, and see what actually won the week.",
-    approach: [
-      "Start from outcomes: habits and weekly wins, not feature checklists.",
-      "Keep the first session short. Goals that feel achievable on day one.",
-      "Surface progress visually so momentum is obvious without dashboards.",
-      "Ship iteratively as a real product at blox.syedbaqirali.com.",
-    ],
-    outcome: [
-      "A focused productivity hub spanning goals, habits, and weekly tracking.",
-      "Clear product narrative: start small, track what matters, win the week.",
-      "Living portfolio piece that demonstrates end-to-end product thinking.",
-    ],
-    stack: ["React", "Next.js", "Spring Boot", "MySQL", "Docker", "AWS EC2"],
-  },
-];
-
-export const FALLBACK_ABOUT: AboutConfig = {
-  displayName: "Syed Baqir Ali",
-  title: ABOUT_TITLE_LINE,
-  bio: ABOUT_BIO,
-  photoUrl: "/sba-photo-2-small.png",
-  hiringBlurb: ABOUT_HIRING_BLURB,
-  homeBlurb: ABOUT_HOME_BLURB,
-  credentials: ABOUT_CREDENTIALS,
+/** Empty about shape for admin forms. Never used as public page content. */
+export const EMPTY_ABOUT: AboutConfig = {
+  displayName: "",
+  title: "",
+  bio: "",
+  photoUrl: "",
+  hiringBlurb: "",
+  homeBlurb: "",
+  credentials: [],
 };
 
 function sanitizeVisitorCopy(text: string): string {
@@ -121,69 +59,49 @@ function sanitizeVisitorCopy(text: string): string {
   );
 }
 
-const SOFT_STACK = /product design|habit|ux|full-stack web|iterative|web application|ai product/i;
-
-function resolveStack(
-  _slug: string,
-  raw: unknown,
-  fallback?: string[]
-): string[] {
-  const fromApi = Array.isArray(raw) ? raw.map(String).filter(Boolean) : [];
-  if (fromApi.length && !fromApi.some((s) => SOFT_STACK.test(s))) {
-    return fromApi;
-  }
-  if (fallback?.length) return fallback;
-  return fromApi;
-}
-
 function mapProject(raw: Record<string, unknown>): CaseStudy {
   const slug = String(raw.slug || "");
-  const fallback = FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
   return {
     id: raw.id != null ? Number(raw.id) : undefined,
     slug,
-    title: String(raw.title || fallback?.title || ""),
-    tagline: String(raw.tagline || fallback?.tagline || ""),
+    title: String(raw.title || ""),
+    tagline: String(raw.tagline || ""),
     href: `/work/${slug}`,
-    externalUrl: raw.externalUrl
-      ? String(raw.externalUrl)
-      : fallback?.externalUrl,
-    mark: String(raw.mark || fallback?.mark || "/ai4.png"),
-    role: String(raw.role || fallback?.role || ""),
-    timeline: String(raw.timeline || fallback?.timeline || ""),
-    result: sanitizeVisitorCopy(
-      String(raw.result || fallback?.result || "")
-    ),
-    problem: String(raw.problem || fallback?.problem || ""),
-    approach: Array.isArray(raw.approach)
-      ? raw.approach.map(String)
-      : fallback?.approach || [],
-    outcome: Array.isArray(raw.outcome)
-      ? raw.outcome.map(String)
-      : fallback?.outcome || [],
-    stack: resolveStack(slug, raw.stack, fallback?.stack),
+    externalUrl: raw.externalUrl ? String(raw.externalUrl) : undefined,
+    mark: String(raw.mark || ""),
+    role: String(raw.role || ""),
+    timeline: String(raw.timeline || ""),
+    result: sanitizeVisitorCopy(String(raw.result || "")),
+    problem: String(raw.problem || ""),
+    approach: Array.isArray(raw.approach) ? raw.approach.map(String) : [],
+    outcome: Array.isArray(raw.outcome) ? raw.outcome.map(String) : [],
+    stack: Array.isArray(raw.stack)
+      ? raw.stack.map(String).filter(Boolean)
+      : [],
     sortOrder: raw.sortOrder != null ? Number(raw.sortOrder) : undefined,
     isVisible:
       raw.isVisible === undefined ? true : Boolean(raw.isVisible),
   };
 }
 
+/** Public work list from API only. No seed / fallback projects. */
 export async function getWorkProjects(): Promise<CaseStudy[]> {
   try {
     const res = await fetch(work_projects_url, {
       next: { revalidate: 60, tags: ["work-projects"] },
     });
-    if (!res.ok) return FALLBACK_CASE_STUDIES;
+    if (!res.ok) return [];
     const data = await readJson<unknown[]>(res, []);
-    const list = Array.isArray(data)
-      ? data.map((raw) => mapProject(raw as Record<string, unknown>))
-      : [];
-    return list.length > 0 ? list : FALLBACK_CASE_STUDIES;
+    if (!Array.isArray(data)) return [];
+    return data
+      .map((raw) => mapProject(raw as Record<string, unknown>))
+      .filter((p) => p.slug && p.title);
   } catch {
-    return FALLBACK_CASE_STUDIES;
+    return [];
   }
 }
 
+/** Public case study from API only. Undefined when missing (caller should 404). */
 export async function getWorkProject(
   slug: string
 ): Promise<CaseStudy | undefined> {
@@ -191,14 +109,14 @@ export async function getWorkProject(
     const res = await fetch(`${work_projects_url}/${encodeURIComponent(slug)}`, {
       next: { revalidate: 60, tags: ["work-projects"] },
     });
-    if (res.ok) {
-      const data = await readJson<Record<string, unknown> | null>(res, null);
-      if (data) return mapProject(data);
-    }
+    if (!res.ok) return undefined;
+    const data = await readJson<Record<string, unknown> | null>(res, null);
+    if (!data) return undefined;
+    const mapped = mapProject(data);
+    return mapped.slug && mapped.title ? mapped : undefined;
   } catch {
-    /* fall through */
+    return undefined;
   }
-  return FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
 }
 
 const STALE_ABOUT_TITLES = new Set([
@@ -252,34 +170,27 @@ function normalizeAboutConfig(raw: {
         !/revenue\s*nsw|aramco|unsw|central\s*punjab|manning/i.test(c.label)
     );
 
+  // API/admin values only. Never invent narrative from frontend seed copy.
   return {
-    displayName: raw.displayName || FALLBACK_ABOUT.displayName,
-    title: staleTitle ? FALLBACK_ABOUT.title : title,
-    bio: staleTitle
-      ? FALLBACK_ABOUT.bio
-      : stripOrgMentions(raw.bio) || FALLBACK_ABOUT.bio,
-    photoUrl: raw.photoUrl || FALLBACK_ABOUT.photoUrl,
-    hiringBlurb: staleTitle
-      ? FALLBACK_ABOUT.hiringBlurb
-      : stripOrgMentions(raw.hiringBlurb) || FALLBACK_ABOUT.hiringBlurb,
-    homeBlurb: staleTitle
-      ? FALLBACK_ABOUT.homeBlurb
-      : stripOrgMentions(raw.homeBlurb) || FALLBACK_ABOUT.homeBlurb,
-    credentials:
-      staleTitle || credentials.length === 0
-        ? FALLBACK_ABOUT.credentials
-        : credentials,
+    displayName: raw.displayName || "",
+    title: staleTitle ? "" : title,
+    bio: stripOrgMentions(raw.bio) || "",
+    photoUrl: raw.photoUrl || "",
+    hiringBlurb: stripOrgMentions(raw.hiringBlurb) || "",
+    homeBlurb: stripOrgMentions(raw.homeBlurb) || "",
+    credentials,
   };
 }
 
+/** Public about config from API only. Empty fields when unavailable. */
 export async function getAboutConfig(): Promise<AboutConfig> {
   try {
     const res = await fetch(about_config_url, {
       next: { revalidate: 60, tags: ["about-config"] },
     });
-    if (!res.ok) return FALLBACK_ABOUT;
+    if (!res.ok) return { ...EMPTY_ABOUT };
     const data = await readJson<Record<string, unknown> | null>(res, null);
-    if (!data) return FALLBACK_ABOUT;
+    if (!data) return { ...EMPTY_ABOUT };
     const credentials = Array.isArray(data.credentials)
       ? data.credentials
           .map((c: { label?: string; href?: string }) => ({
@@ -287,26 +198,19 @@ export async function getAboutConfig(): Promise<AboutConfig> {
             href: c.href ? String(c.href) : undefined,
           }))
           .filter((c: Credential) => c.label)
-      : FALLBACK_ABOUT.credentials;
+      : [];
     return normalizeAboutConfig({
-      displayName: (data.displayName as string) || FALLBACK_ABOUT.displayName,
-      title: (data.title as string) || FALLBACK_ABOUT.title,
-      bio: (data.bio as string) || FALLBACK_ABOUT.bio,
-      photoUrl: (data.photoUrl as string) || FALLBACK_ABOUT.photoUrl,
-      hiringBlurb: (data.hiringBlurb as string) || FALLBACK_ABOUT.hiringBlurb,
-      homeBlurb: (data.homeBlurb as string) || FALLBACK_ABOUT.homeBlurb,
+      displayName: String(data.displayName || ""),
+      title: String(data.title || ""),
+      bio: String(data.bio || ""),
+      photoUrl: String(data.photoUrl || ""),
+      hiringBlurb: String(data.hiringBlurb || ""),
+      homeBlurb: String(data.homeBlurb || ""),
       credentials,
     });
   } catch {
-    return FALLBACK_ABOUT;
+    return { ...EMPTY_ABOUT };
   }
-}
-
-/** @deprecated Prefer getWorkProjects(); kept for static imports during migration. */
-export const CASE_STUDIES = FALLBACK_CASE_STUDIES;
-
-export function getCaseStudy(slug: string): CaseStudy | undefined {
-  return FALLBACK_CASE_STUDIES.find((c) => c.slug === slug);
 }
 
 export const CALENDLY_URL = "https://calendly.com/syedbaqirali/30min";
@@ -320,6 +224,3 @@ export const CREDENTIAL_LINKS = [
   { label: "Blox", href: blox_url },
   { label: "Amazon author", href: AMAZON_AUTHOR_URL },
 ] as const;
-
-/** @deprecated Prefer getAboutConfig().credentials */
-export const CREDENTIALS: Credential[] = FALLBACK_ABOUT.credentials;

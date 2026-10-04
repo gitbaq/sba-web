@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import SubscribeForm from "@/components/SubscribeForm";
+import SendLinksToMe from "@/components/SendLinksToMe";
 import LatestWriting from "@/components/home/LatestWriting";
 import { getLatestSubtopics } from "@/utils/services/getLatestSubtopics";
+import { getPublicAudienceSignal } from "@/lib/newsletterAudience";
 import { pageMeta } from "@/lib/seo";
 import { CTA } from "@/lib/ctas";
 import { CADENCE_LINE, SUBSCRIBE } from "@/lib/copy";
@@ -21,7 +23,11 @@ const perks = [
 ];
 
 export default async function SubscribePage() {
-  const posts = await getLatestSubtopics(3);
+  const [posts, audience] = await Promise.all([
+    getLatestSubtopics(3),
+    getPublicAudienceSignal(),
+  ]);
+  const essayIds = posts.map((p) => p.id).filter((id) => Number.isFinite(id));
 
   return (
     <div className='w-full'>
@@ -34,6 +40,9 @@ export default async function SubscribePage() {
           <p className='max-w-xl text-lg leading-relaxed text-foreground/80'>
             {CADENCE_LINE} Prefer feeds? Use RSS.
           </p>
+          {audience.label ? (
+            <p className='text-sm font-medium text-brand'>{audience.label}</p>
+          ) : null}
         </header>
       </div>
 
@@ -76,6 +85,16 @@ export default async function SubscribePage() {
         {posts.length > 0 && (
           <LatestWriting posts={posts} title='Recent essays' showViewAll />
         )}
+
+        {essayIds.length > 0 ? (
+          <section
+            id='email-to-me'
+            className='life-panel'
+            aria-label='Email essays to yourself'
+          >
+            <SendLinksToMe essayIds={essayIds} />
+          </section>
+        ) : null}
       </main>
     </div>
   );

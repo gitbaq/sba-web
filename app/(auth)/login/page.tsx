@@ -39,8 +39,10 @@ const formSchema = z.object({
 
 /** Only allow same-origin relative paths (block open redirects). */
 function safeReturnPath(url: string | null): string {
-  if (!url || !url.startsWith("/") || url.startsWith("//")) return "/";
-  if (url.startsWith("/login") || url.startsWith("/logout")) return "/";
+  // Default: Admin home. Deep-links (e.g. /admin/about, /editor/…) keep their callback.
+  if (!url || !url.startsWith("/") || url.startsWith("//")) return "/admin";
+  if (url.startsWith("/login") || url.startsWith("/logout")) return "/admin";
+  if (url === "/") return "/admin";
   return url;
 }
 

@@ -24,6 +24,9 @@ type Props = {
 
 export default async function AuthorBox({ className = "" }: Props) {
   const about = await getAboutConfig();
+  if (!about.displayName && !about.homeBlurb && !about.photoUrl) {
+    return null;
+  }
 
   return (
     <aside
@@ -35,22 +38,26 @@ export default async function AuthorBox({ className = "" }: Props) {
         .join(" ")}
       aria-labelledby='author-box'
     >
-      <Image
-        src={about.photoUrl}
-        alt={about.displayName}
-        width={72}
-        height={72}
-        className='h-[72px] w-[72px] shrink-0 rounded-full object-cover ring-1 ring-border'
-        sizes='72px'
-        unoptimized={!shouldOptimize(about.photoUrl)}
-      />
+      {about.photoUrl ? (
+        <Image
+          src={about.photoUrl}
+          alt={about.displayName || "Author"}
+          width={72}
+          height={72}
+          className='h-[72px] w-[72px] shrink-0 rounded-full object-cover ring-1 ring-border'
+          sizes='72px'
+          unoptimized={!shouldOptimize(about.photoUrl)}
+        />
+      ) : null}
       <div className='flex flex-col gap-2'>
         <h2 id='author-box' className='font-display text-lg font-semibold'>
-          {about.displayName}
+          {about.displayName || "About the author"}
         </h2>
-        <p className='text-sm text-muted-foreground leading-relaxed max-w-xl'>
-          {about.homeBlurb}
-        </p>
+        {about.homeBlurb ? (
+          <p className='text-sm text-muted-foreground leading-relaxed max-w-xl'>
+            {about.homeBlurb}
+          </p>
+        ) : null}
         <Link
           href='/about'
           className='w-fit text-sm font-semibold text-brand underline-offset-4 hover:underline min-h-11 inline-flex items-center'

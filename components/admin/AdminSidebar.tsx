@@ -16,7 +16,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Icons from "@/components/Icons";
-import { ADMIN_MANAGE_LINKS } from "@/lib/adminNav";
+import {
+  ADMIN_NAV_SECTIONS,
+  ADMIN_OVERVIEW_LINK,
+} from "@/lib/adminNav";
 import { readJson } from "@/lib/http";
 import { SubTopic } from "@/types/types";
 import { subtopics_url } from "@/utils/endpoints/endpoints";
@@ -41,6 +44,7 @@ const MANAGE_ICONS: Record<string, IconComp> = {
   "/admin/work": Icons.FolderCode,
   "/admin/about": Icons.User,
   "/admin/newsletter": Icons.Mails,
+  "/admin/subscribers": Icons.Users,
 };
 
 function AdminNavLink({
@@ -117,31 +121,48 @@ export default function AdminSidebar() {
       <SidebarContent className='pt-16 gap-1'>
         <SidebarGroup className='py-1'>
           <SidebarGroupLabel className='sidebar-group-labels'>
-            Manage
+            Admin
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {ADMIN_MANAGE_LINKS.map((l) => {
-                const Icon = MANAGE_ICONS[l.href] || Icons.Settings2;
-                // In icon mode, Essays covers /editor too (essay list is hidden).
-                const active =
-                  l.href === "/admin/essays"
-                    ? navActive(pathname, l.href) ||
-                      pathname.startsWith("/editor")
-                    : navActive(pathname, l.href);
-                return (
-                  <AdminNavLink
-                    key={l.href}
-                    href={l.href}
-                    label={l.label}
-                    icon={Icon}
-                    active={active}
-                  />
-                );
-              })}
+              <AdminNavLink
+                href={ADMIN_OVERVIEW_LINK.href}
+                label={ADMIN_OVERVIEW_LINK.label}
+                icon={MANAGE_ICONS[ADMIN_OVERVIEW_LINK.href] || Icons.MonitorCog}
+                active={navActive(pathname, ADMIN_OVERVIEW_LINK.href)}
+              />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {ADMIN_NAV_SECTIONS.map((section) => (
+          <SidebarGroup key={section.id} className='py-1'>
+            <SidebarGroupLabel className='sidebar-group-labels'>
+              {section.label}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {section.links.map((l) => {
+                  const Icon = MANAGE_ICONS[l.href] || Icons.Settings2;
+                  const active =
+                    l.href === "/admin/essays"
+                      ? navActive(pathname, l.href) ||
+                        pathname.startsWith("/editor")
+                      : navActive(pathname, l.href);
+                  return (
+                    <AdminNavLink
+                      key={l.href}
+                      href={l.href}
+                      label={l.label}
+                      icon={Icon}
+                      active={active}
+                    />
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
 
         {showEssayList ? (
           <SidebarGroup className='overflow-y-auto min-h-0 flex-1 py-1'>
