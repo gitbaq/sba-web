@@ -68,12 +68,13 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://challenges.cloudflare.com https://va.vercel-scripts.com",
+              // AdSense also loads SODAR (adtrafficquality.google) for traffic quality checks.
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.googlesyndication.com https://*.googleadservices.com https://www.googletagservices.com https://*.adtrafficquality.google https://challenges.cloudflare.com https://va.vercel-scripts.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://api.syedbaqirali.com https://challenges.cloudflare.com https://vitals.vercel-insights.com",
-              "frame-src https://challenges.cloudflare.com https://calendly.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com",
+              "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://*.googlesyndication.com https://*.googleadservices.com https://*.doubleclick.net https://*.adtrafficquality.google https://api.syedbaqirali.com https://challenges.cloudflare.com https://vitals.vercel-insights.com",
+              "frame-src https://challenges.cloudflare.com https://calendly.com https://*.doubleclick.net https://*.googlesyndication.com https://*.googleadservices.com https://*.adtrafficquality.google https://www.google.com https://googleads.g.doubleclick.net",
               "frame-ancestors 'self'",
               "base-uri 'self'",
               "form-action 'self'",
