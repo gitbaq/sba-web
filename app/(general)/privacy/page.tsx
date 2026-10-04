@@ -30,7 +30,8 @@ export default function PrivacyPage() {
           <h2 className='display-title text-2xl'>Contact form</h2>
           <p className='leading-relaxed text-muted-foreground'>
             When you submit the contact form, I store your email, reason
-            (Project, Role, Question about writing, or Other), subject, and
+            (Project, Role, Question about writing, Feature request, Site
+            feedback, or Other), subject, and
             message so I can reply. Spam checks may use Cloudflare Turnstile. I
             do not sell this data.
           </p>

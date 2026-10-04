@@ -31,6 +31,8 @@ const REASONS = [
   "Project",
   "Role",
   "Question about writing",
+  "Feature request",
+  "Site feedback",
   "Other",
 ] as const;
 
