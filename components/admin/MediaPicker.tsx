@@ -21,6 +21,11 @@ export type MediaItem = {
 type Props = {
   value?: string;
   onSelect: (url: string) => void;
+  /**
+   * Called when a library image is chosen or a new upload finishes.
+   * Not called for manual URL typing (use Save for that).
+   */
+  onCommit?: (url: string) => void | Promise<void>;
   /** S3 prefix filter, e.g. about/ or uploads/ */
   defaultPrefix?: string;
   /** Folder for new uploads */
@@ -32,6 +37,7 @@ type Props = {
 export default function MediaPicker({
   value,
   onSelect,
+  onCommit,
   defaultPrefix = "",
   uploadFolder = "uploads",
   label = "Image",
@@ -137,10 +143,15 @@ export default function MediaPicker({
           err?.errors?.[0] || err?.message || err?.detail || "Upload failed"
         );
       }
-      const data = await readJson<{ url?: string } | null>(res, null);
-      if (!data?.url) throw new Error("No URL returned");
-      onSelect(String(data.url));
-      toast.success("Uploaded");
+      const data = await readJson<{
+        url?: string;
+        data?: { url?: string };
+      } | null>(res, null);
+      const url = data?.url || data?.data?.url;
+      if (!url) throw new Error("No URL returned");
+      onSelect(url);
+      if (onCommit) await onCommit(url);
+      else toast.success("Uploaded");
       setOpen(false);
       void load();
     } catch (e) {
@@ -259,7 +270,8 @@ export default function MediaPicker({
                       onClick={() => {
                         onSelect(item.url);
                         setOpen(false);
-                        toast.success("Image selected");
+                        if (onCommit) void onCommit(item.url);
+                        else toast.success("Image selected");
                       }}
                       className={`relative aspect-square w-full overflow-hidden rounded-lg bg-secondary ring-1 transition ${
                         selected

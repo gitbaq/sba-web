@@ -10,6 +10,7 @@ import {
 } from "@/utils/endpoints/endpoints";
 import { DEFAULT_START_HERE_IDS } from "@/lib/homeConfig";
 import { readJson } from "@/lib/http";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ function essayLabel(essay: SubTopic): string {
 
 export default function HomeAdminClient() {
   const { token, isAdmin } = useAuth();
+  const confirm = useConfirm();
   const [essays, setEssays] = useState<SubTopic[]>([]);
   const [featuredEssayId, setFeaturedEssayId] = useState<number | "">("");
   const [startHereIds, setStartHereIds] = useState<(number | "")[]>(["", "", ""]);
@@ -125,6 +127,13 @@ export default function HomeAdminClient() {
       toast.error("Pick at least one Start here essay");
       return;
     }
+
+    const ok = await confirm({
+      title: "Save homepage picks?",
+      description: "This updates the featured essay and Start here list.",
+      confirmLabel: "Save",
+    });
+    if (!ok) return;
 
     setLoading(true);
     try {

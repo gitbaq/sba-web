@@ -16,6 +16,7 @@ import { ThemeProvider } from "@wrksz/themes/next";
 import Script from "next/script";
 import SidebarWrapper from "@/components/SidebarWrapper";
 import { AuthProvider } from "@/utils/AuthContext";
+import { ConfirmProvider } from "@/components/admin/ConfirmProvider";
 import RefreshOnBack from "@/components/RefreshOnBack";
 
 const gsc = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
@@ -112,19 +113,21 @@ export default function RootLayout({
           storage='localStorage'
         >
           <AuthProvider>
-            <RefreshOnBack />
-            <TooltipProvider delayDuration={1000}>
-              <div className='flex min-h-0 w-full flex-1 flex-col'>
-                <SidebarWrapper>
-                  {children}
+            <ConfirmProvider>
+              <RefreshOnBack />
+              <TooltipProvider delayDuration={1000}>
+                <div className='flex min-h-0 w-full flex-1 flex-col'>
+                  <SidebarWrapper>
+                    {children}
 
-                  <Toaster position='top-right' />
-                  <Analytics />
-                  <SpeedInsights />
-                </SidebarWrapper>
-              </div>
-              <Footer />
-            </TooltipProvider>
+                    <Toaster position='top-right' />
+                    <Analytics />
+                    <SpeedInsights />
+                  </SidebarWrapper>
+                </div>
+                <Footer />
+              </TooltipProvider>
+            </ConfirmProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

@@ -19,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { articleHref } from "@/lib/articles";
 import { readJson } from "@/lib/http";
 import MediaPicker from "@/components/admin/MediaPicker";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 
 type Params = { subId: string | undefined; post: SubTopic };
 
@@ -95,6 +96,7 @@ function statusLabel(form: FormState): string {
 export default function XEditor({ params }: { params?: Params }) {
   const post = params?.post;
   const { token, isAdmin, isAuthenticated } = useAuth();
+  const confirm = useConfirm();
   const [formData, setFormData] = useState<FormState>(() => toForm(post));
   const [series, setSeries] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -125,7 +127,10 @@ export default function XEditor({ params }: { params?: Params }) {
     );
   }
 
-  async function save(patch?: Partial<FormState>) {
+  async function save(
+    patch?: Partial<FormState>,
+    options?: { skipConfirm?: boolean; confirmTitle?: string; confirmDescription?: string }
+  ) {
     if (!token || !isAdmin) {
       toast.error("Admin sign-in required to save.");
       return;
@@ -133,6 +138,16 @@ export default function XEditor({ params }: { params?: Params }) {
     if (!formData.id) {
       toast.error("Missing essay id.");
       return;
+    }
+    if (!options?.skipConfirm) {
+      const ok = await confirm({
+        title: options?.confirmTitle || "Save this essay?",
+        description:
+          options?.confirmDescription ||
+          "This updates the essay in the database and may change the live site.",
+        confirmLabel: "Save",
+      });
+      if (!ok) return;
     }
     const liveHtml = editorRef.current?.getHTML();
     const next = {
@@ -212,15 +227,34 @@ export default function XEditor({ params }: { params?: Params }) {
 
   function publishNow() {
     const now = toLocalInput(new Date().toISOString());
-    void save({ isPublished: true, publishDate: now });
+    void save(
+      { isPublished: true, publishDate: now },
+      {
+        confirmTitle: "Publish this essay now?",
+        confirmDescription:
+          "The essay will go live. Subscribers are not emailed until you send from Newsletter.",
+      }
+    );
   }
 
   function unpublish() {
-    void save({ isPublished: false });
+    void save(
+      { isPublished: false },
+      {
+        confirmTitle: "Unpublish this essay?",
+        confirmDescription: "The essay will leave the public writing index.",
+      }
+    );
   }
 
   function saveDraft() {
-    void save({ isPublished: false });
+    void save(
+      { isPublished: false },
+      {
+        confirmTitle: "Save as draft?",
+        confirmDescription: "Keep the essay unpublished and save current edits.",
+      }
+    );
   }
 
   function schedule() {
@@ -233,7 +267,13 @@ export default function XEditor({ params }: { params?: Params }) {
       toast.error("Schedule time must be in the future.");
       return;
     }
-    void save({ isPublished: false });
+    void save(
+      { isPublished: false },
+      {
+        confirmTitle: "Schedule this essay?",
+        confirmDescription: `Save with publish time ${formData.publishDate}. It stays unpublished until you publish.`,
+      }
+    );
   }
 
   function previewHref(): string {

@@ -11,6 +11,7 @@ import {
 } from "@/utils/endpoints/endpoints";
 import { isIndexable } from "@/lib/articles";
 import { readJson } from "@/lib/http";
+import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -42,6 +43,7 @@ type SendResult = {
 
 export default function NewsletterAdminClient() {
   const { token, isAdmin } = useAuth();
+  const confirm = useConfirm();
   const [essays, setEssays] = useState<SubTopic[]>([]);
   const [essayId, setEssayId] = useState<number | "">("");
   const [loading, setLoading] = useState(false);
@@ -101,14 +103,26 @@ export default function NewsletterAdminClient() {
       toast.error("Sign in and pick an essay");
       return;
     }
-    if (!dryRun) {
-      const ok = window.confirm(
-        alreadySent
-          ? "This essay was already emailed. Send again to all confirmed subscribers?"
-          : "Send this essay to all confirmed subscribers? Publishing alone does not email anyone. This send cannot be undone."
-      );
-      if (!ok) return;
-    }
+    const title = selected?.subHeading || selected?.heading || "this essay";
+    const ok = await confirm(
+      dryRun
+        ? {
+            title: "Run a dry send?",
+            description: `Simulate emailing “${title}” without sending to subscribers.`,
+            confirmLabel: "Dry run",
+          }
+        : {
+            title: alreadySent
+              ? "Send this essay again?"
+              : "Send newsletter now?",
+            description: alreadySent
+              ? `“${title}” was already emailed. Send again to all confirmed subscribers? This cannot be undone.`
+              : `Email “${title}” to all confirmed subscribers. Publishing alone does not email anyone. This cannot be undone.`,
+            confirmLabel: alreadySent ? "Send again" : "Send",
+            variant: "destructive",
+          }
+    );
+    if (!ok) return;
     setLoading(true);
     setLastResult(null);
     try {
