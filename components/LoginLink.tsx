@@ -1,11 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 /**
- * Footer Login link. SSR always renders `/login` so public pages stay cacheable.
- * After mount, attach callbackUrl from window.location (no useSearchParams).
+ * Footer Login link. Always lands on Admin home after login
+ * (proxy still sets callbackUrl when guarding /admin or /editor).
  */
 export default function LoginLink({
   className,
@@ -14,19 +11,12 @@ export default function LoginLink({
   className?: string;
   children?: React.ReactNode;
 }) {
-  const [href, setHref] = useState("/login");
-
-  useEffect(() => {
-    const path = `${window.location.pathname}${window.location.search}`;
-    if (!path || path.startsWith("/login") || path.startsWith("/logout")) {
-      setHref("/login");
-      return;
-    }
-    setHref(`/login?callbackUrl=${encodeURIComponent(path)}`);
-  }, []);
-
   return (
-    <Link href={href} className={className} prefetch={false}>
+    <Link
+      href='/login?callbackUrl=%2Fadmin'
+      className={className}
+      prefetch={false}
+    >
       {children}
     </Link>
   );

@@ -309,7 +309,7 @@ export default async function WritingArticlePage({
             summary={dek || subtopic.subHeading}
           />
           <SeriesNav topic={seriesTopic} currentId={subtopic.id} />
-          <ArticleEndCta />
+          <ArticleEndCta essayId={current.id} />
           <AuthorBox />
           <PopularEssaysHero posts={popular} />
         </div>

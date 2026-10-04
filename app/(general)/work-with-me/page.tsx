@@ -121,12 +121,15 @@ export default async function WorkWithMePage() {
             <h2 id='why-trust' className='display-title text-2xl md:text-3xl'>
               Why teams hire me
             </h2>
-            <p className='mt-2 max-w-xl text-muted-foreground'>
-              {about.title} 25+ years in software engineering. Essays, shipped
-              products, and practical delivery for teams.
-            </p>
+            {about.title || about.homeBlurb ? (
+              <p className='mt-2 max-w-xl text-muted-foreground'>
+                {about.title || about.homeBlurb}
+              </p>
+            ) : null}
           </div>
-          <CredentialsStrip credentials={about.credentials} />
+          {about.credentials.length > 0 ? (
+            <CredentialsStrip credentials={about.credentials} />
+          ) : null}
         </section>
 
         <section

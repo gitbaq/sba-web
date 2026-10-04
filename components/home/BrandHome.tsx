@@ -6,7 +6,7 @@ import { SubTopic, Topic } from "@/types/types";
 import { getAudience, LINKEDIN_URL, AudienceId } from "@/lib/audience";
 import { articleHref } from "@/lib/articles";
 import { seriesHref } from "@/utils/services/getTopics";
-import { CASE_STUDIES } from "@/lib/work";
+import type { CaseStudy } from "@/lib/work";
 import { seriesStyle } from "@/lib/seriesColors";
 import LatestWriting from "./LatestWriting";
 import Reveal from "@/components/Reveal";
@@ -23,6 +23,8 @@ type Props = {
   quote: RandomQuote | null;
   audience: AudienceId;
   onChangePath: () => void;
+  /** API work projects only. Never seed/fallback list. */
+  work?: CaseStudy[];
 };
 
 export default function BrandHome({
@@ -31,6 +33,7 @@ export default function BrandHome({
   quote,
   audience,
   onChangePath,
+  work = [],
 }: Props) {
   const path = getAudience(audience);
   const firstPost = posts[0];
@@ -165,6 +168,7 @@ export default function BrandHome({
             </Reveal>
           )}
 
+          {work.length > 0 ? (
           <Reveal>
             <section
               aria-labelledby='work-teaser'
@@ -178,21 +182,23 @@ export default function BrandHome({
                 Selected work
               </h2>
               <ul className='grid grid-cols-1 sm:grid-cols-2 gap-4 list-none p-0 m-0'>
-                {CASE_STUDIES.map((study) => (
+                {work.map((study) => (
                   <li key={study.slug}>
                     <Link
                       href={study.href}
                       className='flex items-center gap-4 rounded-2xl border border-border/80 bg-card p-4 shadow-elev1 transition-all hover:border-brand/40 hover:no-underline hover:-translate-y-0.5'
                     >
-                      <span className='relative h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-1 ring-border/80'>
-                        <Image
-                          src={study.mark}
-                          alt=''
-                          fill
-                          className='object-cover'
-                          sizes='56px'
-                        />
-                      </span>
+                      {study.mark ? (
+                        <span className='relative h-14 w-14 shrink-0 overflow-hidden rounded-xl ring-1 ring-border/80'>
+                          <Image
+                            src={study.mark}
+                            alt=''
+                            fill
+                            className='object-cover'
+                            sizes='56px'
+                          />
+                        </span>
+                      ) : null}
                       <span className='min-w-0'>
                         <span className='block font-display font-semibold text-lg text-foreground'>
                           {study.title}
@@ -213,6 +219,7 @@ export default function BrandHome({
               </Link>
             </section>
           </Reveal>
+          ) : null}
 
           <Reveal>
             <section className='home-section'>

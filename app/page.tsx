@@ -17,6 +17,7 @@ import {
   getHomePageConfig,
 } from "@/lib/homeConfig";
 import { getAboutConfig, getWorkProjects } from "@/lib/work";
+import { getPublicAudienceSignal } from "@/lib/newsletterAudience";
 
 export const revalidate = 60;
 
@@ -28,12 +29,13 @@ export const metadata: Metadata = pageMeta({
 });
 
 export default async function Home() {
-  const [latest, all, homeConfig, about, work] = await Promise.all([
+  const [latest, all, homeConfig, about, work, audience] = await Promise.all([
     getLatestSubtopics(5),
     getAllSubtopicsSorted(),
     getHomePageConfig(),
     getAboutConfig(),
     getWorkProjects(),
+    getPublicAudienceSignal(),
   ]);
   const indexable = all.filter(
     (p) =>
@@ -85,6 +87,11 @@ export default async function Home() {
             <p className='mt-2 text-xs text-muted-foreground'>
               {CADENCE_LINE} Unsubscribe anytime.
             </p>
+            {audience.label ? (
+              <p className='mt-2 text-xs font-medium text-brand'>
+                {audience.label}
+              </p>
+            ) : null}
           </div>
         </div>
       </section>
@@ -169,35 +176,47 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* 5. About snippet */}
-        <section aria-labelledby='about-snip' className='home-section'>
-          <p className='accent-label mb-2'>About</p>
-          <div className='flex flex-col gap-5 sm:flex-row sm:items-start'>
-            <Image
-              src={about.photoUrl}
-              alt={about.displayName}
-              width={96}
-              height={96}
-              className='h-24 w-24 shrink-0 rounded-full object-cover ring-1 ring-border'
-              sizes='96px'
-              unoptimized={about.photoUrl.startsWith("http")}
-            />
-            <div className='flex flex-col gap-3'>
-              <h2 id='about-snip' className='display-title text-2xl'>
-                {about.displayName}
-              </h2>
-              <p className='max-w-xl text-muted-foreground leading-relaxed'>
-                {about.homeBlurb}
-              </p>
-              <Link
-                href='/about'
-                className='inline-flex min-h-11 w-fit items-center font-semibold text-brand underline-offset-4 hover:underline'
-              >
-                More about me
-              </Link>
+        {/* 5. About snippet (API/admin content only) */}
+        {about.displayName || about.homeBlurb || about.photoUrl ? (
+          <section aria-labelledby='about-snip' className='home-section'>
+            <p className='accent-label mb-2'>About</p>
+            <div className='flex flex-col gap-5 sm:flex-row sm:items-start'>
+              {about.photoUrl ? (
+                <Image
+                  src={about.photoUrl}
+                  alt={about.displayName || "Author"}
+                  width={96}
+                  height={96}
+                  className='h-24 w-24 shrink-0 rounded-full object-cover ring-1 ring-border'
+                  sizes='96px'
+                  unoptimized={about.photoUrl.startsWith("http")}
+                />
+              ) : null}
+              <div className='flex flex-col gap-3'>
+                {about.displayName ? (
+                  <h2 id='about-snip' className='display-title text-2xl'>
+                    {about.displayName}
+                  </h2>
+                ) : (
+                  <h2 id='about-snip' className='sr-only'>
+                    About
+                  </h2>
+                )}
+                {about.homeBlurb ? (
+                  <p className='max-w-xl text-muted-foreground leading-relaxed'>
+                    {about.homeBlurb}
+                  </p>
+                ) : null}
+                <Link
+                  href='/about'
+                  className='inline-flex min-h-11 w-fit items-center font-semibold text-brand underline-offset-4 hover:underline'
+                >
+                  More about me
+                </Link>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
       </div>
     </div>
   );

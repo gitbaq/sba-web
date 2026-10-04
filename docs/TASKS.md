@@ -115,3 +115,11 @@ GitHub issues: owner said no.
 - Branch FE: `overhaul/p5-through-p8`. BE: `overhaul/p3-content-ops` (newsletter from-name, no auto-send, contact Turnstile, stats).
 - Owner after deploy: P4-09 Search Console; P5-05 testimonials; P6-02 CV; P7-02 CloudFront; P8-02 UptimeRobot/Sentry; optional Turnstile keys; confirm 24h reply copy if desired.
 - Deploy both FE + BE together, then `npm run post-deploy`.
+
+### Newsletter ops (overhaul/next, hardened for deploy)
+
+- Admin: `/admin/subscribers`, composer (intro, essays, popular links, header/banner), drafts, preview, schedule, targeted send, send-to-self, horizontal metrics (Recharts).
+- Public: growth/rounded audience signal; self-send essay links via confirm email (HMAC token, rate limited, generic responses).
+- Backend: send logs + `payload_json`, drafts table, scheduler, header URL sanitize (https or site-relative only).
+- Hardening checks: newsletter unit tests green; FE typecheck/lint clean of errors. Deploy FE+BE from `overhaul/next` then `npm run post-deploy`.
+- Next after deploy: reader accounts + moderated comments MVP (separate from newsletter subscribers).

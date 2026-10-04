@@ -4,19 +4,20 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/utils/AuthContext";
 import { about_config_secure_url } from "@/utils/endpoints/endpoints";
-import { AboutConfig, Credential, FALLBACK_ABOUT } from "@/lib/work";
+import { AboutConfig, Credential, EMPTY_ABOUT } from "@/lib/work";
 import { readJson } from "@/lib/http";
 import MediaPicker from "@/components/admin/MediaPicker";
 import { useConfirm } from "@/components/admin/ConfirmProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { errorMessage, fromApiBody } from "@/lib/adminErrors";
 import { toast } from "sonner";
 
 export default function AboutAdminClient() {
   const { token, isAdmin } = useAuth();
   const confirm = useConfirm();
-  const [form, setForm] = useState<AboutConfig>(FALLBACK_ABOUT);
+  const [form, setForm] = useState<AboutConfig>(EMPTY_ABOUT);
   const [credText, setCredText] = useState("");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
@@ -31,15 +32,13 @@ export default function AboutAdminClient() {
       const data = await readJson<AboutConfig | null>(res, null);
       if (!data) throw new Error("load failed");
       const next: AboutConfig = {
-        displayName: data.displayName || FALLBACK_ABOUT.displayName,
-        title: data.title || FALLBACK_ABOUT.title,
-        bio: data.bio || FALLBACK_ABOUT.bio,
-        photoUrl: data.photoUrl || FALLBACK_ABOUT.photoUrl,
-        hiringBlurb: data.hiringBlurb || FALLBACK_ABOUT.hiringBlurb,
-        homeBlurb: data.homeBlurb || FALLBACK_ABOUT.homeBlurb,
-        credentials: Array.isArray(data.credentials)
-          ? data.credentials
-          : FALLBACK_ABOUT.credentials,
+        displayName: data.displayName || "",
+        title: data.title || "",
+        bio: data.bio || "",
+        photoUrl: data.photoUrl || "",
+        hiringBlurb: data.hiringBlurb || "",
+        homeBlurb: data.homeBlurb || "",
+        credentials: Array.isArray(data.credentials) ? data.credentials : [],
       };
       setForm(next);
       setCredText(
@@ -88,12 +87,10 @@ export default function AboutAdminClient() {
         detail?: string;
         errors?: string[];
       } | null>(res, null);
-      throw new Error(
-        err?.errors?.[0] || err?.message || err?.detail || "Save failed"
-      );
+      throw new Error(fromApiBody(err, "Save failed"));
     }
     try {
-      await fetch("/api/admin/revalidate", {
+      const rev = await fetch("/api/admin/revalidate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -101,8 +98,11 @@ export default function AboutAdminClient() {
           tag: "about-config",
         }),
       });
+      if (!rev.ok) {
+        toast.error("Saved, but cache revalidate failed. Refresh may lag.");
+      }
     } catch {
-      /* best-effort */
+      toast.error("Saved, but cache revalidate failed. Refresh may lag.");
     }
     toast.success(successMessage);
     await load();
@@ -121,7 +121,7 @@ export default function AboutAdminClient() {
     try {
       await persistAbout(next, "Photo saved");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save photo");
+      toast.error(errorMessage(e, "Could not save photo"));
     } finally {
       setLoading(false);
     }
@@ -139,7 +139,7 @@ export default function AboutAdminClient() {
     try {
       await persistAbout(form, "About page updated");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save");
+      toast.error(errorMessage(e, "Could not save"));
     } finally {
       setLoading(false);
     }

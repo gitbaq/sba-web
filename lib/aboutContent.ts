@@ -1,4 +1,4 @@
-/** Canonical About page narrative. Keep in sync with FALLBACK_ABOUT and backend defaults. */
+/** Static About page copy (What I do, meta). Bio/credentials come from the API. */
 
 export type AboutCredential = {
   label: string;
