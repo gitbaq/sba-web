@@ -4,22 +4,33 @@ import Link from "next/link";
 import { Metadata } from "next";
 import Icons from "@/components/Icons";
 import { LINKEDIN_URL } from "@/lib/audience";
+import {
+  ABOUT_BIO_PARAGRAPHS,
+  ABOUT_META_DESCRIPTION,
+  ABOUT_WHAT_I_DO,
+} from "@/lib/aboutContent";
 import { CTA } from "@/lib/ctas";
 import CredentialsStrip from "@/components/CredentialsStrip";
 import { pageMeta } from "@/lib/seo";
-import { getAboutConfig } from "@/lib/work";
+import { CALENDLY_URL, getAboutConfig } from "@/lib/work";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = pageMeta({
   title: "About",
-  description:
-    "Software innovation and AI leadership. Researched writing, shipped products, and practical delivery for teams.",
+  description: ABOUT_META_DESCRIPTION,
   path: "/about",
 });
 
 export default async function About() {
   const about = await getAboutConfig();
+  const bioParagraphs =
+    about.bio.includes("\n")
+      ? about.bio
+          .split(/\n+/)
+          .map((p) => p.trim())
+          .filter(Boolean)
+      : [...ABOUT_BIO_PARAGRAPHS];
 
   return (
     <div className='w-full'>
@@ -42,33 +53,31 @@ export default async function About() {
               {about.displayName}
             </h1>
             <p className='text-lg text-foreground/80'>{about.title}</p>
-            <p className='mx-auto max-w-xl text-muted-foreground leading-relaxed'>
-              {about.bio}
-            </p>
-            <div className='flex flex-wrap gap-3 justify-center pt-2'>
-              <Link href='/writing' className='craft-cta-secondary'>
-                <Icons.BookOpen className='craft-cta-icon' aria-hidden />
-                {CTA.writing}
-              </Link>
-              <Link href='/work' className='craft-cta-secondary'>
-                <Icons.FolderCode className='craft-cta-icon' aria-hidden />
-                {CTA.work}
-              </Link>
-              <a
-                href={LINKEDIN_URL}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='craft-cta-secondary'
-              >
-                <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
-                {CTA.linkedin}
-              </a>
+            <div className='mx-auto flex max-w-xl flex-col gap-4 text-left text-muted-foreground leading-relaxed'>
+              {bioParagraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
             </div>
           </header>
         </div>
       </div>
 
       <main className='mx-auto flex w-full max-w-3xl flex-col gap-12 px-4 py-10 md:py-14'>
+        <section aria-labelledby='what-i-do'>
+          <p className='accent-label mb-2'>Practice</p>
+          <h2
+            id='what-i-do'
+            className='display-title text-2xl md:text-3xl mb-6'
+          >
+            What I do
+          </h2>
+          <ul className='m-0 list-disc space-y-3 pl-5 text-muted-foreground leading-relaxed'>
+            {ABOUT_WHAT_I_DO.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+
         <section aria-labelledby='credentials'>
           <p className='accent-label mb-2'>Background</p>
           <h2
@@ -78,18 +87,6 @@ export default async function About() {
             Credentials
           </h2>
           <CredentialsStrip credentials={about.credentials} />
-        </section>
-
-        <section aria-labelledby='teaching' className='life-panel'>
-          <p className='accent-label mb-2'>Teaching</p>
-          <h2 id='teaching' className='display-title text-2xl md:text-3xl mb-3'>
-            Teaching and mentoring
-          </h2>
-          <p className='max-w-xl leading-relaxed text-muted-foreground'>
-            Casual Academic in Computer Science and IT at UNSW Sydney. I teach
-            and mentor with the same plain, practical style as the essays on this
-            site.
-          </p>
         </section>
 
         <section
@@ -115,32 +112,38 @@ export default async function About() {
               className='craft-cta-primary'
             >
               <Icons.FaLinkedin className='craft-cta-icon' aria-hidden />
-              LinkedIn profile
+              LinkedIn
             </a>
-            <Link href='/contact' className='craft-cta-secondary'>
-              <Icons.Mails className='craft-cta-icon' aria-hidden />
-              {CTA.contact}
-            </Link>
             <Link href='/work' className='craft-cta-secondary'>
-              Case studies
+              <Icons.FolderCode className='craft-cta-icon' aria-hidden />
+              Work
             </Link>
           </div>
         </section>
 
-        <section aria-labelledby='portfolio-link' className='life-panel'>
-          <p className='accent-label mb-2'>Portfolio</p>
-          <h2 id='portfolio-link' className='display-title text-2xl mb-3'>
-            Work, separate from Writing
+        <section aria-labelledby='next-step' className='life-panel'>
+          <p className='accent-label mb-2'>Next</p>
+          <h2 id='next-step' className='display-title text-2xl md:text-3xl mb-3'>
+            Stay in touch
           </h2>
-          <p className='text-muted-foreground leading-relaxed mb-4'>
-            Case studies live under Work: problem, approach, outcome, and stack.
+          <p className='mb-5 max-w-xl text-muted-foreground leading-relaxed'>
+            Get new essays by email, or book a 30 minute call.
           </p>
-          <Link
-            href='/work'
-            className='text-brand font-semibold underline-offset-4 hover:underline w-fit'
-          >
-            View work
-          </Link>
+          <div className='flex flex-wrap gap-3'>
+            <Link href='/subscribe' className='craft-cta-primary'>
+              <Icons.Mails className='craft-cta-icon' aria-hidden />
+              Get new essays by email
+            </Link>
+            <a
+              href={CALENDLY_URL}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='craft-cta-secondary'
+            >
+              <Icons.FaCalendarDays className='craft-cta-icon' aria-hidden />
+              {CTA.calendly}
+            </a>
+          </div>
         </section>
       </main>
     </div>

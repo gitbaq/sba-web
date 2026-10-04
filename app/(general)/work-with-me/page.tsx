@@ -19,7 +19,7 @@ export const revalidate = 60;
 export const metadata: Metadata = pageMeta({
   title: "Work with me",
   description:
-    "Book a 30 minute call. AI, cloud, and software delivery with clear outcomes, credentials, and case studies.",
+    "Book a 30 minute call. AI, cloud, case studies, and book review or authoring for publishers.",
   path: "/work-with-me",
 });
 
@@ -53,7 +53,7 @@ export default async function WorkWithMePage() {
       <AudienceShell
         eyebrow='Clients'
         title='What I offer'
-        description='AI product slices, cloud integration, and release automation for teams that need shipped outcomes, not slide decks.'
+        description='AI product slices, cloud integration, and book review or authoring for publishers. Shipped outcomes, not slide decks.'
         ctas={[
           {
             href: CALENDLY_URL,
@@ -81,7 +81,7 @@ export default async function WorkWithMePage() {
             <li className='rounded-xl border border-border/80 bg-card p-4'>
               <p className='font-display font-semibold text-foreground'>1. Book a call</p>
               <p className='mt-1 text-sm leading-relaxed text-muted-foreground'>
-                A paid 30 minute consultation to frame the outcome.
+                A 30 minute call to frame the outcome.
               </p>
             </li>
             <li className='rounded-xl border border-border/80 bg-card p-4'>
@@ -113,8 +113,8 @@ export default async function WorkWithMePage() {
               Why teams hire me
             </h2>
             <p className='mt-2 max-w-xl text-muted-foreground'>
-              {about.title}. Research-depth writing, shipped products, and
-              delivery across AI and cloud systems.
+              {about.title} 25+ years in software engineering. Essays, shipped
+              products, and practical delivery for teams.
             </p>
           </div>
           <CredentialsStrip credentials={about.credentials} />
@@ -127,8 +127,8 @@ export default async function WorkWithMePage() {
               How I help
             </h2>
             <p className='mt-2 max-w-xl text-muted-foreground'>
-              Each offer lists who it is for, what you get, relevant credentials,
-              and related work on this site.
+              Each offer lists who it is for, what you get, and related work on
+              this site.
             </p>
           </div>
           <ul className='m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2'>
@@ -156,20 +156,6 @@ export default async function WorkWithMePage() {
                   <div>
                     <dt className='font-semibold text-foreground'>Deliver</dt>
                     <dd className='m-0 text-muted-foreground'>{o.deliver}</dd>
-                  </div>
-                  <div>
-                    <dt className='font-semibold text-foreground'>Timeline</dt>
-                    <dd className='m-0 text-muted-foreground'>{o.timeline}</dd>
-                  </div>
-                  <div>
-                    <dt className='font-semibold text-foreground'>Credentials</dt>
-                    <dd className='m-0 text-muted-foreground'>
-                      <ul className='m-0 list-disc space-y-1 pl-4'>
-                        {o.credentials.map((c) => (
-                          <li key={c}>{c}</li>
-                        ))}
-                      </ul>
-                    </dd>
                   </div>
                   <div>
                     <dt className='font-semibold text-foreground'>Related work</dt>
@@ -217,11 +203,20 @@ export default async function WorkWithMePage() {
           <div>
             <p className='accent-label mb-2'>Proof</p>
             <h2 id='proof' className='display-title text-2xl md:text-3xl'>
-              Featured work
+              Featured work and recommendations
             </h2>
             <p className='mt-2 max-w-xl text-muted-foreground'>
               Cobu and Blox are live product showcases: problem, approach, and
-              outcome for each.
+              outcome for each. Recommendations are on{" "}
+              <a
+                href={LINKEDIN_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='font-semibold text-brand underline-offset-4 hover:underline'
+              >
+                LinkedIn
+              </a>
+              .
             </p>
           </div>
           <ul className='m-0 grid list-none gap-4 p-0 sm:grid-cols-2'>
@@ -231,34 +226,22 @@ export default async function WorkWithMePage() {
               </li>
             ))}
           </ul>
-          <Link
-            href='/work'
-            className='w-fit font-semibold text-brand underline-offset-4 hover:underline'
-          >
-            All case studies
-          </Link>
-        </section>
-
-        <section aria-labelledby='editorial' className='flex flex-col gap-4'>
-          <div>
-            <p className='accent-label mb-2'>Editorial</p>
-            <h2 id='editorial' className='display-title text-2xl md:text-3xl'>
-              Publishing and review
-            </h2>
-          </div>
-          <p className='max-w-xl leading-relaxed text-muted-foreground'>
-            Book reviewer for Manning Publications. Co-author with titles on
-            Amazon. For recommendations, see{" "}
+          <div className='flex flex-wrap gap-x-5 gap-y-2'>
+            <Link
+              href='/work'
+              className='w-fit font-semibold text-brand underline-offset-4 hover:underline'
+            >
+              All case studies
+            </Link>
             <a
-              href={LINKEDIN_URL}
+              href='https://www.amazon.com.au/stores/Syed-Baqir-Ali/author/B0G81DNV2T'
               target='_blank'
               rel='noopener noreferrer'
-              className='font-semibold text-brand underline-offset-4 hover:underline'
+              className='w-fit font-semibold text-brand underline-offset-4 hover:underline'
             >
-              LinkedIn
+              Amazon author page
             </a>
-            .
-          </p>
+          </div>
         </section>
 
         <section
@@ -271,8 +254,8 @@ export default async function WorkWithMePage() {
             Next step
           </h2>
           <p className='mb-5 max-w-xl leading-relaxed text-muted-foreground'>
-            Book a paid consultation on Calendly, or send a short note with your
-            goal and constraints. I read every message.
+            Book a call on Calendly, or send a short note with your goal and
+            constraints. I read every message.
           </p>
           <div className='flex flex-wrap gap-3'>
             <a

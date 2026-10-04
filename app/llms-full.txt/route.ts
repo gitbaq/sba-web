@@ -61,7 +61,7 @@ export async function GET() {
 ## Entity
 
 - Person: Syed Baqir Ali
-- Role: Software innovation and AI leader; writes research-depth essays
+- Role: Principal engineer and AI practitioner in Sydney; 25+ years in software engineering
 - Canonical site: ${web_url}
 - About: ${web_url}/about
 - Contact: ${web_url}/contact

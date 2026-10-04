@@ -5,7 +5,7 @@ export const SITE = {
   url: "https://www.syedbaqirali.com",
   title: "Syed Baqir Ali | Practical Writing on AI and Software",
   description:
-    "Practical notes on software, AI, and leading teams. New essays as they publish.",
+    "Principal engineer and AI practitioner in Sydney. Essays, shipped products, and practical delivery for teams.",
   locale: "en_US",
   twitter: "@baq2coaching",
   linkedin: "https://www.linkedin.com/in/syedbaqirali/",
@@ -14,7 +14,7 @@ export const SITE = {
   calendly: "https://calendly.com/syedbaqirali/30min",
   ogImage: "https://www.syedbaqirali.com/ai4.png",
   email: "hello@syedbaqirali.com",
-  tagline: "Practical notes on software, AI, and leading teams.",
+  tagline: "Principal engineer and AI practitioner in Sydney.",
 } as const;
 
 export function absoluteUrl(path: string): string {
@@ -38,7 +38,11 @@ type PageMetaInput = {
   title: string;
   description: string;
   path: string;
-  image?: string;
+  /**
+   * Explicit image URL, or `null` to omit so a route `opengraph-image` can provide it.
+   * When omitted (`undefined`), falls back to `SITE.ogImage`.
+   */
+  image?: string | null;
   /** Use when title already includes the brand (home). */
   absoluteTitle?: boolean;
   ogType?: "website" | "article";
@@ -70,9 +74,11 @@ export function pageMeta({
   const url = absoluteUrl(path);
   const desc = clampDescription(description);
   const ogTitle = absoluteTitle ? title : `${title} | ${SITE.name}`;
-  const img = image || SITE.ogImage;
-
-  const images = [{ url: img, width: 1200, height: 630, alt: title || SITE.name }];
+  // null omits images so route opengraph-image.tsx can supply them.
+  const img = image === null ? undefined : image || SITE.ogImage;
+  const images = img
+    ? [{ url: img, width: 1200, height: 630, alt: title || SITE.name }]
+    : undefined;
   const openGraph: Metadata["openGraph"] =
     ogType === "article"
       ? {
@@ -108,7 +114,7 @@ export function pageMeta({
       card: "summary_large_image",
       title: ogTitle,
       description: desc,
-      images: [img],
+      images: img ? [img] : undefined,
       creator: SITE.twitter,
     },
   };
@@ -120,8 +126,15 @@ export function personJsonLd() {
     "@type": "Person",
     name: SITE.name,
     url: SITE.url,
-    jobTitle: "Software and AI practitioner",
+    jobTitle: "Principal engineer and AI practitioner",
     description: SITE.description,
+    knowsAbout: [
+      "Artificial intelligence",
+      "Software engineering",
+      "RAG",
+      "Agents",
+      "Cloud-native delivery",
+    ],
     sameAs: [SITE.linkedin, SITE.github, SITE.x, "https://www.codingburo.com"],
     image: `${SITE.url}/sba-photo-2-small.png`,
   };
@@ -181,7 +194,7 @@ export function professionalServiceJsonLd() {
     serviceType: [
       "Custom AI solutions",
       "Cloud integration",
-      "DevOps and automation",
+      "Book review and authoring",
     ],
   };
 }

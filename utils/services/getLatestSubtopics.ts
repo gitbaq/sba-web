@@ -121,10 +121,9 @@ export function articleHref(post: SubTopic): string {
   return hrefFromLib(post);
 }
 
-/** Rank by shared series (topicId), then shared tags, then recency. */
 /**
- * Related essays: same series first, then shared tags, then recency.
- * Prefer fewer items over weak matches (P3-08).
+ * Related essays: every essay in the same series first, then shared tags,
+ * then recency. Prefer fewer items over unrelated ones (P3-08).
  */
 export function relatedPosts(
   current: SubTopic,
@@ -136,23 +135,29 @@ export function relatedPosts(
     .filter((p) => p.id !== current.id && isPublic(p) && isIndexable(p))
     .map((p) => {
       let score = 0;
-      if (current.topicId != null && p.topicId === current.topicId) score += 100;
-      else if (
-        current.sbaTopicName &&
-        p.sbaTopicName &&
-        p.sbaTopicName === current.sbaTopicName
-      ) {
-        score += 80;
-      } else if (p.heading && p.heading === current.heading) {
-        score += 60;
-      }
+      const sameSeries =
+        (current.topicId != null && p.topicId === current.topicId) ||
+        Boolean(
+          current.sbaTopicName &&
+            p.sbaTopicName &&
+            p.sbaTopicName === current.sbaTopicName
+        );
+      if (sameSeries) score += 100;
+      else if (p.heading && p.heading === current.heading) score += 60;
       const overlap = postTags(p).filter((t) => currentTags.has(t)).length;
       score += overlap * 10;
       const t = Date.parse(postDate(p));
       const recency = Number.isFinite(t) ? t / 1e13 : 0;
-      return { p, score: score + recency, topical: score };
+      return { p, score: score + recency, topical: score, sameSeries };
     })
-    .filter((x) => x.topical >= 10)
     .sort((a, b) => b.score - a.score);
-  return scored.slice(0, limit).map((x) => x.p);
+  const series = scored.filter((x) => x.sameSeries);
+  const tagged = scored.filter((x) => !x.sameSeries && x.topical >= 10);
+  const picked = [...series, ...tagged].slice(0, limit);
+  // If nothing topical matched, allow one same-heading or weak tag peer.
+  if (!picked.length) {
+    const fallback = scored.find((x) => x.topical > 0);
+    if (fallback) return [fallback.p];
+  }
+  return picked.map((x) => x.p);
 }

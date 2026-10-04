@@ -28,9 +28,8 @@ export async function generateMetadata({
     title: study.title,
     description: study.tagline,
     path: `/work/${slug}`,
-    image: study.mark?.startsWith("http")
-      ? study.mark
-      : undefined,
+    // null: use route opengraph-image.tsx (branded OG), not the static fallback.
+    image: study.mark?.startsWith("http") ? study.mark : null,
   });
 }
 

@@ -1,9 +1,8 @@
 import { CaseStudy } from "@/lib/work";
 
-const CELLS: { key: keyof Pick<CaseStudy, "role" | "timeline" | "stack" | "result">; label: string }[] =
+const CELLS: { key: keyof Pick<CaseStudy, "role" | "stack" | "result">; label: string }[] =
   [
     { key: "role", label: "Role" },
-    { key: "timeline", label: "Timeline" },
     { key: "stack", label: "Stack" },
     { key: "result", label: "Result" },
   ];

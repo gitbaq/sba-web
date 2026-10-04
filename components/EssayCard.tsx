@@ -6,6 +6,7 @@ import {
   articleHref,
   estimateReadingMinutes,
   extractTextFromHtml,
+  normalizeDashesInText,
   postDate,
 } from "@/lib/articles";
 import { isNewPost } from "@/utils/services/getLatestSubtopics";
@@ -31,18 +32,19 @@ export default function EssayCard({
   const showNew = isNewPost(dateStr);
   const minutes = estimateReadingMinutes(post.content || "");
   const title = post.subHeading || post.heading;
-  const dek =
+  const dek = normalizeDashesInText(
     post.dek?.trim() ||
-    extractTextFromHtml(post.content || "", featured ? 180 : 140)
-      .replace(
-        new RegExp(
-          `^${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[.….]?\\s*`,
-          "i"
-        ),
-        ""
-      )
-      .trim();
-  const topic = post.sbaTopicName || post.heading;
+      extractTextFromHtml(post.content || "", featured ? 180 : 140)
+        .replace(
+          new RegExp(
+            `^${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*[.….]?\\s*`,
+            "i"
+          ),
+          ""
+        )
+        .trim()
+  );
+  const topic = post.sbaTopicName || "";
   const image = coverSrc(post);
 
   return (

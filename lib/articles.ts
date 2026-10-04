@@ -120,13 +120,28 @@ export function parseArticleParam(param: string): ArticleParam | null {
   return { kind: "slug", slug: param };
 }
 
-export function extractTextFromHtml(html: string, maxLength = 160): string {
-  const text = (html || "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .substring(0, maxLength)
+export function normalizeDashesInText(text: string): string {
+  if (!text) return "";
+  return text
+    .replace(/\u2014/g, ". ")
+    .replace(/\u2013/g, "-")
+    .replace(/&mdash;/gi, ". ")
+    .replace(/&#8212;/g, ". ")
+    .replace(/&#x2014;/gi, ". ")
+    .replace(/&ndash;/gi, "-")
+    .replace(/&#8211;/g, "-")
+    .replace(/&#x2013;/gi, "-")
+    .replace(/\s{2,}/g, " ")
     .trim();
+}
+
+export function extractTextFromHtml(html: string, maxLength = 160): string {
+  const text = normalizeDashesInText(
+    (html || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  ).substring(0, maxLength).trim();
   return text || "Research writing by Syed Baqir Ali";
 }
 
@@ -168,42 +183,116 @@ export function injectHeadingIds(html: string): string {
   });
 }
 
+const EMOJI_CLASS =
+  "[\\u{1F000}-\\u{1FAFF}\\u{2600}-\\u{27BF}\\u{231A}-\\u{23FF}\\u{2B00}-\\u{2BFF}]";
+const EMOJI_RUN_RE = new RegExp(
+  `(\\s*)(?:${EMOJI_CLASS}|\\u{FE0F}|\\u{200D}|\\u{20E3})+(\\s*)`,
+  "gu"
+);
+
+function emojiGap(_m: string, before: string, after: string): string {
+  if (before && after) return " ";
+  if (after) return after;
+  return "";
+}
+
+/** Remove emoji from plain text and tidy the spacing they leave behind. */
+export function stripEmojiFromText(text: string): string {
+  if (!text) return "";
+  return text.replace(EMOJI_RUN_RE, emojiGap).replace(/[ \t]{2,}/g, " ").trim();
+}
+
+/** Remove emoji (raw chars and numeric entities) from essay HTML. */
+export function stripEmojiFromHtml(html: string): string {
+  if (!html) return "";
+  const withoutEntities = html.replace(
+    /&#(?:x([0-9a-f]+)|(\d+));/gi,
+    (full, hex, dec) => {
+      const code = hex ? parseInt(hex, 16) : parseInt(dec, 10);
+      const isEmoji =
+        (code >= 0x1f000 && code <= 0x1faff) ||
+        (code >= 0x2600 && code <= 0x27bf) ||
+        (code >= 0x231a && code <= 0x23ff) ||
+        (code >= 0x2b00 && code <= 0x2bff) ||
+        code === 0xfe0f ||
+        code === 0x200d ||
+        code === 0x20e3;
+      return isEmoji ? "" : full;
+    }
+  );
+  return withoutEntities
+    .replace(EMOJI_RUN_RE, emojiGap)
+    .replace(/(<h[1-6]\b[^>]*>)\s+/gi, "$1")
+    .replace(/\s+(<\/h[1-6]>)/gi, "$1");
+}
+
+function normalizeHeadingText(s: string): string {
+  return stripEmojiFromText(s)
+    .toLowerCase()
+    .replace(/&[a-z0-9#]+;/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** True when two normalized strings are equal or nearly the same phrase. */
+function isNearDuplicate(a: string, b: string): boolean {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a];
+  if (short.length >= 12 && long.includes(short) && short.length / long.length >= 0.75) {
+    return true;
+  }
+  const ta = new Set(a.split(" "));
+  const tb = new Set(b.split(" "));
+  if (ta.size < 3 || tb.size < 3) return false;
+  let shared = 0;
+  ta.forEach((t) => {
+    if (tb.has(t)) shared += 1;
+  });
+  return shared / (ta.size + tb.size - shared) >= 0.8;
+}
+
 /**
- * Page has one H1 (the title). Demote body H1→H2, H2→H3, H3→H4.
- * Drop a leading body heading that repeats the title or dek.
+ * Page has one H1 (the title). Body headings are shifted so the shallowest
+ * becomes H2, relative depth is kept, and levels never skip (max H4).
+ * Drop the first body heading when it repeats the title or dek.
  */
 export function demoteBodyHeadings(
   html: string,
   opts?: { title?: string; dek?: string }
 ): string {
   if (!html) return "";
-  let out = html.replace(/<h([1-3])(\b[^>]*)>/gi, (_, level, attrs) => {
-    const next = Math.min(Number(level) + 1, 4);
-    return `<h${next}${attrs}>`;
-  });
-  out = out.replace(/<\/h([1-3])>/gi, (_, level) => {
-    const next = Math.min(Number(level) + 1, 4);
-    return `</h${next}>`;
-  });
+  let out = html;
 
-  const normalize = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, " ")
-      .trim();
-  const titleN = opts?.title ? normalize(opts.title) : "";
-  const dekN = opts?.dek ? normalize(opts.dek) : "";
+  const titleN = opts?.title ? normalizeHeadingText(opts.title) : "";
+  const dekN = opts?.dek ? normalizeHeadingText(opts.dek) : "";
   if (titleN || dekN) {
-    out = out.replace(
-      /^\s*<h([2-4])\b[^>]*>([\s\S]*?)<\/h\1>/i,
-      (full, _level, inner) => {
-        const text = normalize(String(inner).replace(/<[^>]*>/g, " "));
-        if (text && (text === titleN || text === dekN)) return "";
-        return full;
+    const first = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/i.exec(out);
+    if (first) {
+      const text = normalizeHeadingText(first[2].replace(/<[^>]*>/g, " "));
+      if (
+        text &&
+        (isNearDuplicate(text, titleN) || isNearDuplicate(text, dekN))
+      ) {
+        out = out.slice(0, first.index) + out.slice(first.index + first[0].length);
       }
-    );
+    }
   }
-  return out;
+
+  const levels = [...out.matchAll(/<h([1-6])\b/gi)].map((m) => Number(m[1]));
+  if (!levels.length) return out;
+  const shift = 2 - Math.min(...levels);
+
+  let prev = 1;
+  let current = 2;
+  return out.replace(/<(\/?)h([1-6])(\b[^>]*)>/gi, (_, slash, level, attrs) => {
+    if (!slash) {
+      const shifted = Number(level) + shift;
+      current = Math.max(2, Math.min(shifted, prev + 1, 4));
+      prev = current;
+    }
+    return `<${slash}h${current}${attrs}>`;
+  });
 }
 
 /** Strip dead `#` anchors left from unpublished series list items. */
@@ -212,18 +301,65 @@ export function stripHashLinks(html: string): string {
   return html.replace(/<a\b[^>]*href=["']#["'][^>]*>([\s\S]*?)<\/a>/gi, "$1");
 }
 
-/** Label Blockchain 101 unfinished list as planned topics (no date implication). */
+const PLANNED_PHRASE =
+  "(?:(?:Articles|Posts|Essays|Topics)\\s+in\\s+this\\s+series|Coming\\s+soon|(?:Here\\s+are\\s+)?(?:the\\s+)?upcoming\\s+(?:articles|posts|essays|topics)(?:\\s+in\\s+(?:the|this)\\s+series)?)";
+const PLANNED_HEADING_RE = new RegExp(
+  `<(h[2-4])([^>]*)>\\s*(?:<[^>]+>\\s*)*${PLANNED_PHRASE}\\s*:?\\s*(?:<\\/[^>]+>\\s*)*<\\/\\1>`,
+  "gi"
+);
+const PLANNED_PARAGRAPH_RE = new RegExp(
+  `<p\\b[^>]*>\\s*(?:<(?:strong|b|em)>\\s*)?${PLANNED_PHRASE}\\s*[:.]?\\s*(?:<\\/(?:strong|b|em)>\\s*)?<\\/p>`,
+  "gi"
+);
+const PLANNED_DETECT_RE = new RegExp(PLANNED_PHRASE, "i");
+
+/** True when the HTML carries an upcoming or coming-soon series list. */
+export function hasPlannedSeriesList(html: string): boolean {
+  return PLANNED_DETECT_RE.test(html || "");
+}
+
+/** Label unfinished series lists as planned topics (no date implication). */
 export function labelPlannedTopics(html: string): string {
   if (!html) return "";
-  return html
-    .replace(
-      /<(h[2-4])([^>]*)>(\s*(?:Articles|Posts|Essays|Topics)\s+in\s+this\s+series\s*)<\/\1>/gi,
-      "<$1$2>Planned topics</$1>"
-    )
-    .replace(
-      /<(h[2-4])([^>]*)>(\s*Coming\s+soon\s*)<\/\1>/gi,
-      "<$1$2>Planned topics</$1>"
+  let out = html
+    .replace(PLANNED_HEADING_RE, "<$1$2>Planned topics</$1>")
+    .replace(PLANNED_PARAGRAPH_RE, "<h2>Planned topics</h2>");
+  if (
+    /Planned topics/i.test(out) &&
+    !/no publish dates/i.test(out)
+  ) {
+    out = out.replace(
+      /(<h[2-4]\b[^>]*>\s*Planned topics\s*<\/h[2-4]>)/i,
+      "$1<p>These topics are planned. No publish dates are promised yet.</p>"
     );
+  }
+  return out;
+}
+
+/**
+ * Remove Substack link-outs from essay HTML. Short paragraphs that exist only
+ * to send readers to Substack are dropped. Other Substack links keep their text.
+ */
+export function stripSubstackLinkouts(html: string): string {
+  if (!html) return "";
+  const dropped = html.replace(/<p\b[^>]*>[\s\S]*?<\/p>/gi, (block) => {
+    if (!/substack/i.test(block)) return block;
+    const text = block.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const hasLink = /href=["'][^"']*substack\.com/i.test(block);
+    const cta =
+      /(originally\s+(?:published|posted)|also\s+(?:published|available)|cross-?posted|read\s+(?:this|it|more|the\s+full)|view\s+(?:this|it)|subscribe|sign\s*up|follow|thanks\s+for\s+reading|newsletter|on\s+substack|from\s+substack)/i;
+    if (hasLink && text.length < 160) return "";
+    if (text.length < 300 && cta.test(text) && /substack/i.test(text)) return "";
+    if (text.length < 120 && /^[^.]*(substack)[^.]*\.?$/i.test(text)) return "";
+    return block;
+  });
+  return dropped
+    .replace(
+      /<a\b[^>]*href=["'][^"']*substack\.com[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,
+      "$1"
+    )
+    .replace(/\s*(?:on|via|from)\s+Substack\b/gi, "")
+    .replace(/\bSubstack\b/gi, "");
 }
 
 /** Replace em/en dashes (chars + HTML entities) so visitor copy stays ASCII-safe (P2-12). */
@@ -240,13 +376,21 @@ export function normalizeDashesInHtml(html: string): string {
     .replace(/&#x2013;/gi, "-");
 }
 
-/** Prepare essay HTML for render: links, demotion, TOC ids. */
+/** Prepare essay HTML for render: cleanup, planned labels, demotion, TOC ids. */
 export function prepareArticleHtml(
   html: string,
-  opts?: { title?: string; dek?: string; essayId?: number }
+  opts?: {
+    title?: string;
+    dek?: string;
+    essayId?: number;
+    /** Series name; Blockchain series always gets planned-topics labels. */
+    series?: string;
+  }
 ): string {
-  let out = stripHashLinks(html || "");
-  if (opts?.essayId === 0) {
+  let out = stripHashLinks(stripEmojiFromHtml(html || ""));
+  out = stripSubstackLinkouts(out);
+  const isBlockchain = /^blockchain\b/i.test((opts?.series || "").trim());
+  if (opts?.essayId === 0 || isBlockchain || hasPlannedSeriesList(out)) {
     out = labelPlannedTopics(out);
   }
   out = demoteBodyHeadings(out, { title: opts?.title, dek: opts?.dek });
@@ -289,17 +433,78 @@ export function shouldShowUpdated(
   );
 }
 
-/** Split HTML near ~40% of H2 sections for mid-article subscribe. */
+const MIN_WORDS_TO_SPLIT = 400;
+const SPLIT_TARGET = 0.4;
+const SPLIT_MIN_TAIL_WORDS = 120;
+const SPLIT_CONTAINERS = new Set([
+  "blockquote",
+  "ul",
+  "ol",
+  "table",
+  "pre",
+  "figure",
+  "details",
+]);
+
+/**
+ * Split HTML for the mid-article subscribe block. Cuts after a paragraph near
+ * 40% of the words, preferring the end of a section. Never leaves a heading
+ * stranded before the cut. Short essays are not split.
+ */
 export function splitHtmlAtMidpoint(html: string): [string, string] {
   if (!html) return ["", ""];
-  const re = /<h2\b[^>]*>/gi;
-  const matches = [...html.matchAll(re)];
-  if (matches.length < 2) return [html, ""];
-  const cutIndex = Math.max(1, Math.floor(matches.length * 0.4));
-  const match = matches[cutIndex];
-  const at = match.index ?? -1;
-  if (at <= 0) return [html, ""];
-  return [html.slice(0, at), html.slice(at)];
+  const tokens = [...html.matchAll(/<(\/?)([a-z][a-z0-9]*)\b[^>]*>|([^<]+)/gi)];
+
+  let depth = 0;
+  let words = 0;
+  let paraText = "";
+  const candidates: { end: number; words: number; endsSection: boolean }[] = [];
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (t[3] !== undefined) {
+      const n = t[3].trim() ? t[3].trim().split(/\s+/).length : 0;
+      words += n;
+      paraText += t[3];
+      continue;
+    }
+    const closing = t[1] === "/";
+    const tag = t[2].toLowerCase();
+    if (SPLIT_CONTAINERS.has(tag)) {
+      depth += closing ? -1 : 1;
+      continue;
+    }
+    if (tag === "p" && !closing) {
+      paraText = "";
+      continue;
+    }
+    if (tag === "p" && closing && depth <= 0) {
+      const text = paraText.replace(/\s+/g, " ").trim();
+      if (text.split(" ").length < 8 || /[:]$/.test(text)) continue;
+      const end = (t.index ?? 0) + t[0].length;
+      const next = tokens.slice(i + 1).find((x) => x[3] === undefined || x[3].trim());
+      const nextTag = next && next[3] === undefined ? next[2].toLowerCase() : "";
+      if (nextTag === "li" || nextTag === "ul" || nextTag === "ol") continue;
+      candidates.push({
+        end,
+        words,
+        endsSection: /^h[1-6]$/.test(nextTag) && next?.[1] !== "/",
+      });
+    }
+  }
+
+  if (words < MIN_WORDS_TO_SPLIT || !candidates.length) return [html, ""];
+
+  let best: { end: number; score: number } | null = null;
+  for (const c of candidates) {
+    if (words - c.words < SPLIT_MIN_TAIL_WORDS) continue;
+    const ratio = c.words / words;
+    if (ratio < 0.2 || ratio > 0.65) continue;
+    const score = Math.abs(ratio - SPLIT_TARGET) - (c.endsSection ? 0.08 : 0);
+    if (!best || score < best.score) best = { end: c.end, score };
+  }
+  if (!best) return [html, ""];
+  return [html.slice(0, best.end), html.slice(best.end)];
 }
 
 /** Stub essay ids excluded from sitemap/index until full text lands. */

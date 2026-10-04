@@ -131,8 +131,8 @@ export default async function Home() {
             AI, cloud, and delivery for product teams
           </h2>
           <p className='mt-3 max-w-xl text-muted-foreground leading-relaxed'>
-            Custom AI slices, cloud integration, and release automation. See
-            services, credentials, and how to book a call.
+            Custom AI slices, cloud integration, and book review or authoring.
+            See services, credentials, and how to book a call.
           </p>
           {work.length > 0 ? (
             <ul className='mt-4 m-0 flex list-none flex-col gap-3 p-0'>

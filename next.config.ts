@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { LEGACY_ARTICLE_PATHS } from "./lib/articles";
+import { LEGACY_SERIES_REDIRECTS } from "./lib/legacySeries";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -38,6 +39,11 @@ const nextConfig: NextConfig = {
       ...LEGACY_ARTICLE_PATHS.map(({ source, slug }) => ({
         source,
         destination: `/writing/${slug}`,
+        permanent: true,
+      })),
+      ...LEGACY_SERIES_REDIRECTS.map(({ source, destination }) => ({
+        source,
+        destination,
         permanent: true,
       })),
     ];

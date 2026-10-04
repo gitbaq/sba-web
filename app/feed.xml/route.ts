@@ -6,8 +6,13 @@ import {
   extractTextFromHtml,
   isIndexable,
   postDate,
+  prepareArticleHtml,
+  stripEmojiFromHtml,
+  stripEmojiFromText,
 } from "@/lib/articles";
 import { getAllSubtopicsSorted } from "@/utils/services/getLatestSubtopics";
+import { findTopicForPost, getAllTopicsSafe } from "@/utils/services/getTopics";
+import { enrichPostsWithSeries } from "@/lib/topicHubs";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
@@ -22,7 +27,11 @@ function escapeXml(s: string) {
 }
 
 export async function GET() {
-  const posts = (await getAllSubtopicsSorted()).filter(isIndexable);
+  const topics = await getAllTopicsSafe();
+  const posts = enrichPostsWithSeries(
+    (await getAllSubtopicsSorted()).filter(isIndexable),
+    topics
+  );
 
   const newest = posts.reduce((latest, post) => {
     const t = Date.parse(postDate(post) || articleModifiedDate(post) || "");
@@ -35,15 +44,31 @@ export async function GET() {
   const items = posts
     .map((post) => {
       const link = `${web_url}${articleHref(post)}`;
-      const title = escapeXml(post.subHeading || post.heading || "Essay");
-      const dek = (post.dek || "").trim();
+      const title = escapeXml(
+        stripEmojiFromText(post.subHeading || post.heading || "Essay")
+      );
+      const dek = stripEmojiFromText((post.dek || "").trim());
       const description = escapeXml(
         dek || extractTextFromHtml(post.content || "", 280)
       );
       const pub = postDate(post);
       const pubDate = pub ? new Date(pub).toUTCString() : lastBuildDate;
-      const category = escapeXml(post.heading || post.sbaTopicName || "Writing");
-      const cdata = (post.content || "").replace(/]]>/g, "]]]]><![CDATA[>");
+      const seriesName =
+        findTopicForPost(topics, post)?.sbaTopicName ||
+        post.sbaTopicName ||
+        "Writing"; // never use post.heading (legacy catalog label)
+      const category = escapeXml(stripEmojiFromText(seriesName));
+      const prepared = prepareArticleHtml(post.content || "", {
+        title: post.subHeading,
+        dek: post.dek?.trim(),
+        essayId: post.id,
+        series: seriesName,
+      });
+      // Full-text feed strips body emoji so readers and validators stay clean.
+      const cdata = stripEmojiFromHtml(prepared).replace(
+        /]]>/g,
+        "]]]]><![CDATA[>"
+      );
 
       return `
     <item>
@@ -63,7 +88,7 @@ export async function GET() {
   <channel>
     <title>Syed Baqir Ali | Writing</title>
     <link>${web_url}/writing</link>
-    <description>Research-depth essays on AI and software. Thorough, practical, and easy to follow.</description>
+    <description>Essays on AI, software, and systems. Practical delivery for engineers and technical leaders.</description>
     <language>en-us</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
     <atom:link href="${web_url}/feed.xml" rel="self" type="application/rss+xml"/>

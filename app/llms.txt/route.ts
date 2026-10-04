@@ -39,11 +39,13 @@ async function body() {
 
   return `# Syed Baqir Ali
 
-> Research-depth writing on AI and software. Personal site of Syed Baqir Ali. Essays, case studies, and audience paths for hiring managers, clients, and readers.
+> Principal engineer and AI practitioner in Sydney. Essays, shipped products, and practical delivery for teams.
 
 ## About
 
 - Name: Syed Baqir Ali
+- Role: Principal engineer and AI practitioner in Sydney
+- Experience: 25+ years in software engineering
 - Site: ${web_url}
 - About: ${web_url}/about
 - Contact: ${web_url}/contact
