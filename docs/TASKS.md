@@ -74,6 +74,10 @@ GitHub issues: owner said no.
 | BL-05 | backlog | Essay view counts | done | — | `/essays/v1/{id}/view` + stats; 12h visitor dedupe |
 | BL-06 | backlog | Engagement signals | done | — | Clap once per visitor; shown on essay pages |
 | BL-07 | backlog | Popular ranking from views | done | — | Popular strip prefers `/essays/v1/popular` then curated fallback |
+| BL-08 | backlog | Multiple admins | todo | — | Today: single admin username. Discuss ROLE_ADMIN allowlist later |
+| BL-09 | backlog | Multiple authors | todo | — | Today: one owner author. Discuss bylines / co-authors later |
+| BL-10 | backlog | Paid subscriber features | todo | — | Discuss tiers, gated essays, billing (prefer existing AWS/free; no new paid SaaS without owner yes) |
+| BL-11 | backlog | Contact feedback reasons | done | — | Feature request + Site feedback on contact form |
 
 ## Phase verification log
 
@@ -128,3 +132,9 @@ GitHub issues: owner said no.
 - Essay comments: public approved list; authenticated submit as PENDING; admin approve/reject at `/admin/comments`.
 - Reader signup/login reused; `/secure/**` admin APIs gated to admin username (readers may only hit profile + comment POST).
 - Essay end CTA: subscribe if not subscribed; login/signup to comment; self-send behind a text link.
+
+### Later discussion (no build yet)
+
+- **Multi-admin / multi-author (BL-08, BL-09):** keep one admin and one author for now. When ready: real roles (`ROLE_ADMIN`), allowlisted admins, optional co-author bylines.
+- **Paid subscribers (BL-10):** ideas to discuss: paid newsletter tier, early access essays, private series, subscriber-only downloads. Prefer Stripe Checkout or AWS-native billing only after owner picks a model. Keep free DOI newsletter as the default path.
+- **Non-essay feedback:** use Contact reasons Feature request and Site feedback (BL-11). Comments stay for essay discussion only.

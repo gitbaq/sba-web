@@ -24,6 +24,7 @@ import { readJson } from "@/lib/http";
 import { SubTopic } from "@/types/types";
 import { subtopics_url } from "@/utils/endpoints/endpoints";
 import { useAdminSidebarMode } from "@/components/admin/AdminSidebarMode";
+import { useAuth } from "@/utils/AuthContext";
 
 function navActive(pathname: string, href: string) {
   if (href === "/admin") return pathname === "/admin";
@@ -81,9 +82,15 @@ function AdminNavLink({
 /** Left rail on /admin and /editor. Essay list only in full (expanded) mode. */
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
   const { isMobile, setOpenMobile, state } = useSidebar();
   const { mode } = useAdminSidebarMode();
   const [posts, setPosts] = useState<SubTopic[]>([]);
+
+  function onLogout() {
+    logout();
+    window.location.href = "/";
+  }
 
   const showEssayList =
     isMobile || (mode === "expanded" && state === "expanded");
@@ -227,6 +234,18 @@ export default function AdminSidebar() {
                     <Icons.BookOpen className='h-4 w-4' aria-hidden />
                     <span>View public writing</span>
                   </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip='Log out'
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false);
+                    onLogout();
+                  }}
+                >
+                  <Icons.LogOut className='h-4 w-4' aria-hidden />
+                  <span>Log out</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

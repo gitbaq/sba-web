@@ -23,10 +23,19 @@ function linkActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
+function useAdminLogout() {
+  const { logout } = useAuth();
+  return () => {
+    logout();
+    window.location.href = "/";
+  };
+}
+
 /** Top-nav Manage dropdown for admin users. */
 export default function ManageNav() {
   const { isAuthenticated, isAdmin } = useAuth();
   const pathname = usePathname();
+  const onLogout = useAdminLogout();
 
   if (!isAuthenticated || !isAdmin) return null;
 
@@ -86,6 +95,14 @@ export default function ManageNav() {
             ))}
           </div>
         ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={onLogout}
+          className='cursor-pointer text-destructive focus:text-destructive'
+        >
+          <Icons.LogOut className='h-4 w-4' aria-hidden />
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -94,6 +111,7 @@ export default function ManageNav() {
 /** Mobile entries for the primary overflow menu. */
 export function ManageNavMobileItems() {
   const { isAuthenticated, isAdmin } = useAuth();
+  const onLogout = useAdminLogout();
   if (!isAuthenticated || !isAdmin) return null;
 
   return (
@@ -122,6 +140,13 @@ export function ManageNavMobileItems() {
           ))}
         </div>
       ))}
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        onClick={onLogout}
+        className='cursor-pointer text-destructive focus:text-destructive'
+      >
+        Log out
+      </DropdownMenuItem>
     </>
   );
 }
