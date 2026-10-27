@@ -22,7 +22,7 @@ import { getPublicAudienceSignal } from "@/lib/newsletterAudience";
 export const revalidate = 60;
 
 export const metadata: Metadata = pageMeta({
-  title: SITE.title,
+  title: SITE.title + " - DEV",
   description: SITE.description,
   path: "/",
   absoluteTitle: true,
