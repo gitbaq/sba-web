@@ -72,7 +72,7 @@ export default async function Home() {
               id='home-brand'
               className='display-title text-4xl text-foreground sm:text-5xl md:text-[3.35rem]'
             >
-              COMP9820 - Welcome! - Practical writing on AI, software, and leading teams.
+              Practical writing on AI, software, and leading teams.
             </h1>
             <p className='max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl'>
               Researched essays for engineers and technical leaders.
